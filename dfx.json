@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "Changa_DAO_backend": {
+      "main": "src/Changa_DAO_backend/main.mo",
+      "type": "motoko"
+    },
+    "Changa_DAO_frontend": {
+      "dependencies": [
+        "Changa_DAO_backend"
+      ],
+      "source": [
+        "src/Changa_DAO_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "Changa_DAO_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

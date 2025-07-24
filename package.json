@@ -1,35 +1,18 @@
 {
-  "name": "Changa_DAO_frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "name": "Changa_DAO",
   "scripts": {
-    "setup": "npm i && dfx canister create Changa_DAO_backend && dfx generate Changa_DAO_backend && dfx deploy",
-    "start": "vite --port 3000",
-    "build": "tsc && vite build",
-    "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\""
+    "build": "npm run build --workspaces --if-present",
+    "prebuild": "npm run prebuild --workspaces --if-present",
+    "pretest": "npm run prebuild --workspaces --if-present",
+    "start": "npm start --workspaces --if-present",
+    "test": "npm test --workspaces --if-present"
   },
-  "dependencies": {
-    "@dfinity/agent": "0.15.6",
-    "@dfinity/auth-client": "0.12.0",
-    "@dfinity/candid": "2.4.1",
-    "@dfinity/principal": "2.1.3",
-    "@emotion/react": "11.11.1",
-    "@emotion/styled": "11.11.0",
-    "@mui/icons-material": "5.14.19",
-    "@mui/material": "5.14.20",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "6.20.1"
-  },
-  "devDependencies": {
-    "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
-    "@vitejs/plugin-react": "4.0.1",
-    "dotenv": "16.3.1",
-    "sass": "1.63.6",
-    "typescript": "5.1.3",
-    "vite": "4.3.9",
-    "vite-plugin-environment": "1.1.3"
-  }
+  "type": "module",
+  "workspaces": [
+    "src/Changa_DAO_frontend"
+  ]
 }

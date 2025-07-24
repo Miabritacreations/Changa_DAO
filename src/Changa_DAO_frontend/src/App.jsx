@@ -1,30 +1,25 @@
-import { useState } from 'react';
-import { Changa_DAO_backend } from 'declarations/Changa_DAO_backend';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./layout/Layout";
+import Dashboard from "./pages/Dashboard";
+import UserProfile from "./pages/UserProfile";
+import Voting from "./pages/Voting";
+import Proposals from "./pages/Proposals";
+import Wallet from "./pages/Wallet";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    Changa_DAO_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
-
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/voting" element={<Voting />} />
+          <Route path="/proposals" element={<Proposals />} />
+          <Route path="/wallet" element={<Wallet />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 

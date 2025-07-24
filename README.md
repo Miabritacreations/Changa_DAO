@@ -56,11 +56,6 @@ dfx deploy
 npm start
 ```
 
- 5. Open the App
-
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
-
----
 
  Customization
 

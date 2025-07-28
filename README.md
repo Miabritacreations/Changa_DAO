@@ -1,81 +1,92 @@
- Changa DAO
+# Changa DAO
 
 A full-stack, modern Decentralized Autonomous Organization (DAO) platform built with React (frontend) and Dfinity/ICP Motoko canisters (backend).
 
- Project Overview
+## 🚀 Live Demo
 
-Changa DAO is a complete solution for creating and managing a DAO. It features a user-friendly web interface and a secure, decentralized backend running on the Internet Computer (ICP). The platform enables members to propose, vote, manage profiles, and interact with the DAO treasury—all in a seamless, blockchain-powered environment.
+**[View Live Project](https://github.com/Miabritacreations/Changa_DAO)**
 
- Features
+> **Note:** This is currently a development version. For a live demo, you'll need to run it locally following the setup instructions below.
 
-- Dashboard: Real-time DAO stats, treasury balance, and recent activity
-- User Profiles: Manage member info and avatars
-- Proposals & Voting: Create, review, and vote on DAO proposals
-- Wallet Integration: Connect and view wallet details
-- Decentralized Backend: Powered by Dfinity/ICP Motoko canisters for security and transparency
-- Modular API Layer: Easily swap between mock APIs and real canister calls
+## ✨ Features
 
- Tech Stack
+- **Dashboard:** Real-time DAO stats, treasury balance, and recent activity
+- **User Profiles:** Manage member info and avatars with Internet Identity authentication
+- **Proposals & Voting:** Create, review, and vote on DAO proposals
+- **Wallet Integration:** Connect and view wallet details
+- **Decentralized Backend:** Powered by Dfinity/ICP Motoko canisters for security and transparency
+- **Modular API Layer:** Easily swap between mock APIs and real canister calls
 
-- Frontend: React, Material UI, Vite, SCSS
-- Backend: Dfinity Internet Computer (ICP), Motoko, Canisters
-- API Layer: Modular, pluggable for easy backend integration
+## 🛠️ Tech Stack
 
-Getting Started
+- **Frontend:** React, Material UI, Vite, SCSS
+- **Backend:** Dfinity Internet Computer (ICP), Motoko, Canisters
+- **Authentication:** Internet Identity (II)
+- **API Layer:** Modular, pluggable for easy backend integration
 
- Prerequisites
+## 🏁 Getting Started
+
+### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v16+ recommended)
 - [DFINITY SDK (dfx)](https://smartcontracts.org/docs/quickstart/quickstart-intro.html)
 - (Optional) [Git](https://git-scm.com/)
 
- 1. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Miabritacreations/Changa_DAO.git
 cd Changa_DAO
 ```
 
- 2. Install Frontend Dependencies
+### 2. Install Frontend Dependencies
 
 ```bash
 cd src/Changa_DAO_frontend
 npm install
 ```
 
- 3. Start the Backend (ICP Local Replica)
+### 3. Start the Backend (ICP Local Replica)
 
 ```bash
+cd ~/Changa_DAO
 dfx start --background
 dfx deploy
 ```
 
- 4. Start the Frontend
+### 4. Start the Frontend
 
 ```bash
+cd ~/Changa_DAO/src/Changa_DAO_frontend
 npm start
 ```
 
+### 5. Open the App
 
- Customization
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-- Backend Integration:
+## 🧩 Customization
+
+- **Backend Integration:**  
   The frontend uses a modular API layer (`src/api/`). You can easily swap mock functions for real canister or REST API calls.
-- Feature Expansion:
+- **Feature Expansion:**  
   Add or modify features by editing the corresponding page and API files.
 
-Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please open issues or pull requests for improvements, bug fixes, or new features.
 
- License
+## 📄 License
 
 This project is open-source and available under the [MIT License](LICENSE).
 
- Acknowledgements
+## 🙏 Acknowledgements
 
 - [DFINITY Foundation](https://dfinity.org/)
 - [React](https://reactjs.org/)
 - [Material UI](https://mui.com/)
 - [Vite](https://vitejs.dev/)
 
+---
+
+**Customizable, open-source, and ready for any DAO community!**

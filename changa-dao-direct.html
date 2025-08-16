@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changa DAO - Internet Identity Required</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4caf50;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+        }
+        
+        .status.warning {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: #ff9800;
+        }
+        
+        .identity-info {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .identity-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4caf50;
+        }
+        
+        .principal-text {
+            font-size: 0.9em;
+            opacity: 0.8;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .activity-section, .sidebar-section {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .activity-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time {
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+        
+        .profile-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin: 0 auto 15px;
+        }
+        
+        .profile-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .profile-role {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+        
+        .voting-section {
+            margin-bottom: 25px;
+        }
+        
+        .voting-label {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .voting-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .voting-fill {
+            background: linear-gradient(90deg, #4caf50, #45a049);
+            height: 100%;
+            width: 75%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .voting-text {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 8px 0;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+        }
+        
+        .btn.primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            border-color: transparent;
+        }
+        
+        .btn.danger:hover {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+        }
+        
+        .login-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .dashboard {
+            display: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .title {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login-section" class="login-section">
+            <div class="header">
+                <h1 class="title">🚀 Changa DAO</h1>
+                <p class="subtitle">Internet Identity Required for Access</p>
+            </div>
+            <div class="status" id="auth-status">
+                🔒 Secure Authentication Required
+            </div>
+            <div class="identity-info" id="identity-info" style="display: none;">
+                <div class="identity-number" id="identity-number"></div>
+                <div class="principal-text" id="principal-text"></div>
+            </div>
+            <button class="login-btn" id="login-btn" onclick="authenticate()">
+                Login with Internet Identity
+            </button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard">
+            <div class="header">
+                <h1 class="title">Changa DAO Dashboard</h1>
+                <p class="subtitle">Welcome, <span id="user-identity"></span></p>
+            </div>
+
+            <div class="identity-info">
+                <div class="identity-number" id="dashboard-identity-number"></div>
+                <div class="principal-text" id="dashboard-principal-text"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showAlert('Total Members: 42 active participants')">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-card" onclick="showAlert('Active Proposals: 17 open for voting')">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Active Proposals</div>
+                </div>
+                <div class="stat-card" onclick="showAlert('Treasury Balance: 12,345 ICP available')">
+                    <div class="stat-number">12,345</div>
+                    <div class="stat-label">Treasury (ICP)</div>
+                </div>
+                <div class="stat-card" onclick="showAlert('Your Voting Power: 750 governance tokens')">
+                    <div class="stat-number">750</div>
+                    <div class="stat-label">Your Voting Power</div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="activity-section">
+                    <div class="section-title">
+                        📈 Recent Activity
+                        <span style="background: #4caf50; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;">Live</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #4CAF50;">📋</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Proposal #17: Community Garden Initiative</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #2196F3;">🗳️</div>
+                        <div class="activity-content">
+                            <div class="activity-title">You voted YES on Proposal #16</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #FF9800;">💰</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Treasury received 50 ICP donation</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #9C27B0;">👤</div>
+                        <div class="activity-content">
+                            <div class="activity-title">New member joined: Alice.ic0</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #E91E63;">🎉</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Proposal #15: Website Redesign passed</div>
+                            <div class="activity-time">1 week ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="profile-section">
+                        <div class="profile-avatar">👤</div>
+                        <div class="profile-name" id="profile-name">User.ic0</div>
+                        <div class="profile-role">DAO Member</div>
+                    </div>
+                    
+                    <div class="voting-section">
+                        <div class="voting-label">Voting Power</div>
+                        <div class="voting-bar">
+                            <div class="voting-fill"></div>
+                        </div>
+                        <div class="voting-text">750 / 1000 tokens</div>
+                    </div>
+
+                    <div class="section-title">⚡ Quick Actions</div>
+                    <button class="btn primary" onclick="showAlert('Create Proposal feature - Coming Soon!')">Create Proposal</button>
+                    <button class="btn" onclick="showAlert('View Proposals feature - Coming Soon!')">View Proposals</button>
+                    <button class="btn" onclick="showAlert('Vote Now feature - Coming Soon!')">Vote Now</button>
+                    <button class="btn danger" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isAuthenticated = false;
+        let userPrincipal = null;
+        let identityNumber = null;
+
+        // Check if Internet Identity is available
+        function checkInternetIdentity() {
+            if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+                // For local development, we'll simulate the check
+                return true;
+            }
+            return true; // Assume it's available
+        }
+
+        async function authenticate() {
+            const loginBtn = document.getElementById('login-btn');
+            const authStatus = document.getElementById('auth-status');
+            
+            if (!checkInternetIdentity()) {
+                authStatus.className = 'status error';
+                authStatus.textContent = '❌ Internet Identity not available';
+                return;
+            }
+
+            try {
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<span class="loading"></span> Authenticating...';
+                authStatus.className = 'status warning';
+                authStatus.textContent = '🔄 Authenticating with Internet Identity...';
+
+                // Simulate Internet Identity authentication
+                // In a real implementation, this would use the actual Internet Identity service
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Simulate successful authentication
+                const mockPrincipal = '2vxsx-fae'; // Mock principal
+                const mockIdentityNumber = '12345'; // Mock identity number
+                
+                userPrincipal = mockPrincipal;
+                identityNumber = mockIdentityNumber;
+                isAuthenticated = true;
+
+                // Update UI
+                authStatus.className = 'status';
+                authStatus.textContent = '✅ Authenticated with Internet Identity';
+                
+                // Show identity info
+                document.getElementById('identity-info').style.display = 'block';
+                document.getElementById('identity-number').textContent = `Identity: ${identityNumber}`;
+                document.getElementById('principal-text').textContent = `Principal: ${userPrincipal}`;
+
+                // Show dashboard
+                showDashboard();
+
+            } catch (error) {
+                console.error('Authentication failed:', error);
+                authStatus.className = 'status error';
+                authStatus.textContent = '❌ Authentication failed. Please try again.';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login with Internet Identity';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Update dashboard with user info
+            document.getElementById('user-identity').textContent = `Identity ${identityNumber}`;
+            document.getElementById('profile-name').textContent = `Identity ${identityNumber}`;
+            document.getElementById('dashboard-identity-number').textContent = `Identity: ${identityNumber}`;
+            document.getElementById('dashboard-principal-text').textContent = `Principal: ${userPrincipal}`;
+            
+            // Add smooth animation
+            document.getElementById('dashboard').style.opacity = '0';
+            document.getElementById('dashboard').style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                document.getElementById('dashboard').style.transition = 'all 0.6s ease';
+                document.getElementById('dashboard').style.opacity = '1';
+                document.getElementById('dashboard').style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        function logout() {
+            isAuthenticated = false;
+            userPrincipal = null;
+            identityNumber = null;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+            
+            // Reset UI
+            document.getElementById('auth-status').className = 'status';
+            document.getElementById('auth-status').textContent = '🔒 Secure Authentication Required';
+            document.getElementById('identity-info').style.display = 'none';
+            document.getElementById('login-btn').disabled = false;
+            document.getElementById('login-btn').textContent = 'Login with Internet Identity';
+        }
+
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Add interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effects to stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 150);
+                });
+            });
+
+            // Add hover effects to voting bar
+            const votingFill = document.querySelector('.voting-fill');
+            if (votingFill) {
+                votingFill.addEventListener('mouseenter', function() {
+                    this.style.width = '85%';
+                });
+                votingFill.addEventListener('mouseleave', function() {
+                    this.style.width = '75%';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

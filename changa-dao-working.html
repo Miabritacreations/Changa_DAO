@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changa DAO - Working Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        .activity, .sidebar {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .section-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+        }
+        .activity-text {
+            flex: 1;
+        }
+        .activity-time {
+            opacity: 0.7;
+            font-size: 0.8em;
+        }
+        .profile-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin: 0 auto 10px;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin: 5px 0;
+            width: 100%;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .login-section {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .login-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .dashboard {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login-section" class="login-section">
+            <h1>🚀 Changa DAO</h1>
+            <p class="subtitle">Welcome to decentralized governance</p>
+            <button class="login-btn" onclick="login()">Login with Internet Identity</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard">
+            <h1>Changa DAO Dashboard</h1>
+            <p class="subtitle">Your governance hub</p>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Active Proposals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12,345</div>
+                    <div class="stat-label">Treasury (ICP)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">750</div>
+                    <div class="stat-label">Your Voting Power</div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="activity">
+                    <div class="section-title">📈 Recent Activity</div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #4CAF50;">📋</div>
+                        <div class="activity-text">
+                            <div>Proposal #17: Community Garden Initiative</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #2196F3;">🗳️</div>
+                        <div class="activity-text">
+                            <div>You voted YES on Proposal #16</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #FF9800;">💰</div>
+                        <div class="activity-text">
+                            <div>Treasury received 50 ICP donation</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: #9C27B0;">👤</div>
+                        <div class="activity-text">
+                            <div>New member joined: Alice.ic0</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="profile-section">
+                        <div class="profile-avatar">👤</div>
+                        <div style="font-size: 1.1em; margin-bottom: 5px;">User.ic0</div>
+                        <div style="opacity: 0.8;">DAO Member</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <div style="margin-bottom: 10px;">Voting Power</div>
+                        <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: white; height: 100%; width: 75%; border-radius: 4px;"></div>
+                        </div>
+                        <div style="font-size: 0.8em; opacity: 0.8; margin-top: 5px;">750 / 1000 tokens</div>
+                    </div>
+
+                    <div class="section-title">⚡ Quick Actions</div>
+                    <button class="btn" onclick="alert('Create Proposal - Coming Soon!')">Create Proposal</button>
+                    <button class="btn" onclick="alert('View Proposals - Coming Soon!')">View Proposals</button>
+                    <button class="btn" onclick="alert('Vote Now - Coming Soon!')">Vote Now</button>
+                    <button class="btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

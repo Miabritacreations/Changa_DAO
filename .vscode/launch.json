@@ -5,25 +5,80 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Edge",
+            "name": "Launch Changa DAO - Chrome (Port 3001)",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3001",
+            "webRoot": "${workspaceFolder}",
+            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile",
+            "runtimeArgs": [
+                "--disable-web-security",
+                "--disable-features=VizDisplayCompositor",
+                "--remote-debugging-port=9222"
+            ],
+            "timeout": 30000
+        },
+        {
+            "name": "Launch Changa DAO - Edge (Port 3001)",
             "request": "launch",
             "type": "msedge",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:3001",
+            "webRoot": "${workspaceFolder}",
+            "userDataDir": "${workspaceFolder}/.vscode/edge-debug-profile",
+            "runtimeArgs": [
+                "--disable-web-security",
+                "--disable-features=VizDisplayCompositor",
+                "--remote-debugging-port=9223"
+            ],
+            "timeout": 30000
         },
         {
-            "name": "Launch Chrome",
+            "name": "Launch Changa DAO - Firefox (Port 3001)",
             "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "type": "firefox",
+            "url": "http://localhost:3001",
+            "webRoot": "${workspaceFolder}",
+            "profile": "${workspaceFolder}/.vscode/firefox-debug-profile",
+            "timeout": 30000
         },
         {
-            "type": "chrome",
+            "name": "Launch Changa DAO - Chrome (Port 3000)",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}",
+            "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile-3000",
+            "runtimeArgs": [
+                "--disable-web-security",
+                "--disable-features=VizDisplayCompositor",
+                "--remote-debugging-port=9224"
+            ],
+            "timeout": 30000
+        },
+        {
+            "name": "Attach to Chrome",
+            "request": "attach",
+            "type": "chrome",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 30000
+        },
+        {
+            "name": "Attach to Edge",
+            "request": "attach",
+            "type": "msedge",
+            "port": 9223,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 30000
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Changa DAO - All Browsers (Port 3001)",
+            "configurations": [
+                "Launch Changa DAO - Chrome (Port 3001)",
+                "Launch Changa DAO - Edge (Port 3001)"
+            ]
         }
     ]
 }

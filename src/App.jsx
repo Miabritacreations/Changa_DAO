@@ -1,25 +1,26 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./layout/Layout";
-import Dashboard from "./pages/Dashboard";
-import UserProfile from "./pages/UserProfile";
-import Voting from "./pages/Voting";
-import Proposals from "./pages/Proposals";
-import Wallet from "./pages/Wallet";
 
 function App() {
+  // Simple test to see if React is working
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/voting" element={<Voting />} />
-          <Route path="/proposals" element={<Proposals />} />
-          <Route path="/wallet" element={<Wallet />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ color: '#1976d2' }}>Changa DAO - Test Page</h1>
+      <p>If you can see this, React is working!</p>
+      <p>Current time: {new Date().toLocaleString()}</p>
+      <button 
+        onClick={() => alert('Button works!')}
+        style={{ 
+          padding: '10px 20px', 
+          background: '#1976d2', 
+          color: 'white', 
+          border: 'none', 
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        Test Button
+      </button>
+    </div>
   );
 }
 

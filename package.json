@@ -14,5 +14,12 @@
   "type": "module",
   "workspaces": [
     "src/Changa_DAO_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/agent": "^1.4.0",
+    "@dfinity/auth-client": "^1.4.0",
+    "@dfinity/authentication": "^0.14.1",
+    "@dfinity/identity": "^1.4.0",
+    "buffer": "^6.0.3"
+  }
 }

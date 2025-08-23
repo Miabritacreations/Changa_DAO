@@ -1,14 +1,16 @@
-import { fileURLToPath, URL } from 'url';
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv';
+import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
 import environment from 'vite-plugin-environment';
-import dotenv from 'dotenv';
 
 dotenv.config({ path: '../../.env' });
 
 export default defineConfig({
+  base: '/Changa_DAO/',
   build: {
     emptyOutDir: true,
+    outDir: 'dist',
   },
   optimizeDeps: {
     esbuildOptions: {

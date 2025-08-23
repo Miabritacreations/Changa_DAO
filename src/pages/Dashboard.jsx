@@ -13,7 +13,6 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
-  Paper,
   Stack,
   Button,
   IconButton,
@@ -121,11 +120,9 @@ const Dashboard = () => {
         const data = await getDashboardData();
         setDashboardData(data);
         
-        // Get user principal for voting power calculation
         const principal = internetIdentityService.getUserPrincipal();
         setUserPrincipal(principal);
         
-        // Mock voting power based on principal (in real app, this would come from token balance)
         if (principal) {
           const mockVotingPower = Math.floor(Math.random() * 1000) + 100;
           setVotingPower(mockVotingPower);
@@ -382,4 +379,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

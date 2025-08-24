@@ -15,6 +15,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
   Container,
   Fade,
   FormControl,
@@ -29,13 +30,16 @@ import {
   Tooltip,
   Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+// **Import your ICP backend canister**
+import { Changa_DAO_backend } from "../declarations/Changa_DAO_backend";
+
 // Project Card Component
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, hero }) => {
   const getMilestoneIcon = (status) => {
     switch (status) {
       case "completed":
@@ -43,7 +47,6 @@ const ProjectCard = ({ project }) => {
       case "in-progress":
         return <ConstructionIcon sx={{ color: "#ff9800" }} />;
       case "pending":
-        return <ScheduleIcon sx={{ color: "#9e9e9e" }} />;
       default:
         return <ScheduleIcon sx={{ color: "#9e9e9e" }} />;
     }
@@ -56,14 +59,13 @@ const ProjectCard = ({ project }) => {
       case "in-progress":
         return "#ff9800";
       case "pending":
-        return "#9e9e9e";
       default:
         return "#9e9e9e";
     }
   };
 
   return (
-    <Fade in={true} timeout={500}>
+    <Fade in timeout={500}>
       <Card
         sx={{
           height: "100%",
@@ -76,11 +78,15 @@ const ProjectCard = ({ project }) => {
           },
           borderRadius: 3,
           overflow: "hidden",
+          ...(hero && {
+            border: "2px solid #1E88E5",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+          }),
         }}
       >
         <CardMedia
           component="img"
-          height="200"
+          height={hero ? "250" : "200"}
           image={
             project.image ||
             "https://via.placeholder.com/400x200/667eea/ffffff?text=Project+Image"
@@ -89,6 +95,7 @@ const ProjectCard = ({ project }) => {
           sx={{ objectFit: "cover" }}
         />
         <CardContent sx={{ flexGrow: 1, p: 3 }}>
+          {/* Location & Category */}
           <Box display="flex" alignItems="center" gap={1} mb={2}>
             <LocationIcon sx={{ color: "text.secondary", fontSize: 20 }} />
             <Typography variant="body2" color="text.secondary">
@@ -105,13 +112,16 @@ const ProjectCard = ({ project }) => {
               }}
             />
           </Box>
+
           <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, lineHeight: 1.3 }}>
             {project.name}
           </Typography>
+
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
             {project.description}
           </Typography>
 
+          {/* Funding Progress */}
           <Box mb={3}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
@@ -145,6 +155,7 @@ const ProjectCard = ({ project }) => {
             </Box>
           </Box>
 
+          {/* Milestones */}
           <Box mb={3}>
             <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
               Milestones
@@ -169,6 +180,7 @@ const ProjectCard = ({ project }) => {
             </Stack>
           </Box>
 
+          {/* Team Info */}
           <Box display="flex" alignItems="center" gap={2} mb={3}>
             <Avatar sx={{ width: 32, height: 32 }}>
               <PeopleIcon />
@@ -210,55 +222,16 @@ const ProjectCard = ({ project }) => {
   );
 };
 
-// Projects Page
+// Main Projects Page
 const Projects = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
-
-  const mockProjects = [
-    {
-      id: 1,
-      name: "Clean Water Initiative",
-      description: "Building boreholes for clean water access in rural communities.",
-      location: "Kisumu, Kenya",
-      category: "Water",
-      categoryColor: "#1E88E5",
-      fundingProgress: 75,
-      raised: 15000,
-      goal: 20000,
-      milestones: [
-        { name: "Site Survey", status: "completed" },
-        { name: "Drilling", status: "in-progress" },
-        { name: "Pump Installation", status: "pending" },
-      ],
-      team: "Water Warriors",
-      teamSize: 5,
-      image: "",
-    },
-    {
-      id: 2,
-      name: "Solar School Project",
-      description: "Installing solar panels to power classrooms and labs.",
-      location: "Accra, Ghana",
-      category: "Energy",
-      categoryColor: "#F9A825",
-      fundingProgress: 40,
-      raised: 8000,
-      goal: 20000,
-      milestones: [
-        { name: "Site Assessment", status: "completed" },
-        { name: "Panel Installation", status: "in-progress" },
-        { name: "System Testing", status: "pending" },
-      ],
-      team: "Sun Scholars",
-      teamSize: 4,
-      image: "",
-    },
-    // Add more projects here
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = [
     { value: "all", label: "All Categories" },
@@ -277,11 +250,23 @@ const Projects = () => {
     { value: "goal", label: "Goal Amount" },
   ];
 
-  // Featured Projects for Hero Section
-  const featuredProjects = mockProjects.slice(0, 2);
+  // **Fetch projects from ICP backend**
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const result = await Changa_DAO_backend.getProjects(); // backend method
+        // Assume backend returns array of projects
+        setProjects(result);
+      } catch (err) {
+        console.error("Failed to fetch projects:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
-  // Filtered & Sorted Projects (excluding featured for main grid)
-  const filteredProjects = mockProjects
+  const filteredProjects = projects
     .filter((project) => {
       const matchesSearch =
         project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -303,31 +288,35 @@ const Projects = () => {
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
       {/* Hero Section */}
-      <Box mb={6}>
-        <Typography variant="h3" sx={{ fontWeight: 700, mb: 3 }}>
-          Featured Projects
-        </Typography>
-        <Grid container spacing={3}>
-          {featuredProjects.map((project) => (
-            <Grid item xs={12} md={6} key={project.id}>
-              <ProjectCard project={project} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Header */}
-      <Box textAlign="center" mb={6}>
+      <Box
+        mb={6}
+        sx={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          borderRadius: 3,
+          p: { xs: 3, md: 6 },
+          color: "white",
+          textAlign: "center",
+        }}
+      >
         <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
-          Explore Projects
+          Discover Impactful Projects
         </Typography>
-        <Typography
-          variant="h6"
-          color="text.secondary"
-          sx={{ maxWidth: 600, mx: "auto" }}
+        <Typography variant="h6" sx={{ mb: 3 }}>
+          Explore global initiatives and fund the ones that inspire you.
+        </Typography>
+        <Button
+          variant="contained"
+          component={Link}
+          to="#projects-grid"
+          sx={{
+            background: "white",
+            color: "#667eea",
+            fontWeight: 600,
+            "&:hover": { background: "#f0f0f0" },
+          }}
         >
-          Discover impactful projects from around the world and fund the ones that matter to you
-        </Typography>
+          Browse Projects
+        </Button>
       </Box>
 
       {/* Filters & Search */}
@@ -383,16 +372,11 @@ const Projects = () => {
       </Grid>
 
       {/* Projects Grid */}
-      <Grid container spacing={3}>
-        {filteredProjects.map((project) => (
-          <Grid item xs={12} sm={6} lg={4} key={project.id}>
-            <ProjectCard project={project} />
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* No Results */}
-      {filteredProjects.length === 0 && (
+      {loading ? (
+        <Box textAlign="center" py={10}>
+          <CircularProgress />
+        </Box>
+      ) : filteredProjects.length === 0 ? (
         <Box textAlign="center" py={8}>
           <Typography variant="h6" color="text.secondary" mb={2}>
             No projects found matching your criteria
@@ -407,6 +391,14 @@ const Projects = () => {
             Clear Filters
           </Button>
         </Box>
+      ) : (
+        <Grid container spacing={3} id="projects-grid">
+          {filteredProjects.map((project) => (
+            <Grid item xs={12} sm={6} lg={4} key={project.id}>
+              <ProjectCard project={project} />
+            </Grid>
+          ))}
+        </Grid>
       )}
     </Container>
   );

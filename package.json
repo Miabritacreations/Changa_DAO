@@ -5,19 +5,20 @@
   },
   "name": "Changa_DAO",
   "type": "module",
+  "private": true,
   "workspaces": [
-    "src/Changa_DAO_frontend"
+    "src/Changa_DAO_frontend",
+    "src/Changa_DAO_backend"
   ],
   "scripts": {
-    "setup": "npm i && dfx canister create Changa_DAO_backend && dfx generate Changa_DAO_backend && dfx deploy",
+    "setup": "npm install && dfx canister create Changa_DAO_backend && dfx generate Changa_DAO_backend && dfx deploy",
     "dev": "vite --port 3000",
     "start": "npm run dev",
-    "prebuild": "dfx generate && npm run prebuild --workspaces --if-present",
-    "build": "tsc && vite build && npm run build --workspaces --if-present",
+    "prebuild": "dfx generate",
+    "build": "tsc && vite build",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\"",
-    "pretest": "npm run prebuild --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test"
   },
   "dependencies": {
     "@dfinity/agent": "0.15.6",

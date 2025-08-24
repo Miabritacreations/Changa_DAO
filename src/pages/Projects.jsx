@@ -15,7 +15,6 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  CircularProgress,
   Container,
   Fade,
   FormControl,
@@ -32,13 +31,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// **Import your ICP backend canister**
-import { Changa_DAO_backend } from "../declarations/Changa_DAO_backend";
-
-// Project Card Component
+// Project Card Component (single declaration)
 const ProjectCard = ({ project, hero }) => {
   const getMilestoneIcon = (status) => {
     switch (status) {
@@ -47,6 +43,7 @@ const ProjectCard = ({ project, hero }) => {
       case "in-progress":
         return <ConstructionIcon sx={{ color: "#ff9800" }} />;
       case "pending":
+        return <ScheduleIcon sx={{ color: "#9e9e9e" }} />;
       default:
         return <ScheduleIcon sx={{ color: "#9e9e9e" }} />;
     }
@@ -59,6 +56,7 @@ const ProjectCard = ({ project, hero }) => {
       case "in-progress":
         return "#ff9800";
       case "pending":
+        return "#9e9e9e";
       default:
         return "#9e9e9e";
     }
@@ -113,17 +111,29 @@ const ProjectCard = ({ project, hero }) => {
             />
           </Box>
 
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, lineHeight: 1.3 }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, mb: 2, lineHeight: 1.3 }}
+          >
             {project.name}
           </Typography>
 
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mb: 3, lineHeight: 1.6 }}
+          >
             {project.description}
           </Typography>
 
           {/* Funding Progress */}
           <Box mb={3}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
                 Funding Progress
               </Typography>
@@ -169,7 +179,8 @@ const ProjectCard = ({ project, hero }) => {
                       variant="body2"
                       sx={{
                         color: getMilestoneColor(milestone.status),
-                        fontWeight: milestone.status === "completed" ? 600 : 400,
+                        fontWeight:
+                          milestone.status === "completed" ? 600 : 400,
                       }}
                     >
                       {milestone.name}
@@ -226,12 +237,52 @@ const ProjectCard = ({ project, hero }) => {
 const Projects = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const mockProjects = [
+    {
+      id: 1,
+      name: "Clean Water Initiative",
+      description:
+        "Building boreholes for clean water access in rural communities.",
+      location: "Kisumu, Kenya",
+      category: "Water",
+      categoryColor: "#1E88E5",
+      fundingProgress: 75,
+      raised: 15000,
+      goal: 20000,
+      milestones: [
+        { name: "Site Survey", status: "completed" },
+        { name: "Drilling", status: "in-progress" },
+        { name: "Pump Installation", status: "pending" },
+      ],
+      team: "Water Warriors",
+      teamSize: 5,
+      image: "",
+    },
+    {
+      id: 2,
+      name: "Solar School Project",
+      description: "Installing solar panels to power classrooms and labs.",
+      location: "Accra, Ghana",
+      category: "Energy",
+      categoryColor: "#F9A825",
+      fundingProgress: 40,
+      raised: 8000,
+      goal: 20000,
+      milestones: [
+        { name: "Site Assessment", status: "completed" },
+        { name: "Panel Installation", status: "in-progress" },
+        { name: "System Testing", status: "pending" },
+      ],
+      team: "Sun Scholars",
+      teamSize: 4,
+      image: "",
+    },
+    // Add more projects as needed
+  ];
 
   const categories = [
     { value: "all", label: "All Categories" },
@@ -250,23 +301,7 @@ const Projects = () => {
     { value: "goal", label: "Goal Amount" },
   ];
 
-  // **Fetch projects from ICP backend**
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const result = await Changa_DAO_backend.getProjects(); // backend method
-        // Assume backend returns array of projects
-        setProjects(result);
-      } catch (err) {
-        console.error("Failed to fetch projects:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProjects();
-  }, []);
-
-  const filteredProjects = projects
+  const filteredProjects = mockProjects
     .filter((project) => {
       const matchesSearch =
         project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -372,11 +407,16 @@ const Projects = () => {
       </Grid>
 
       {/* Projects Grid */}
-      {loading ? (
-        <Box textAlign="center" py={10}>
-          <CircularProgress />
-        </Box>
-      ) : filteredProjects.length === 0 ? (
+      <Grid container spacing={3} id="projects-grid">
+        {filteredProjects.map((project) => (
+          <Grid item xs={12} sm={6} lg={4} key={project.id}>
+            <ProjectCard project={project} />
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* No Results */}
+      {filteredProjects.length === 0 && (
         <Box textAlign="center" py={8}>
           <Typography variant="h6" color="text.secondary" mb={2}>
             No projects found matching your criteria
@@ -391,14 +431,6 @@ const Projects = () => {
             Clear Filters
           </Button>
         </Box>
-      ) : (
-        <Grid container spacing={3} id="projects-grid">
-          {filteredProjects.map((project) => (
-            <Grid item xs={12} sm={6} lg={4} key={project.id}>
-              <ProjectCard project={project} />
-            </Grid>
-          ))}
-        </Grid>
       )}
     </Container>
   );

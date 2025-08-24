@@ -9,7 +9,7 @@
         "Changa_DAO_backend"
       ],
       "source": [
-        "src/Changa_DAO_frontend/dist"
+        "src/Changa_DAO_frontend"       
       ],
       "type": "assets",
       "workspace": "Changa_DAO_frontend"

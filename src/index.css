@@ -174,4 +174,4 @@ button:hover, .btn:hover {
 .mb-4 { margin-bottom: 32px; }
 .text-center { text-align: center; }
 .rounded { border-radius: var(--radius); }
-.shadow { box-shadow: var(--card-shadow
+.shadow { box-shadow: var(--card-shadow)}

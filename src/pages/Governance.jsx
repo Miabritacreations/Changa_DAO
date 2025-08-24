@@ -1,152 +1,83 @@
-import React, { useState } from "react";
 import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-  Chip,
-  Stack,
-  Avatar,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Tabs,
-  Tab,
-  TextField,
-  LinearProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import {
-  HowToVote as VoteIcon,
-  Assignment as ProposalIcon,
-  People as PeopleIcon,
-  TrendingUp as TrendingUpIcon,
-  CheckCircle as CheckIcon,
-  Cancel as CancelIcon,
-  Schedule as ScheduleIcon,
-  Chat as ChatIcon,
-  Send as SendIcon,
-  AccountBalance as TreasuryIcon,
   Forum as ForumIcon,
+  Send as SendIcon,
+  HowToVote as VoteIcon
 } from "@mui/icons-material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card, CardContent,
+  Chip,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl, FormControlLabel,
+  Grid,
+  LinearProgress,
+  Radio, RadioGroup,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+  Typography
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Changa_DAO_backend } from "../../../declarations/Changa_DAO_backend";
 
+// TabPanel helper
 const TabPanel = ({ children, value, index }) => (
-  <div hidden={value !== index}>
-    {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
-  </div>
+  <div hidden={value !== index}>{value === index && <Box sx={{ py: 3 }}>{children}</Box>}</div>
 );
 
 const Governance = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [proposals, setProposals] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [showVoteDialog, setShowVoteDialog] = useState(false);
   const [voteChoice, setVoteChoice] = useState("");
   const [chatMessage, setChatMessage] = useState("");
+  const [newProposal, setNewProposal] = useState({ title: "", description: "", category: "" });
 
-  const mockProposals = [
-    {
-      id: 1,
-      title: "Community Garden Initiative",
-      description: "Proposal to fund a community garden project in Nairobi slums to provide fresh vegetables and income generation for local families.",
-      author: "Sarah Mwangi",
-      category: "Agriculture",
-      status: "active",
-      startDate: "2024-03-01",
-      endDate: "2024-03-15",
-      totalVotes: 156,
-      yesVotes: 89,
-      noVotes: 45,
-      abstainVotes: 22,
-      requiredQuorum: 100,
-      yourVote: null,
-    },
-    {
-      id: 2,
-      title: "Website Redesign",
-      description: "Proposal to redesign the Changa DAO website with improved UX and mobile responsiveness.",
-      author: "John Ochieng",
-      category: "Infrastructure",
-      status: "passed",
-      startDate: "2024-02-15",
-      endDate: "2024-02-28",
-      totalVotes: 203,
-      yesVotes: 178,
-      noVotes: 15,
-      abstainVotes: 10,
-      requiredQuorum: 100,
-      yourVote: "yes",
-    },
-    {
-      id: 3,
-      title: "Mobile App Development",
-      description: "Proposal to develop a mobile app for easier project funding and governance participation.",
-      author: "Mary Akinyi",
-      category: "Technology",
-      status: "active",
-      startDate: "2024-03-10",
-      endDate: "2024-03-25",
-      totalVotes: 78,
-      yesVotes: 45,
-      noVotes: 20,
-      abstainVotes: 13,
-      requiredQuorum: 100,
-      yourVote: null,
-    },
-  ];
-
-  const mockChatMessages = [
-    {
-      id: 1,
-      user: "Alice.ic0",
-      message: "I think the community garden initiative is a great idea! It will provide sustainable food sources.",
-      timestamp: "2 hours ago",
-      avatar: "A",
-    },
-    {
-      id: 2,
-      user: "Bob.ic0",
-      message: "The budget seems reasonable for the impact it will create. I'm voting yes.",
-      timestamp: "1 hour ago",
-      avatar: "B",
-    },
-    {
-      id: 3,
-      user: "Carol.ic0",
-      message: "Has anyone considered the maintenance costs after the initial setup?",
-      timestamp: "30 minutes ago",
-      avatar: "C",
-    },
-  ];
-
-  const userVotingPower = 1250;
+  const userVotingPower = 1250; // later fetch from backend
   const totalVotingPower = 50000;
 
-  const getVotePercentage = (votes, total) => {
-    return total > 0 ? Math.round((votes / total) * 100) : 0;
-  };
+  // Fetch proposals from canister
+  async function fetchProposals() {
+    try {
+      const res = await Changa_DAO_backend.getProposals();
+      setProposals(res);
+    } catch (e) {
+      console.error("Failed to fetch proposals", e);
+    }
+  }
+
+  // Fetch forum messages
+  async function fetchMessages() {
+    try {
+      const res = await Changa_DAO_backend.getMessages();
+      setMessages(res);
+    } catch (e) {
+      console.error("Failed to fetch messages", e);
+    }
+  }
+
+  useEffect(() => {
+    fetchProposals();
+    fetchMessages();
+  }, []);
+
+  const getVotePercentage = (votes, total) => (total > 0 ? Math.round((votes / total) * 100) : 0);
 
   const getProposalStatusColor = (status) => {
     switch (status) {
-      case "active":
-        return "warning";
-      case "passed":
-        return "success";
-      case "failed":
-        return "error";
-      default:
-        return "default";
+      case "active": return "warning";
+      case "passed": return "success";
+      case "failed": return "error";
+      default: return "default";
     }
   };
 
@@ -155,16 +86,42 @@ const Governance = () => {
     setShowVoteDialog(true);
   };
 
-  const handleConfirmVote = () => {
-    // Handle vote submission logic here
-    setShowVoteDialog(false);
-    setVoteChoice("");
+  const handleConfirmVote = async () => {
+    try {
+      await Changa_DAO_backend.voteOnProposal(selectedProposal.id, voteChoice);
+      setShowVoteDialog(false);
+      setVoteChoice("");
+      fetchProposals(); // refresh proposals after voting
+    } catch (e) {
+      console.error("Vote failed", e);
+    }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (chatMessage.trim()) {
-      // Handle sending message logic here
-      setChatMessage("");
+      try {
+        await Changa_DAO_backend.addMessage(chatMessage);
+        setChatMessage("");
+        fetchMessages();
+      } catch (e) {
+        console.error("Failed to send message", e);
+      }
+    }
+  };
+
+  const handleCreateProposal = async () => {
+    if (newProposal.title && newProposal.description) {
+      try {
+        await Changa_DAO_backend.addProposal(
+          newProposal.title,
+          newProposal.description,
+          newProposal.category || "General"
+        );
+        setNewProposal({ title: "", description: "", category: "" });
+        fetchProposals();
+      } catch (e) {
+        console.error("Failed to create proposal", e);
+      }
     }
   };
 
@@ -180,7 +137,35 @@ const Governance = () => {
         </Typography>
       </Box>
 
-      {/* Voting Power Card */}
+      {/* Create Proposal */}
+      <Card sx={{ mb: 4, p: 3 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>Create New Proposal</Typography>
+        <Stack spacing={2}>
+          <TextField
+            label="Proposal Title"
+            fullWidth
+            value={newProposal.title}
+            onChange={(e) => setNewProposal({ ...newProposal, title: e.target.value })}
+          />
+          <TextField
+            label="Description"
+            multiline
+            rows={3}
+            fullWidth
+            value={newProposal.description}
+            onChange={(e) => setNewProposal({ ...newProposal, description: e.target.value })}
+          />
+          <TextField
+            label="Category"
+            fullWidth
+            value={newProposal.category}
+            onChange={(e) => setNewProposal({ ...newProposal, category: e.target.value })}
+          />
+          <Button variant="contained" onClick={handleCreateProposal}>Submit Proposal</Button>
+        </Stack>
+      </Card>
+
+      {/* Voting Power */}
       <Card sx={{ mb: 4 }}>
         <CardContent sx={{ p: 4 }}>
           <Box display="flex" alignItems="center" gap={2} mb={3}>
@@ -188,12 +173,8 @@ const Governance = () => {
               <VoteIcon />
             </Avatar>
             <Box flex={1}>
-              <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                Your Voting Power
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Based on your token holdings
-              </Typography>
+              <Typography variant="h5" sx={{ fontWeight: 600 }}>Your Voting Power</Typography>
+              <Typography variant="body1" color="text.secondary">Based on your token holdings</Typography>
             </Box>
             <Box textAlign="right">
               <Typography variant="h4" sx={{ fontWeight: 700, color: "primary.main" }}>
@@ -207,33 +188,19 @@ const Governance = () => {
           <LinearProgress
             variant="determinate"
             value={(userVotingPower / totalVotingPower) * 100}
-            sx={{
-              height: 8,
-              borderRadius: 4,
-              "& .MuiLinearProgress-bar": {
-                borderRadius: 4,
-              },
-            }}
+            sx={{ height: 8, borderRadius: 4 }}
           />
         </CardContent>
       </Card>
 
-      {/* Main Content */}
+      {/* Proposals */}
       <Grid container spacing={4}>
-        {/* Proposals Section */}
         <Grid item xs={12} md={8}>
           <Card>
             <Tabs
               value={activeTab}
               onChange={(e, newValue) => setActiveTab(newValue)}
-              sx={{
-                borderBottom: 1,
-                borderColor: "divider",
-                "& .MuiTab-root": {
-                  textTransform: "none",
-                  fontWeight: 600,
-                },
-              }}
+              sx={{ borderBottom: 1, borderColor: "divider" }}
             >
               <Tab label="Active Proposals" />
               <Tab label="Past Votes" />
@@ -241,7 +208,7 @@ const Governance = () => {
 
             <TabPanel value={activeTab} index={0}>
               <Stack spacing={3}>
-                {mockProposals.filter(p => p.status === "active").map((proposal) => (
+                {proposals.filter(p => p.status === "active").map((proposal) => (
                   <Card key={proposal.id} sx={{ p: 3 }}>
                     <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                       <Box flex={1}>
@@ -251,34 +218,14 @@ const Governance = () => {
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                           {proposal.description}
                         </Typography>
-                        <Box display="flex" alignItems="center" gap={2}>
-                          <Chip
-                            label={proposal.category}
-                            size="small"
-                            variant="outlined"
-                          />
-                          <Typography variant="caption" color="text.secondary">
-                            By {proposal.author}
-                          </Typography>
-                        </Box>
+                        <Chip label={proposal.category} size="small" variant="outlined" />
                       </Box>
-                      <Chip
-                        label={proposal.status}
-                        color={getProposalStatusColor(proposal.status)}
-                        size="small"
-                      />
+                      <Chip label={proposal.status} color={getProposalStatusColor(proposal.status)} size="small" />
                     </Box>
 
                     {/* Vote Progress */}
-                    <Box mb={3}>
-                      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          Voting Progress
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {proposal.totalVotes} votes cast
-                        </Typography>
-                      </Box>
+                    <Box mb={2}>
+                      <Typography variant="body2" sx={{ fontWeight: 600 }}>Voting Progress</Typography>
                       <LinearProgress
                         variant="determinate"
                         value={(proposal.totalVotes / proposal.requiredQuorum) * 100}
@@ -289,64 +236,10 @@ const Governance = () => {
                       </Typography>
                     </Box>
 
-                    {/* Vote Results */}
-                    <Grid container spacing={2} mb={3}>
-                      <Grid item xs={4}>
-                        <Box textAlign="center">
-                          <Typography variant="h6" sx={{ color: "#4caf50", fontWeight: 600 }}>
-                            {getVotePercentage(proposal.yesVotes, proposal.totalVotes)}%
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Yes ({proposal.yesVotes})
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Box textAlign="center">
-                          <Typography variant="h6" sx={{ color: "#f44336", fontWeight: 600 }}>
-                            {getVotePercentage(proposal.noVotes, proposal.totalVotes)}%
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            No ({proposal.noVotes})
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Box textAlign="center">
-                          <Typography variant="h6" sx={{ color: "#9e9e9e", fontWeight: 600 }}>
-                            {getVotePercentage(proposal.abstainVotes, proposal.totalVotes)}%
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Abstain ({proposal.abstainVotes})
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-
-                    {/* Action Buttons */}
+                    {/* Results */}
                     <Box display="flex" gap={2}>
-                      {proposal.yourVote ? (
-                        <Chip
-                          label={`You voted ${proposal.yourVote.toUpperCase()}`}
-                          color="primary"
-                          variant="outlined"
-                        />
-                      ) : (
-                        <Button
-                          variant="contained"
-                          startIcon={<VoteIcon />}
-                          onClick={() => handleVote(proposal)}
-                          sx={{ borderRadius: 2 }}
-                        >
-                          Vote Now
-                        </Button>
-                      )}
-                      <Button
-                        variant="outlined"
-                        startIcon={<ScheduleIcon />}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        Ends {proposal.endDate}
+                      <Button variant="contained" onClick={() => handleVote(proposal)} startIcon={<VoteIcon />}>
+                        Vote Now
                       </Button>
                     </Box>
                   </Card>
@@ -356,80 +249,10 @@ const Governance = () => {
 
             <TabPanel value={activeTab} index={1}>
               <Stack spacing={3}>
-                {mockProposals.filter(p => p.status !== "active").map((proposal) => (
+                {proposals.filter(p => p.status !== "active").map((proposal) => (
                   <Card key={proposal.id} sx={{ p: 3 }}>
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
-                      <Box flex={1}>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                          {proposal.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {proposal.description}
-                        </Typography>
-                        <Box display="flex" alignItems="center" gap={2}>
-                          <Chip
-                            label={proposal.category}
-                            size="small"
-                            variant="outlined"
-                          />
-                          <Typography variant="caption" color="text.secondary">
-                            By {proposal.author}
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Chip
-                        label={proposal.status}
-                        color={getProposalStatusColor(proposal.status)}
-                        size="small"
-                      />
-                    </Box>
-
-                    {/* Final Results */}
-                    <Box mb={2}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
-                        Final Results
-                      </Typography>
-                      <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                          <Box textAlign="center">
-                            <Typography variant="h6" sx={{ color: "#4caf50", fontWeight: 600 }}>
-                              {getVotePercentage(proposal.yesVotes, proposal.totalVotes)}%
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Yes ({proposal.yesVotes})
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Box textAlign="center">
-                            <Typography variant="h6" sx={{ color: "#f44336", fontWeight: 600 }}>
-                              {getVotePercentage(proposal.noVotes, proposal.totalVotes)}%
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              No ({proposal.noVotes})
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Box textAlign="center">
-                            <Typography variant="h6" sx={{ color: "#9e9e9e", fontWeight: 600 }}>
-                              {getVotePercentage(proposal.abstainVotes, proposal.totalVotes)}%
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Abstain ({proposal.abstainVotes})
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Box>
-
-                    {proposal.yourVote && (
-                      <Chip
-                        label={`You voted ${proposal.yourVote.toUpperCase()}`}
-                        color="primary"
-                        variant="outlined"
-                      />
-                    )}
+                    <Typography variant="h6">{proposal.title}</Typography>
+                    <Typography variant="body2">{proposal.description}</Typography>
                   </Card>
                 ))}
               </Stack>
@@ -437,46 +260,29 @@ const Governance = () => {
           </Card>
         </Grid>
 
-        {/* Community Forum */}
+        {/* Forum */}
         <Grid item xs={12} md={4}>
           <Card sx={{ height: "fit-content" }}>
             <CardContent sx={{ p: 3 }}>
               <Box display="flex" alignItems="center" gap={2} mb={3}>
                 <ForumIcon sx={{ color: "primary.main" }} />
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Community Forum
-                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Community Forum</Typography>
               </Box>
 
-              {/* Chat Messages */}
               <Box sx={{ maxHeight: 400, overflowY: "auto", mb: 3 }}>
                 <Stack spacing={2}>
-                  {mockChatMessages.map((message) => (
-                    <Box key={message.id}>
-                      <Box display="flex" alignItems="flex-start" gap={2}>
-                        <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem" }}>
-                          {message.avatar}
-                        </Avatar>
-                        <Box flex={1}>
-                          <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                              {message.user}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {message.timestamp}
-                            </Typography>
-                          </Box>
-                          <Typography variant="body2" sx={{ lineHeight: 1.4 }}>
-                            {message.message}
-                          </Typography>
-                        </Box>
+                  {messages.map((m, idx) => (
+                    <Box key={idx} display="flex" gap={2}>
+                      <Avatar>{m.user?.[0] || "U"}</Avatar>
+                      <Box>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>{m.user}</Typography>
+                        <Typography variant="body2">{m.text}</Typography>
                       </Box>
                     </Box>
                   ))}
                 </Stack>
               </Box>
 
-              {/* Message Input */}
               <Box display="flex" gap={1}>
                 <TextField
                   fullWidth
@@ -484,14 +290,8 @@ const Governance = () => {
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
                   size="small"
-                  sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
                 />
-                <Button
-                  variant="contained"
-                  onClick={handleSendMessage}
-                  disabled={!chatMessage.trim()}
-                  sx={{ borderRadius: 2, minWidth: 40 }}
-                >
+                <Button variant="contained" onClick={handleSendMessage} disabled={!chatMessage.trim()}>
                   <SendIcon />
                 </Button>
               </Box>
@@ -501,81 +301,26 @@ const Governance = () => {
       </Grid>
 
       {/* Vote Dialog */}
-      <Dialog
-        open={showVoteDialog}
-        onClose={() => setShowVoteDialog(false)}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={showVoteDialog} onClose={() => setShowVoteDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Vote on Proposal</DialogTitle>
         <DialogContent>
           {selectedProposal && (
             <Box sx={{ mt: 2 }}>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                {selectedProposal.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                {selectedProposal.description}
-              </Typography>
-
-              <FormControl component="fieldset">
-                <Typography variant="body1" sx={{ fontWeight: 600, mb: 2 }}>
-                  Your Vote
-                </Typography>
-                <RadioGroup
-                  value={voteChoice}
-                  onChange={(e) => setVoteChoice(e.target.value)}
-                >
-                  <FormControlLabel
-                    value="yes"
-                    control={<Radio />}
-                    label={
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <CheckIcon sx={{ color: "#4caf50" }} />
-                        <Typography>Yes - I support this proposal</Typography>
-                      </Box>
-                    }
-                  />
-                  <FormControlLabel
-                    value="no"
-                    control={<Radio />}
-                    label={
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <CancelIcon sx={{ color: "#f44336" }} />
-                        <Typography>No - I oppose this proposal</Typography>
-                      </Box>
-                    }
-                  />
-                  <FormControlLabel
-                    value="abstain"
-                    control={<Radio />}
-                    label={
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <ScheduleIcon sx={{ color: "#9e9e9e" }} />
-                        <Typography>Abstain - I choose not to vote</Typography>
-                      </Box>
-                    }
-                  />
+              <Typography variant="h6">{selectedProposal.title}</Typography>
+              <Typography variant="body2" sx={{ mb: 3 }}>{selectedProposal.description}</Typography>
+              <FormControl>
+                <RadioGroup value={voteChoice} onChange={(e) => setVoteChoice(e.target.value)}>
+                  <FormControlLabel value="yes" control={<Radio />} label="Yes - I support" />
+                  <FormControlLabel value="no" control={<Radio />} label="No - I oppose" />
+                  <FormControlLabel value="abstain" control={<Radio />} label="Abstain" />
                 </RadioGroup>
               </FormControl>
-
-              <Box sx={{ mt: 3, p: 2, bgcolor: "background.paper", borderRadius: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Your voting power: {userVotingPower.toLocaleString()} tokens
-                </Typography>
-              </Box>
             </Box>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowVoteDialog(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            onClick={handleConfirmVote}
-            disabled={!voteChoice}
-          >
-            Submit Vote
-          </Button>
+          <Button variant="contained" onClick={handleConfirmVote} disabled={!voteChoice}>Submit Vote</Button>
         </DialogActions>
       </Dialog>
     </Container>

@@ -1,28 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import "./index.css"; // Ensure your CSS is loaded
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-  },
-});
-
-// Add error handling for the entire app
 const renderApp = () => {
   try {
     ReactDOM.createRoot(document.getElementById("root")).render(
       <React.StrictMode>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+        <App />
       </React.StrictMode>
     );
   } catch (error) {
     console.error('Failed to render app:', error);
-    // Show a simple error message
     const root = document.getElementById("root");
     if (root) {
       root.innerHTML = `

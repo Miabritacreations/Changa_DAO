@@ -1,0 +1,177 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600&family=Poppins:wght@700&display=swap');
+
+/* CSS Variables for Design System */
+:root {
+  /* Light Mode Colors */
+  --primary: #1E88E5;
+  --secondary: #F9A825;
+  --background: #F5F7FA;
+  --text-primary: #1C1C1C;
+  --text-secondary: #4F4F4F;
+  --accent: #34A853;
+
+  /* Typography */
+  --font-heading: 'Poppins', Arial, sans-serif;
+  --font-body: 'Inter', 'Roboto', Arial, sans-serif;
+  --font-cta: 'Montserrat', Arial, sans-serif;
+
+  /* Border radius */
+  --radius: 12px;
+  --card-shadow: 0 2px 12px rgba(30, 136, 229, 0.08);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --primary: #42A5F5;
+  --secondary: #FFD54F;
+  --background: #121212;
+  --card-surface: #1E1E1E;
+  --text-primary: #FFFFFF;
+  --text-secondary: #BDBDBD;
+  --accent: #66BB6A;
+  --card-shadow: 0 0 0 2px #42A5F5, 0 2px 12px rgba(66, 165, 245, 0.12);
+}
+
+/* Global Styles */
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Paragraphs */
+p, span, li, ul, ol {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+}
+
+/* Buttons */
+button, .btn {
+  font-family: var(--font-cta);
+  font-weight: 600;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 28px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.08);
+}
+
+button:hover, .btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+[data-theme="dark"] .card {
+  background: var(--card-surface);
+  border: 1px solid var(--primary);
+  box-shadow: var(--card-shadow);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  width: 56px;
+  height: 32px;
+  background: var(--secondary);
+  border-radius: 16px;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.3s;
+}
+
+.toggle-switch[data-checked="true"] .toggle-slider {
+  left: 28px;
+  background: var(--accent);
+}
+
+/* Nav Bar */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.04);
+  z-index: 100;
+}
+
+.navbar .logo {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.navbar .cta {
+  font-family: var(--font-cta);
+  background: var(--secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius);
+  padding: 10px 24px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.navbar .cta:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Utility Classes */
+.mt-2 { margin-top: 16px; }
+.mb-2 { margin-bottom: 16px; }
+.mt-4 { margin-top: 32px; }
+.mb-4 { margin-bottom: 32px; }
+.text-center { text-align: center; }
+.rounded { border-radius: var(--radius); }
+.shadow { box-shadow: var(--card-shadow); }

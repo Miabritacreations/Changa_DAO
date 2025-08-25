@@ -1,383 +1,420 @@
-import React, { useState, useEffect } from "react";
 import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  Chip,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Divider,
-  CircularProgress,
-  Paper,
-  Stack,
-  Button,
-  IconButton,
-  Tooltip,
-  LinearProgress,
-} from "@mui/material";
-import {
-  People as PeopleIcon,
-  Assignment as AssignmentIcon,
-  AccountBalance as TreasuryIcon,
-  TrendingUp as TrendingUpIcon,
-  HowToVote as VoteIcon,
-  Notifications as NotificationIcon,
-  Refresh as RefreshIcon,
-  Visibility as ViewIcon,
-  Add as AddIcon,
+    Timeline as ActivityIcon,
+    Assessment as AssessmentIcon,
+    CheckCircle as CheckCircleIcon,
+    Group as GroupIcon,
+    AttachMoney as MoneyIcon,
+    HowToVote as ProposalsIcon,
+    School as SchoolIcon,
+    TrendingDown as TrendingDownIcon,
+    TrendingUp as TrendingUpIcon,
+    Visibility as ViewAllIcon,
+    HowToVote as VotingIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
-import { getDashboardData } from "../api/dashboard";
-import internetIdentityService from "../services/internetIdentity";
-
-const StatCard = ({ title, value, icon, color, subtitle, onClick }) => (
-  <Card 
-    sx={{ 
-      height: '100%', 
-      cursor: onClick ? 'pointer' : 'default',
-      transition: 'all 0.3s ease',
-      '&:hover': onClick ? {
-        transform: 'translateY(-4px)',
-        boxShadow: 4,
-      } : {},
-      background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`,
-      border: `1px solid ${color}30`,
-    }}
-    onClick={onClick}
-  >
-    <CardContent>
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Box>
-          <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: color }}>
-            {value}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            {title}
-          </Typography>
-          {subtitle && (
-            <Typography variant="caption" color="text.secondary">
-              {subtitle}
-            </Typography>
-          )}
-        </Box>
-        <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>
-          {icon}
-        </Avatar>
-      </Box>
-    </CardContent>
-  </Card>
-);
-
-const ActivityItem = ({ activity, timestamp, type }) => {
-  const getActivityIcon = (type) => {
-    switch (type) {
-      case 'proposal': return <AssignmentIcon />;
-      case 'vote': return <VoteIcon />;
-      case 'treasury': return <TreasuryIcon />;
-      default: return <NotificationIcon />;
-    }
-  };
-
-  const getActivityColor = (type) => {
-    switch (type) {
-      case 'proposal': return '#2196f3';
-      case 'vote': return '#4caf50';
-      case 'treasury': return '#ff9800';
-      default: return '#9e9e9e';
-    }
-  };
-
-  return (
-    <ListItem sx={{ px: 0 }}>
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: getActivityColor(type) }}>
-          {getActivityIcon(type)}
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={activity}
-        secondary={timestamp}
-        primaryTypographyProps={{ variant: 'body2' }}
-        secondaryTypographyProps={{ variant: 'caption' }}
-      />
-    </ListItem>
-  );
-};
+import {
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Divider,
+    Grid,
+    LinearProgress,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+    useTheme
+} from "@mui/material";
+import React from "react";
+import { getBackendActor } from "../api/canister";
 
 const Dashboard = () => {
-  const [dashboardData, setDashboardData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [userPrincipal, setUserPrincipal] = useState(null);
-  const [votingPower, setVotingPower] = useState(0);
+  const [data, setData] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const theme = useTheme();
 
-  useEffect(() => {
-    const loadDashboard = async () => {
+  console.log('Dashboard component loaded');
+
+  React.useEffect(() => {
+    (async () => {
       try {
-        setLoading(true);
-        const data = await getDashboardData();
-        setDashboardData(data);
-        
-        // Get user principal for voting power calculation
-        const principal = internetIdentityService.getUserPrincipal();
-        setUserPrincipal(principal);
-        
-        // Mock voting power based on principal (in real app, this would come from token balance)
-        if (principal) {
-          const mockVotingPower = Math.floor(Math.random() * 1000) + 100;
-          setVotingPower(mockVotingPower);
-        }
-      } catch (error) {
-        console.error('Failed to load dashboard:', error);
+        const backend = await getBackendActor();
+        const res = await backend.getDashboardData();
+        setData(res);
+      } catch (_e) {
+        setData(null);
       } finally {
         setLoading(false);
       }
-    };
-
-    loadDashboard();
+    })();
   }, []);
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
-  const handleViewProposals = () => {
-    window.location.href = '/proposals';
-  };
-
-  const handleCreateProposal = () => {
-    window.location.href = '/proposals?create=true';
-  };
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-        <CircularProgress size={60} />
-      </Box>
-    );
-  }
-
-  const mockRecentActivity = [
-    { activity: "Proposal #17: Community Garden Initiative", timestamp: "2 hours ago", type: "proposal" },
-    { activity: "You voted YES on Proposal #16", timestamp: "1 day ago", type: "vote" },
-    { activity: "Treasury received 50 ICP donation", timestamp: "2 days ago", type: "treasury" },
-    { activity: "New member joined: Alice.ic0", timestamp: "3 days ago", type: "member" },
-    { activity: "Proposal #15: Website Redesign passed", timestamp: "1 week ago", type: "proposal" },
+  const metricCards = [
+    {
+      title: 'Total Invested',
+      value: '$45,230',
+      icon: <MoneyIcon />,
+      color: 'success',
+      trend: '+12.5%',
+      trendUp: true
+    },
+    {
+      title: 'Active Projects',
+      value: '8',
+      icon: <GroupIcon />,
+      color: 'primary',
+      trend: '+2',
+      trendUp: true
+    },
+    {
+      title: 'Impact Score',
+      value: '94.2',
+      icon: <AssessmentIcon />,
+      color: 'warning',
+      trend: '+5.3%',
+      trendUp: true
+    },
+    {
+      title: 'Voting Power',
+      value: '1,250',
+      icon: <VotingIcon />,
+      color: 'secondary',
+      trend: '+150',
+      trendUp: true
+    }
   ];
 
+  const recentProjects = [
+    {
+      id: 1,
+      title: 'Rural School Construction',
+      category: 'Education',
+      location: 'Kenya',
+      progress: 75,
+      raised: 45000,
+      goal: 60000,
+      status: 'active',
+      icon: <SchoolIcon />
+    },
+    {
+      id: 2,
+      title: 'Clean Water Borehole',
+      category: 'Infrastructure',
+      location: 'Tanzania',
+      progress: 90,
+      raised: 28000,
+      goal: 30000,
+      status: 'near-completion',
+      icon: <WaterIcon />
+    }
+  ];
+
+  const recentActivity = [
+    {
+      id: 1,
+      description: 'Rural School Construction completed foundation phase',
+      time: '2 hours ago',
+      type: 'milestone'
+    },
+    {
+      id: 2,
+      description: 'New proposal available for community voting',
+      time: '5 hours ago',
+      type: 'voting'
+    },
+    {
+      id: 3,
+      description: '$15,000 released to Clean Water project',
+      time: '1 day ago',
+      type: 'funds'
+    }
+  ];
+
+  // Helper function to convert variant objects to strings
+  const variantToString = (variant) => {
+    if (typeof variant === 'object' && variant !== null) {
+      return Object.keys(variant)[0];
+    }
+    return variant;
+  };
+
+  const getStatusColor = (status) => {
+    // Handle Motoko variant objects
+    const statusStr = typeof status === 'object' ? Object.keys(status)[0] : status;
+    switch (statusStr?.toLowerCase()) {
+      case 'active':
+        return 'success';
+      case 'completed':
+        return 'info';
+      case 'pendingreview':
+        return 'warning';
+      case 'draft':
+        return 'default';
+      default:
+        return 'default';
+    }
+  };
+
+  const getActivityIcon = (type) => {
+    switch (type) {
+      case 'milestone':
+        return <CheckCircleIcon />;
+      case 'voting':
+        return <ProposalsIcon />;
+      case 'funds':
+        return <MoneyIcon />;
+      default:
+        return <ActivityIcon />;
+    }
+  };
+
   return (
-    <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Box>
-          <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Welcome to Changa DAO
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Your decentralized governance dashboard
-          </Typography>
-        </Box>
-        <Box display="flex" gap={2}>
-          <Tooltip title="Refresh Dashboard">
-            <IconButton onClick={handleRefresh} sx={{ bgcolor: 'background.paper' }}>
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleCreateProposal}
-            sx={{ borderRadius: 2 }}
-          >
-            Create Proposal
-          </Button>
-        </Box>
+    <Box sx={{ 
+      minHeight: '100vh', 
+      backgroundColor: '#1a1a1a',
+      color: 'white',
+      p: 3
+    }}>
+      {/* Dashboard Header */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
+          Dashboard
+        </Typography>
+        <Typography variant="h6" sx={{ color: '#b0b0b0' }}>
+          Welcome back! Here's what's happening with your investments.
+        </Typography>
       </Box>
 
-      {/* Statistics Cards */}
-      <Grid container spacing={3} mb={4}>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Total Members"
-            value={dashboardData?.totalMembers || 42}
-            icon={<PeopleIcon />}
-            color="#2196f3"
-            subtitle="Active participants"
-            onClick={handleViewProposals}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Active Proposals"
-            value={dashboardData?.totalProposals || 17}
-            icon={<AssignmentIcon />}
-            color="#4caf50"
-            subtitle="Open for voting"
-            onClick={handleViewProposals}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Treasury Balance"
-            value={`${dashboardData?.treasury || 12345.67} ICP`}
-            icon={<TreasuryIcon />}
-            color="#ff9800"
-            subtitle="Available funds"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Your Voting Power"
-            value={votingPower}
-            icon={<VoteIcon />}
-            color="#9c27b0"
-            subtitle="Governance tokens"
-          />
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={3}>
-        {/* Recent Activity */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ height: '100%' }}>
-            <CardContent>
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
-                  Recent Activity
-                </Typography>
-                <Chip 
-                  label="Live" 
-                  color="success" 
-                  size="small" 
-                  icon={<TrendingUpIcon />}
-                />
-              </Box>
-              <Divider sx={{ mb: 2 }} />
-              <List sx={{ p: 0 }}>
-                {mockRecentActivity.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <ActivityItem {...item} />
-                    {index < mockRecentActivity.length - 1 && <Divider variant="inset" component="li" />}
-                  </React.Fragment>
-                ))}
-              </List>
-              <Box textAlign="center" mt={2}>
-                <Button variant="outlined" size="small">
-                  View All Activity
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Quick Actions & User Info */}
-        <Grid item xs={12} md={4}>
-          <Stack spacing={3}>
-            {/* User Info Card */}
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-                  Your Profile
-                </Typography>
-                <Box display="flex" alignItems="center" gap={2} mb={2}>
-                  <Avatar sx={{ width: 56, height: 56 }}>
-                    <PeopleIcon />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-                      {userPrincipal ? `${userPrincipal.toString().slice(0, 8)}...` : 'Anonymous'}
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+          <Typography sx={{ color: 'white' }}>Loading dashboard data...</Typography>
+        </Box>
+      ) : (
+        <>
+          {/* Key Metrics Cards */}
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            {metricCards.map((metric, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: '#2a2a2a',
+                    border: '1px solid #3a3a3a',
+                    borderRadius: 3,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                      <Avatar
+                        sx={{
+                          backgroundColor: `${metric.color}.main`,
+                          color: 'white',
+                          width: 48,
+                          height: 48,
+                        }}
+                      >
+                        {metric.icon}
+                      </Avatar>
+                      <Chip
+                        icon={metric.trendUp ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                        label={metric.trend}
+                        size="small"
+                        color={metric.trendUp ? 'success' : 'error'}
+                        variant="outlined"
+                        sx={{ 
+                          backgroundColor: metric.trendUp ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                          borderColor: metric.trendUp ? '#4caf50' : '#f44336',
+                          color: metric.trendUp ? '#4caf50' : '#f44336'
+                        }}
+                      />
+                    </Box>
+                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
+                      {metric.value}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      DAO Member
+                    <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                      {metric.title}
                     </Typography>
-                  </Box>
-                </Box>
-                <Divider sx={{ my: 2 }} />
-                <Box mb={2}>
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    Voting Power
-                  </Typography>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={(votingPower / 1000) * 100} 
-                    sx={{ height: 8, borderRadius: 4 }}
-                  />
-                  <Typography variant="caption" color="text.secondary">
-                    {votingPower} / 1000 tokens
-                  </Typography>
-                </Box>
-                <Button variant="outlined" fullWidth size="small">
-                  View Profile
-                </Button>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
 
-            {/* Quick Actions */}
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-                  Quick Actions
-                </Typography>
-                <Stack spacing={2}>
-                  <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    fullWidth
-                    onClick={handleCreateProposal}
-                    sx={{ borderRadius: 2 }}
-                  >
-                    Create Proposal
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    startIcon={<ViewIcon />}
-                    fullWidth
-                    onClick={handleViewProposals}
-                    sx={{ borderRadius: 2 }}
-                  >
-                    View Proposals
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    startIcon={<VoteIcon />}
-                    fullWidth
-                    onClick={() => window.location.href = '/voting'}
-                    sx={{ borderRadius: 2 }}
-                  >
-                    Vote Now
-                  </Button>
-                </Stack>
-              </CardContent>
-            </Card>
+          {/* Recent Projects and Activity */}
+          <Grid container spacing={3}>
+            {/* Recent Projects */}
+            <Grid item xs={12} lg={8}>
+              <Card sx={{ 
+                backgroundColor: '#2a2a2a',
+                border: '1px solid #3a3a3a',
+                borderRadius: 3
+              }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 600, color: 'white' }}>
+                      Recent Projects
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      endIcon={<ViewAllIcon />}
+                      sx={{
+                        borderColor: '#4caf50',
+                        color: '#4caf50',
+                        '&:hover': {
+                          borderColor: '#45a049',
+                          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        },
+                      }}
+                    >
+                      View All
+                    </Button>
+                  </Box>
+                  
+                  <Box sx={{ space: 3 }}>
+                    {recentProjects.map((project, index) => (
+                      <Box key={project.id} sx={{ mb: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar
+                            sx={{
+                              backgroundColor: 'primary.main',
+                              color: 'white',
+                              width: 40,
+                              height: 40,
+                              mr: 2,
+                            }}
+                          >
+                            {project.icon}
+                          </Avatar>
+                          <Box sx={{ flexGrow: 1 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: 'white', mb: 0.5 }}>
+                              {project.title}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                              <Chip
+                                label={project.category}
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                                sx={{ 
+                                  backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                                  borderColor: '#2196f3',
+                                  color: '#2196f3'
+                                }}
+                              />
+                              <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                                {project.location}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Chip
+                            label={variantToString(project.status)}
+                            color={getStatusColor(project.status)}
+                            size="small"
+                            sx={{
+                              backgroundColor: variantToString(project.status)?.toLowerCase() === 'active' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                              color: variantToString(project.status)?.toLowerCase() === 'active' ? '#4caf50' : '#ff9800'
+                            }}
+                          />
+                        </Box>
+                        
+                        <Box sx={{ mb: 2 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                            <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                              Progress
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'white', fontWeight: 600 }}>
+                              {project.progress}%
+                            </Typography>
+                          </Box>
+                          <LinearProgress
+                            variant="determinate"
+                            value={project.progress}
+                            sx={{ 
+                              height: 8, 
+                              borderRadius: 4,
+                              backgroundColor: '#3a3a3a',
+                              '& .MuiLinearProgress-bar': {
+                                backgroundColor: project.progress >= 90 ? '#ff9800' : '#4caf50',
+                              }
+                            }}
+                          />
+                        </Box>
+                        
+                        <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                          ${project.raised.toLocaleString()} / ${project.goal.toLocaleString()}
+                        </Typography>
+                        
+                        {index < recentProjects.length - 1 && (
+                          <Divider sx={{ mt: 3, borderColor: '#3a3a3a' }} />
+                        )}
+                      </Box>
+                    ))}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            {/* DAO Stats */}
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
-                  DAO Statistics
-                </Typography>
-                <Stack spacing={1}>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography variant="body2">Participation Rate</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 'medium' }}>78%</Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography variant="body2">Avg. Proposal Duration</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 'medium' }}>7 days</Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography variant="body2">Success Rate</Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 'medium' }}>85%</Typography>
-                  </Box>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Stack>
-        </Grid>
-      </Grid>
+            {/* Recent Activity */}
+            <Grid item xs={12} lg={4}>
+              <Card sx={{ 
+                backgroundColor: '#2a2a2a',
+                border: '1px solid #3a3a3a',
+                borderRadius: 3
+              }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: 'white' }}>
+                    Recent Activity
+                  </Typography>
+                  
+                  <List sx={{ p: 0 }}>
+                    {recentActivity.map((activity, index) => (
+                      <React.Fragment key={activity.id}>
+                        <ListItem sx={{ px: 0, py: 2 }}>
+                          <ListItemIcon sx={{ minWidth: 40 }}>
+                            <Avatar
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                backgroundColor: 'primary.light',
+                                color: 'white',
+                              }}
+                            >
+                              {getActivityIcon(activity.type)}
+                            </Avatar>
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Typography variant="body2" sx={{ color: 'white', fontWeight: 500 }}>
+                                {activity.description}
+                              </Typography>
+                            }
+                            secondary={
+                              <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                                {activity.time}
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                        {index < recentActivity.length - 1 && (
+                          <Divider sx={{ borderColor: '#3a3a3a' }} />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Box>
   );
 };

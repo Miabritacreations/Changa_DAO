@@ -1,17 +1,19 @@
+import { CssBaseline } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import "./index.css";
+import ThemeProvider from "./theme/ThemeProvider";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-  },
-});
+// Buffer polyfill for DFINITY SDK
+import { Buffer } from 'buffer';
+if (!window.Buffer) {
+  window.Buffer = Buffer;
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <CssBaseline />
       <App />
     </ThemeProvider>

@@ -16,10 +16,17 @@
     "src/Changa_DAO_frontend"
   ],
   "dependencies": {
-    "@dfinity/agent": "^1.4.0",
-    "@dfinity/auth-client": "^1.4.0",
+    "@dfinity/agent": "^0.14.1",
+    "@dfinity/auth-client": "^0.14.1",
     "@dfinity/authentication": "^0.14.1",
-    "@dfinity/identity": "^1.4.0",
-    "buffer": "^6.0.3"
+    "@dfinity/identity": "^0.14.1",
+    "@mui/icons-material": "^7.3.1",
+    "buffer": "^6.0.3",
+    "react-router-dom": "^6.30.1"
+  },
+  "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.48.1",
+    "dotenv": "^17.2.1",
+    "sass-embedded": "^1.90.0"
   }
 }

@@ -1,18 +1,22 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
+import { useAppTheme } from '../theme/ThemeProvider';
 
-const ThemeToggle = ({ mode, onToggle }) => {
+const ThemeToggle = () => {
+  const { mode, toggleTheme } = useAppTheme();
+
   return (
-    <Tooltip title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'} arrow>
+    <Tooltip title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
       <IconButton
-        onClick={onToggle}
+        onClick={toggleTheme}
+        color="inherit"
         sx={{
-          color: 'text.primary',
-          transition: 'all 0.3s ease-in-out',
+          borderRadius: 2,
+          transition: 'all 200ms ease',
           '&:hover': {
-            transform: 'rotate(180deg)',
-            backgroundColor: 'action.hover',
+            backgroundColor: 'rgba(0,0,0,0.04)',
+            transform: 'scale(1.05)',
           },
         }}
       >

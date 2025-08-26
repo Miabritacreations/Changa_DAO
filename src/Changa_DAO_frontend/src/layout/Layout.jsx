@@ -28,7 +28,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAppTheme } from "../theme/ThemeProvider";
-import ThemeToggle from "./ThemeToggle";
 
 const Shell = () => {
   const [authClient, setAuthClient] = useState(null);
@@ -201,7 +200,7 @@ const Shell = () => {
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#1a1a1a' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0F172A' }}>
       {/* Desktop Sidebar */}
       <Box
         component="nav"
@@ -209,8 +208,8 @@ const Shell = () => {
           width: { md: 280 },
           flexShrink: { md: 0 },
           display: { xs: 'none', md: 'block' },
-          backgroundColor: '#2a2a2a',
-          borderRight: '1px solid #3a3a3a',
+          backgroundColor: '#1E293B',
+          borderRight: '1px solid #334155',
         }}
       >
         <Box
@@ -220,14 +219,14 @@ const Shell = () => {
             top: 0,
             left: 0,
             height: '100vh',
-            backgroundColor: '#2a2a2a',
-            borderRight: '1px solid #3a3a3a',
+            backgroundColor: '#1E293B',
+            borderRight: '1px solid #334155',
             overflowY: 'auto',
             zIndex: 1200,
           }}
         >
           {/* Logo */}
-          <Box sx={{ p: 3, borderBottom: '1px solid #3a3a3a' }}>
+          <Box sx={{ p: 3, borderBottom: '1px solid #334155' }}>
             <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
               Changa DAO
             </Typography>
@@ -247,13 +246,13 @@ const Shell = () => {
           '& .MuiDrawer-paper': {
             width: 280,
             boxSizing: 'border-box',
-            backgroundColor: '#2a2a2a',
-            borderRight: '1px solid #3a3a3a',
+            backgroundColor: '#1E293B',
+            borderRight: '1px solid #334155',
           },
         }}
       >
         {/* Logo */}
-        <Box sx={{ p: 3, borderBottom: '1px solid #3a3a3a' }}>
+        <Box sx={{ p: 3, borderBottom: '1px solid #334155' }}>
           <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
             Changa DAO
           </Typography>
@@ -268,7 +267,7 @@ const Shell = () => {
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - 280px)` },
-          backgroundColor: '#1a1a1a',
+          backgroundColor: '#0F172A',
         }}
       >
         {/* Header */}
@@ -276,8 +275,8 @@ const Shell = () => {
           position="sticky" 
           elevation={0}
           sx={{
-            backgroundColor: '#2a2a2a',
-            borderBottom: '1px solid #3a3a3a',
+            backgroundColor: '#1E293B',
+            borderBottom: '1px solid #334155',
             backdropFilter: 'none',
           }}
         >
@@ -299,7 +298,7 @@ const Shell = () => {
                     width: 32,
                     height: 32,
                     borderRadius: 2,
-                    background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+                    background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
                     mr: 2,
                   }}
                 />
@@ -309,15 +308,13 @@ const Shell = () => {
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <ThemeToggle />
-
                 {isAuthenticated ? (
                   <>
                     <Typography 
                       variant="caption" 
                       sx={{ 
                         display: { xs: 'none', md: 'block' },
-                        color: '#b0b0b0',
+                        color: '#94A3B8',
                         fontFamily: 'monospace'
                       }}
                     >
@@ -346,9 +343,9 @@ const Shell = () => {
                     onClick={handleLogin}
                     size="large"
                     sx={{
-                      background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+                      background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
                       '&:hover': {
-                        background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                        background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
                       },
                       px: 3,
                       py: 1.5,

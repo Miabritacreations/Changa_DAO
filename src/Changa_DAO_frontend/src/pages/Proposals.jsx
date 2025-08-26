@@ -8,6 +8,7 @@ import {
   Delete as DeleteIcon,
   FilterList as FilterIcon,
   LocalHospital as HealthIcon,
+  Business as ProjectsIcon,
   Schedule as ScheduleIcon,
   School as SchoolIcon,
   AccountBalanceWallet as TreasuryIcon,
@@ -74,8 +75,90 @@ const Proposals = () => {
         const backend = await getBackendActor();
         const list = await backend.getProposals();
         setProposals(list);
-      } catch (_e) {
-        setProposals([]);
+      } catch (error) {
+        console.error('Error loading proposals:', error);
+        
+        // Set dummy data when backend fails
+        const dummyProposals = [
+          {
+            id: 1,
+            title: "Increase Community Fund Allocation",
+            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects and better community support.",
+            proposalType: "GovernanceChange",
+            status: "Active",
+            votesFor: 45,
+            votesAgainst: 12,
+            quorum: 50,
+            endDate: Date.now() + (3 * 24 * 60 * 60 * 1000), // 3 days from now
+            documents: [
+              { name: "Financial Analysis.pdf", hash: "ipfs://QmHash1" },
+              { name: "Community Impact Report.docx", hash: "ipfs://QmHash2" }
+            ]
+          },
+          {
+            id: 2,
+            title: "New Project Approval: Solar Energy Initiative",
+            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000 with expected ROI of 25% over 5 years.",
+            proposalType: "ProjectApproval",
+            status: "Active",
+            votesFor: 38,
+            votesAgainst: 8,
+            quorum: 40,
+            endDate: Date.now() + (5 * 24 * 60 * 60 * 1000), // 5 days from now
+            documents: [
+              { name: "Project Proposal.pdf", hash: "ipfs://QmHash3" },
+              { name: "Technical Specifications.pdf", hash: "ipfs://QmHash4" },
+              { name: "Cost Analysis.xlsx", hash: "ipfs://QmHash5" }
+            ]
+          },
+          {
+            id: 3,
+            title: "Emergency Response Fund Creation",
+            description: "Creation of a $25,000 emergency fund for rapid response to natural disasters and urgent community needs. This fund will be managed by elected community representatives.",
+            proposalType: "TreasuryAllocation",
+            status: "Active",
+            votesFor: 52,
+            votesAgainst: 5,
+            quorum: 45,
+            endDate: Date.now() + (2 * 24 * 60 * 60 * 1000), // 2 days from now
+            documents: [
+              { name: "Emergency Fund Guidelines.pdf", hash: "ipfs://QmHash6" }
+            ]
+          },
+          {
+            id: 4,
+            title: "Update DAO Governance Rules",
+            description: "Proposal to update the DAO governance rules to include quadratic voting and improve transparency in decision-making processes.",
+            proposalType: "GovernanceChange",
+            status: "Passed",
+            votesFor: 67,
+            votesAgainst: 15,
+            quorum: 60,
+            endDate: Date.now() - (2 * 24 * 60 * 60 * 1000), // 2 days ago
+            documents: [
+              { name: "Governance Rules Update.pdf", hash: "ipfs://QmHash7" },
+              { name: "Quadratic Voting Guide.pdf", hash: "ipfs://QmHash8" }
+            ]
+          },
+          {
+            id: 5,
+            title: "Milestone Approval: Water Project Phase 1",
+            description: "Approval for the completion of Phase 1 of the Clean Water Initiative. All objectives have been met and the project is ready for Phase 2 funding.",
+            proposalType: "MilestoneApproval",
+            status: "Executed",
+            votesFor: 89,
+            votesAgainst: 3,
+            quorum: 70,
+            endDate: Date.now() - (5 * 24 * 60 * 60 * 1000), // 5 days ago
+            documents: [
+              { name: "Phase 1 Report.pdf", hash: "ipfs://QmHash9" },
+              { name: "Audit Results.pdf", hash: "ipfs://QmHash10" },
+              { name: "Phase 2 Proposal.pdf", hash: "ipfs://QmHash11" }
+            ]
+          }
+        ];
+        
+        setProposals(dummyProposals);
       } finally {
         setLoading(false);
       }
@@ -305,6 +388,23 @@ const Proposals = () => {
     }
   };
 
+  const getProposalTypeIcon = (type) => {
+    switch (type) {
+      case 'ProjectApproval':
+        return <ProjectsIcon />;
+      case 'MilestoneApproval':
+        return <CheckCircleIcon />;
+      case 'GovernanceChange':
+        return <VoteIcon />;
+      case 'TreasuryAllocation':
+        return <TreasuryIcon />;
+      case 'EmergencyAction':
+        return <CancelIcon />;
+      default:
+        return <VoteIcon />;
+    }
+  };
+
   const filteredProposals = proposals.filter(proposal => {
     if (filter === 'all') return true;
     return proposal.status?.toLowerCase() === filter.toLowerCase();
@@ -315,14 +415,14 @@ const Proposals = () => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, backgroundColor: '#0F172A', minHeight: '100vh', color: 'white' }}>
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 4, flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+          <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
             DAO Proposals
           </Typography>
-          <Typography variant="h6" color="text.secondary">
+          <Typography variant="h6" sx={{ color: '#94A3B8' }}>
             Review active and historical governance proposals
           </Typography>
         </Box>
@@ -331,9 +431,9 @@ const Proposals = () => {
           startIcon={<AddIcon />}
           onClick={() => setCreateProposalDialog(true)}
           sx={{
-            background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+            background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+              background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
             },
           }}
         >
@@ -342,16 +442,24 @@ const Proposals = () => {
       </Box>
 
       {/* Filter Tabs */}
-      <Paper sx={{ mb: 4 }}>
+      <Paper sx={{ mb: 4, backgroundColor: '#1E293B', border: '1px solid #334155' }}>
         <Tabs
           value={filter}
           onChange={handleFilterChange}
           variant="scrollable"
           scrollButtons="auto"
           sx={{
+            backgroundColor: '#1E293B',
             '& .MuiTab-root': {
               textTransform: 'none',
               fontWeight: 600,
+              color: '#94A3B8',
+              '&.Mui-selected': {
+                color: '#3B82F6',
+              },
+            },
+            '& .MuiTabs-indicator': {
+              backgroundColor: '#3B82F6',
             },
           }}
         >
@@ -384,7 +492,7 @@ const Proposals = () => {
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <Typography>Loading proposals...</Typography>
+          <Typography sx={{ color: '#94A3B8' }}>Loading proposals...</Typography>
         </Box>
       ) : (
         <Grid container spacing={3}>
@@ -393,10 +501,13 @@ const Proposals = () => {
               <Card
                 sx={{
                   height: '100%',
+                  backgroundColor: '#1E293B',
+                  border: '1px solid #334155',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: theme.shadows[8],
+                    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                    borderColor: '#3B82F6',
                   },
                 }}
               >
@@ -406,13 +517,13 @@ const Proposals = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar
                         sx={{
-                          backgroundColor: 'primary.light',
+                          backgroundColor: '#3B82F6',
                           color: 'white',
                           width: 40,
                           height: 40,
                         }}
                       >
-                        {getCategoryIcon(proposal.category)}
+                        {getProposalTypeIcon(proposal.proposalType)}
                       </Avatar>
                       <Box>
                         <Chip
@@ -432,10 +543,10 @@ const Proposals = () => {
                   </Box>
 
                   {/* Title and Description */}
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: 'white' }}>
                     {proposal.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                  <Typography variant="body2" sx={{ color: '#94A3B8', mb: 3, lineHeight: 1.6 }}>
                     {proposal.description}
                   </Typography>
 
@@ -493,27 +604,27 @@ const Proposals = () => {
                   {/* Stats */}
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                     <Box sx={{ textAlign: 'center' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                        {proposal.raised ? `$${proposal.raised.toLocaleString()}` : '—'}
+                      <Typography variant="h6" sx={{ fontWeight: 700, color: '#3B82F6' }}>
+                        {proposal.votesFor || 0}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Raised
-                      </Typography>
-                    </Box>
-                    <Box sx={{ textAlign: 'center' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                        {proposal.goal ? `$${proposal.goal.toLocaleString()}` : '—'}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Goal
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
+                        Votes For
                       </Typography>
                     </Box>
                     <Box sx={{ textAlign: 'center' }}>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                        {proposal.votes || 0}
+                      <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
+                        {proposal.votesAgainst || 0}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Votes
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
+                                                Votes Against
+                      </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Typography variant="h6" sx={{ fontWeight: 700, color: '#10B981' }}>
+                        {proposal.quorum || 0}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
+                        Quorum
                       </Typography>
                     </Box>
                   </Box>
@@ -533,15 +644,15 @@ const Proposals = () => {
                         }
                       }}
                       sx={{
-                        borderColor: '#3a3a3a',
-                        color: '#b0b0b0',
+                        borderColor: '#475569',
+                        color: '#94A3B8',
                         '&:hover': {
-                          borderColor: '#4a4a4a',
-                          backgroundColor: 'rgba(255,255,255,0.05)',
+                          borderColor: '#3B82F6',
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         },
                         '&.Mui-disabled': {
-                          borderColor: '#2a2a2a',
-                          color: '#666666',
+                          borderColor: '#334155',
+                          color: '#64748B',
                         },
                       }}
                     >
@@ -551,9 +662,9 @@ const Proposals = () => {
                       variant="contained"
                       fullWidth
                       sx={{
-                        background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+                        background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
                         '&:hover': {
-                          background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                          background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
                         },
                       }}
                     >
@@ -569,11 +680,11 @@ const Proposals = () => {
 
       {!loading && filteredProposals.length === 0 && (
         <Box sx={{ textAlign: 'center', py: 8 }}>
-          <VoteIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
+          <VoteIcon sx={{ fontSize: 64, color: '#64748B', mb: 2 }} />
+          <Typography variant="h6" sx={{ color: '#64748B', mb: 1 }}>
             No proposals found
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: '#64748B' }}>
             {filter === 'all' 
               ? 'No proposals have been created yet.' 
               : `No ${filter} proposals found.`

@@ -109,13 +109,13 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#0F172A', color: 'white' }}>
       {/* Hero Section */}
       <Box
         sx={{
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%)',
           color: 'white',
           py: { xs: 8, md: 12 },
         }}
@@ -260,7 +260,7 @@ const Home = () => {
 
         {/* Values */}
         <Box sx={{ mb: 8 }}>
-          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             Our Values
           </Typography>
           <Grid container spacing={3}>
@@ -272,13 +272,13 @@ const Home = () => {
               { title: 'Sustainability', description: 'We focus on solutions that last for generations, not just quick fixes', icon: <TrendingUpIcon /> },
             ].map((value, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ height: '100%', textAlign: 'center' }}>
+                <Card sx={{ height: '100%', textAlign: 'center', backgroundColor: '#1E293B', border: '1px solid #334155' }}>
                   <CardContent sx={{ p: 4 }}>
-                    <Box sx={{ mb: 2, color: 'primary.main' }}>{value.icon}</Box>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                    <Box sx={{ mb: 2, color: '#3B82F6' }}>{value.icon}</Box>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
                       {value.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                       {value.description}
                     </Typography>
                   </CardContent>
@@ -290,7 +290,7 @@ const Home = () => {
 
         {/* How It Works */}
         <Box sx={{ mb: 8 }}>
-          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             How It Works
           </Typography>
           <Grid container spacing={4}>
@@ -301,14 +301,14 @@ const Home = () => {
               { step: '4', title: 'Track', description: 'Impact tracking with geo-tagged media + transparent dashboards', icon: <SecurityIcon /> },
             ].map((step, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
-                <Card sx={{ height: '100%', textAlign: 'center', position: 'relative' }}>
+                <Card sx={{ height: '100%', textAlign: 'center', position: 'relative', backgroundColor: '#1E293B', border: '1px solid #334155' }}>
                   <CardContent sx={{ p: 4 }}>
                     <Box
                       sx={{
                         width: 60,
                         height: 60,
                         borderRadius: '50%',
-                        backgroundColor: 'primary.main',
+                        backgroundColor: '#3B82F6',
                         color: 'white',
                         display: 'flex',
                         alignItems: 'center',
@@ -321,10 +321,10 @@ const Home = () => {
                     >
                       {step.step}
                     </Box>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
                       {step.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                       {step.description}
                     </Typography>
                   </CardContent>
@@ -337,70 +337,75 @@ const Home = () => {
         {/* Featured Projects */}
         <Box sx={{ mb: 8 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-            <Typography variant="h3" sx={{ fontWeight: 700 }}>
+            <Typography variant="h3" sx={{ fontWeight: 700, color: 'white' }}>
               Featured Projects
             </Typography>
-            <Button variant="outlined" color="primary">
+            <Button variant="outlined" sx={{ borderColor: '#3B82F6', color: '#3B82F6', '&:hover': { borderColor: '#1E40AF', backgroundColor: 'rgba(59, 130, 246, 0.1)' } }}>
               View all projects
             </Button>
           </Box>
 
           {loading ? (
-            <Typography>Loading projects...</Typography>
+            <Typography sx={{ color: '#94A3B8' }}>Loading projects...</Typography>
           ) : (
             <Grid container spacing={3}>
               {projects.slice(0, 4).map((project) => (
                 <Grid item xs={12} md={6} key={Number(project.id)}>
-                  <Card sx={{ height: '100%' }}>
+                  <Card sx={{ height: '100%', backgroundColor: '#1E293B', border: '1px solid #334155', transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', borderColor: '#3B82F6' } }}>
                     <CardContent sx={{ p: 4 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                          <Box sx={{ color: 'primary.main' }}>
+                          <Box sx={{ color: '#3B82F6' }}>
                             {getCategoryIcon(project.category)}
                           </Box>
                           <Chip
                             label={project.category}
                             size="small"
-                            color="primary"
                             variant="outlined"
+                            sx={{ borderColor: '#3B82F6', color: '#3B82F6', backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
                           />
                         </Box>
                         <Chip
                           label={variantToString(project.status)}
                           color={getStatusColor(project.status)}
                           size="small"
+                          sx={{ 
+                            backgroundColor: variantToString(project.status) === 'Active' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(249, 115, 22, 0.1)',
+                            color: variantToString(project.status) === 'Active' ? '#10B981' : '#F97316',
+                            border: variantToString(project.status) === 'Active' ? '1px solid #10B981' : '1px solid #F97316'
+                          }}
                         />
                       </Box>
 
-                      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
                         {project.title}
                       </Typography>
 
-                      <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary' }}>
+                      <Typography variant="body2" sx={{ mb: 3, color: '#94A3B8' }}>
                         {project.description}
                       </Typography>
 
                       <Box sx={{ mb: 2 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                             Progress
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                             {(project.percent || 0)}%
                           </Typography>
                         </Box>
                         <LinearProgress
                           variant="determinate"
                           value={project.percent || 0}
-                          sx={{ height: 8, borderRadius: 4 }}
+                          sx={{ height: 8, borderRadius: 4, backgroundColor: '#334155', '& .MuiLinearProgress-bar': { backgroundColor: '#10B981' } }}
                         />
                       </Box>
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                           ${project.raised?.toLocaleString()} raised
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                           Goal: ${project.goal?.toLocaleString()}
                         </Typography>
                       </Box>
@@ -414,10 +419,10 @@ const Home = () => {
 
         {/* Teams Section */}
         <Box sx={{ mb: 8 }}>
-          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             Meet Our Team
           </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ mb: 6, textAlign: 'center', maxWidth: 800, mx: 'auto' }}>
+          <Typography variant="h6" sx={{ mb: 6, textAlign: 'center', maxWidth: 800, mx: 'auto', color: '#94A3B8' }}>
             We're a passionate team of innovators and developers dedicated to building a better future through decentralized governance and social impact.
           </Typography>
           
@@ -456,13 +461,14 @@ const Home = () => {
               <Grid item xs={12} md={6} lg={5} key={member.id}>
                 <Card sx={{
                   height: '100%',
+                  backgroundColor: '#1E293B',
+                  border: '1px solid #334155',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-8px)',
-                    boxShadow: theme.shadows[8],
-                    borderColor: '#1E40AF',
+                    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                    borderColor: '#3B82F6',
                   },
-                  border: '2px solid transparent',
                 }}>
                   <CardContent sx={{ p: 4, textAlign: 'center' }}>
                     {/* Avatar */}
@@ -473,20 +479,20 @@ const Home = () => {
                         height: 120,
                         mx: 'auto',
                         mb: 3,
-                        border: '4px solid #1E40AF',
+                        border: '4px solid #3B82F6',
                       }}
                     />
                     
                     {/* Name and Role */}
-                    <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: 'white' }}>
                       {member.name}
                     </Typography>
-                    <Typography variant="subtitle1" color="primary" sx={{ mb: 3, fontWeight: 500 }}>
+                    <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 500, color: '#3B82F6' }}>
                       {member.role}
                     </Typography>
                     
                     {/* Bio */}
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                    <Typography variant="body2" sx={{ mb: 3, lineHeight: 1.6, color: '#94A3B8' }}>
                       {member.bio}
                     </Typography>
                     
@@ -587,7 +593,7 @@ const Home = () => {
 
         {/* FAQ Section */}
         <Box sx={{ mb: 8 }}>
-          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             Frequently Asked Questions
           </Typography>
           <Grid container spacing={3}>

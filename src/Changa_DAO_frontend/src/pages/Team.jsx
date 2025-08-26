@@ -52,7 +52,7 @@ const Team = memo(() => {
       name: "Bridgit Nyambeka",
       role: "Founder & CEO",
       avatar: bridgitPhoto,
-      bio: "Visionary leader with 15+ years in blockchain and social impact. Former VP at major tech companies, passionate about decentralized governance and community-driven development. Leading Changa DAO's mission to empower communities through transparent, democratic decision-making.",
+      bio: "Visionary leader in blockchain and social impact, passionate about decentralized governance and community-driven development.",
       expertise: ["Blockchain", "Governance", "Strategy", "Social Impact"],
       social: {
         linkedin: "https://www.linkedin.com/in/bridgit-nyambeka-63b46b345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",

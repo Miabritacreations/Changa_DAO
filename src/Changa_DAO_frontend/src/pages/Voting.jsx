@@ -5,7 +5,6 @@ import {
   CheckCircle as CheckCircleIcon,
   Group as GroupIcon,
   LocalHospital as HealthIcon,
-  Person as PersonIcon,
   Business as ProjectsIcon,
   School as SchoolIcon,
   Star as StarIcon,
@@ -74,6 +73,95 @@ const Voting = () => {
         }
       } catch (error) {
         console.error('Error loading voting data:', error);
+        
+        // Set dummy data when backend fails
+        const dummyProjects = [
+          {
+            id: 1,
+            title: "Clean Water Initiative",
+            description: "Providing clean drinking water to rural communities in Kenya. This project aims to install 50 water purification systems across 10 villages.",
+            category: "Water",
+            status: "Active",
+            fundingGoal: 50000,
+            currentFunding: 35000,
+            endDate: "2024-03-15"
+          },
+          {
+            id: 2,
+            title: "Digital Literacy Program",
+            description: "Teaching computer skills to 500 students in underserved schools. Includes laptops, internet access, and certified instructors.",
+            category: "Education",
+            status: "Active",
+            fundingGoal: 75000,
+            currentFunding: 28000,
+            endDate: "2024-04-20"
+          },
+          {
+            id: 3,
+            title: "Healthcare Mobile Clinic",
+            description: "Mobile medical clinic to serve remote communities. Provides basic healthcare, vaccinations, and health education.",
+            category: "Health",
+            status: "PendingReview",
+            fundingGoal: 120000,
+            currentFunding: 0,
+            endDate: "2024-05-10"
+          },
+          {
+            id: 4,
+            title: "Sustainable Farming Training",
+            description: "Training 200 farmers in modern, sustainable agricultural techniques. Includes seeds, tools, and ongoing support.",
+            category: "Agriculture",
+            status: "Active",
+            fundingGoal: 45000,
+            currentFunding: 42000,
+            endDate: "2024-03-30"
+          }
+        ];
+
+        const dummyProposals = [
+          {
+            id: 1,
+            title: "Increase Community Fund Allocation",
+            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects.",
+            type: "GovernanceChange",
+            status: "Active",
+            votesFor: 45,
+            votesAgainst: 12,
+            endDate: "2024-03-10"
+          },
+          {
+            id: 2,
+            title: "New Project Approval: Solar Energy Initiative",
+            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000.",
+            type: "ProjectApproval",
+            status: "Active",
+            votesFor: 38,
+            votesAgainst: 8,
+            endDate: "2024-03-12"
+          },
+          {
+            id: 3,
+            title: "Emergency Response Fund",
+            description: "Creation of a $25,000 emergency fund for rapid response to natural disasters and urgent community needs.",
+            type: "TreasuryAllocation",
+            status: "Active",
+            votesFor: 52,
+            votesAgainst: 5,
+            endDate: "2024-03-08"
+          }
+        ];
+
+        const dummyUserProfile = {
+          governanceTokens: 1250,
+          reputationScore: 85,
+          kycStatus: true,
+          totalVotes: 23,
+          successfulVotes: 20
+        };
+
+        setProjects(dummyProjects);
+        setProposals(dummyProposals);
+        setUserProfile(dummyUserProfile);
       } finally {
         setLoading(false);
       }
@@ -204,38 +292,46 @@ const Voting = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      backgroundColor: '#1a1a1a',
+      backgroundColor: '#0F172A',
       color: 'white',
       p: 3
     }}>
       {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
-          Voting Dashboard
+      <Box sx={{ mb: 4, textAlign: 'center' }}>
+        <Typography variant="h3" sx={{ 
+          fontWeight: 700, 
+          mb: 2,
+          background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}>
+          Active Voting Dashboard
         </Typography>
-        <Typography variant="h6" sx={{ color: '#b0b0b0' }}>
-          Participate in governance and vote on projects and proposals
+        <Typography variant="h6" sx={{ color: '#475569', maxWidth: 800, mx: 'auto' }}>
+          Participate in governance and vote on projects and proposals. Your voice matters in shaping the future of our community.
         </Typography>
       </Box>
 
       {/* User Voting Power */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ 
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
-            borderRadius: 3,
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
-            },
-          }}>
-            <CardContent sx={{ p: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                     <Card sx={{ 
+             backgroundColor: '#1E293B',
+             border: '2px solid #334155',
+             borderRadius: 3,
+             transition: 'all 0.3s ease',
+             '&:hover': {
+               transform: 'translateY(-4px)',
+               boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+               borderColor: '#3B82F6',
+             },
+           }}>
+            <CardContent sx={{ p: 3, textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
                 <Avatar
                   sx={{
-                    backgroundColor: 'primary.main',
+                    backgroundColor: '#1E40AF',
                     color: 'white',
                     width: 48,
                     height: 48,
@@ -245,81 +341,84 @@ const Voting = () => {
                   <VoteIcon />
                 </Avatar>
               </Box>
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#1E40AF' }}>
                 {userProfile?.governanceTokens || 0}
               </Typography>
-              <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                Voting Power
-              </Typography>
+                             <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                 Voting Power
+               </Typography>
             </CardContent>
           </Card>
         </Grid>
         
-        <Grid item xs={12} md={4}>
-          <Card sx={{ 
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
-            borderRadius: 3,
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
-            },
-          }}>
-            <CardContent sx={{ p: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                 <Grid item xs={12} md={4}>
+           <Card sx={{ 
+             backgroundColor: '#1E293B',
+             border: '2px solid #334155',
+             borderRadius: 3,
+             transition: 'all 0.3s ease',
+             '&:hover': {
+               transform: 'translateY(-4px)',
+               boxShadow: '0 8px 25px rgba(16, 185, 129, 0.15)',
+               borderColor: '#10B981',
+             },
+           }}>
+             <CardContent sx={{ p: 3, textAlign: 'center' }}>
+               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                 <Avatar
+                   sx={{
+                     backgroundColor: '#10B981',
+                     color: 'white',
+                     width: 48,
+                     height: 48,
+                     mr: 2,
+                   }}
+                 >
+                   <StarIcon />
+                 </Avatar>
+               </Box>
+               <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#10B981' }}>
+                 {userProfile?.reputationScore || 0}
+               </Typography>
+               <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                 Reputation Score
+               </Typography>
+             </CardContent>
+           </Card>
+         </Grid>
+         
+         <Grid item xs={12} md={4}>
+           <Card sx={{ 
+             backgroundColor: '#1E293B',
+             border: '2px solid #334155',
+             borderRadius: 3,
+             transition: 'all 0.3s ease',
+             '&:hover': {
+               transform: 'translateY(-4px)',
+               boxShadow: '0 8px 25px rgba(249, 115, 22, 0.15)',
+               borderColor: '#F97316',
+             },
+           }}>
+            <CardContent sx={{ p: 3, textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
                 <Avatar
                   sx={{
-                    backgroundColor: 'warning.main',
+                    backgroundColor: '#F97316',
                     color: 'white',
                     width: 48,
                     height: 48,
                     mr: 2,
                   }}
                 >
-                  <StarIcon />
+                  <ThumbUpIcon />
                 </Avatar>
               </Box>
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
-                {userProfile?.reputationScore || 0}
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#F97316' }}>
+                {filteredProjects.filter(p => variantToString(p.status) === 'Active').length + 
+                 filteredProposals.filter(p => variantToString(p.status) === 'Active').length}
               </Typography>
-              <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                Reputation Score
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        <Grid item xs={12} md={4}>
-          <Card sx={{ 
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
-            borderRadius: 3,
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
-            },
-          }}>
-            <CardContent sx={{ p: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar
-                  sx={{
-                    backgroundColor: 'success.main',
-                    color: 'white',
-                    width: 48,
-                    height: 48,
-                    mr: 2,
-                  }}
-                >
-                  <PersonIcon />
-                </Avatar>
-              </Box>
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
-                {userProfile?.kycStatus ? 'Verified' : 'Unverified'}
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                KYC Status
+              <Typography variant="body2" sx={{ color: '#64748B' }}>
+                Active Votes
               </Typography>
             </CardContent>
           </Card>
@@ -328,19 +427,23 @@ const Voting = () => {
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <Typography sx={{ color: 'white' }}>Loading voting data...</Typography>
+          <Typography sx={{ color: '#94A3B8' }}>Loading voting data...</Typography>
         </Box>
       ) : (
         <Grid container spacing={3}>
           {/* Projects Available for Voting */}
           <Grid item xs={12} lg={6}>
-            <Card sx={{ 
-              backgroundColor: '#2a2a2a',
-              border: '1px solid #3a3a3a',
-              borderRadius: 3
-            }}>
+                         <Card sx={{ 
+               backgroundColor: '#1E293B',
+               border: '2px solid #334155',
+               borderRadius: 3,
+               transition: 'all 0.3s ease',
+               '&:hover': {
+                 boxShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+               },
+             }}>
               <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: 'white' }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: '#1E40AF' }}>
                   Projects Available for Voting
                 </Typography>
                 
@@ -352,7 +455,7 @@ const Voting = () => {
                           <ListItemIcon sx={{ minWidth: 40 }}>
                             <Avatar
                               sx={{
-                                backgroundColor: 'primary.light',
+                                backgroundColor: '#1E40AF',
                                 color: 'white',
                                 width: 40,
                                 height: 40,
@@ -363,64 +466,64 @@ const Voting = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="h6" sx={{ fontWeight: 600, color: 'white', mb: 1 }}>
-                                {project.title}
-                              </Typography>
-                            }
-                            secondary={
-                              <Box>
-                                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 1 }}>
-                                  {project.description}
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                                                             <Typography variant="h6" sx={{ fontWeight: 600, color: 'white', mb: 1 }}>
+                                 {project.title}
+                               </Typography>
+                             }
+                             secondary={
+                               <Box>
+                                 <Typography variant="body2" sx={{ color: '#94A3B8', mb: 1 }}>
+                                   {project.description}
+                                 </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                                   <Chip
                                     label={project.category}
                                     size="small"
-                                    color="primary"
                                     variant="outlined"
                                     sx={{ 
-                                      backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                                      borderColor: '#2196f3',
-                                      color: '#2196f3'
+                                      backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                                      borderColor: '#1E40AF',
+                                      color: '#1E40AF'
                                     }}
                                   />
                                   <Chip
                                     label={variantToString(project.status)}
-                                    color={getStatusColor(project.status)}
                                     size="small"
                                     sx={{
-                                      backgroundColor: variantToString(project.status) === 'Active' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
-                                      color: variantToString(project.status) === 'Active' ? '#4caf50' : '#ff9800'
+                                      backgroundColor: variantToString(project.status) === 'Active' 
+                                        ? 'rgba(16, 185, 129, 0.1)' 
+                                        : 'rgba(249, 115, 22, 0.1)',
+                                      borderColor: variantToString(project.status) === 'Active' 
+                                        ? '#10B981' 
+                                        : '#F97316',
+                                      color: variantToString(project.status) === 'Active' 
+                                        ? '#10B981' 
+                                        : '#F97316'
                                     }}
                                   />
-                                </Box>
-                                <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
-                                  Goal: ${project.goalAmount?.toLocaleString() || '0'} | Raised: ${project.raisedAmount?.toLocaleString() || '0'}
-                                </Typography>
-                              </Box>
-                            }
-                          />
-                          <Button
-                            variant="contained"
-                            size="small"
-                            disabled={variantToString(project.status) !== 'Active'}
-                            onClick={() => {
-                              setSelectedItem(project);
-                              setVoteDialog(true);
-                            }}
-                            sx={{
-                              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
-                              '&:hover': {
-                                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
-                              },
-                              '&.Mui-disabled': {
-                                background: '#2a2a2a',
-                                color: '#666666',
-                              },
-                            }}
-                          >
-                            Vote
-                          </Button>
+                                                                     <Button
+                                     variant="contained"
+                                     size="small"
+                                     onClick={() => {
+                                       setSelectedItem(project);
+                                       setVoteDialog(true);
+                                     }}
+                                     sx={{
+                                       backgroundColor: '#F97316',
+                                       '&:hover': {
+                                         backgroundColor: '#EA580C',
+                                       },
+                                     }}
+                                   >
+                                     Vote Now
+                                   </Button>
+                                 </Box>
+                                 <Typography variant="caption" sx={{ color: '#64748B' }}>
+                                   Goal: ${project.fundingGoal?.toLocaleString() || '0'} | Raised: ${project.currentFunding?.toLocaleString() || '0'}
+                                 </Typography>
+                               </Box>
+                             }
+                           />
                         </ListItem>
                         {index < filteredProjects.length - 1 && (
                           <Divider sx={{ borderColor: '#3a3a3a' }} />
@@ -428,30 +531,34 @@ const Voting = () => {
                       </React.Fragment>
                     ))}
                   </List>
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 4 }}>
-                    <ProjectsIcon sx={{ fontSize: 48, color: '#b0b0b0', mb: 2 }} />
-                    <Typography variant="h6" sx={{ color: '#b0b0b0', mb: 1 }}>
-                      No projects available for voting
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                      Check back later for new projects to vote on
-                    </Typography>
-                  </Box>
-                )}
+                                 ) : (
+                   <Box sx={{ textAlign: 'center', py: 4 }}>
+                     <ProjectsIcon sx={{ fontSize: 48, color: '#94A3B8', mb: 2 }} />
+                     <Typography variant="h6" sx={{ color: '#94A3B8', mb: 1 }}>
+                       No projects available for voting
+                     </Typography>
+                     <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                       Check back later for new projects to vote on
+                     </Typography>
+                   </Box>
+                 )}
               </CardContent>
             </Card>
           </Grid>
 
           {/* Active Proposals */}
           <Grid item xs={12} lg={6}>
-            <Card sx={{ 
-              backgroundColor: '#2a2a2a',
-              border: '1px solid #3a3a3a',
-              borderRadius: 3
-            }}>
+                         <Card sx={{ 
+               backgroundColor: '#1E293B',
+               border: '2px solid #334155',
+               borderRadius: 3,
+               transition: 'all 0.3s ease',
+               '&:hover': {
+                 boxShadow: '0 4px 20px rgba(16, 185, 129, 0.1)',
+               },
+             }}>
               <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: 'white' }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: '#10B981' }}>
                   Active Proposals
                 </Typography>
                 
@@ -463,7 +570,7 @@ const Voting = () => {
                           <ListItemIcon sx={{ minWidth: 40 }}>
                             <Avatar
                               sx={{
-                                backgroundColor: 'secondary.light',
+                                backgroundColor: '#10B981',
                                 color: 'white',
                                 width: 40,
                                 height: 40,
@@ -472,42 +579,63 @@ const Voting = () => {
                               {getProposalTypeIcon(proposal.proposalType)}
                             </Avatar>
                           </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="h6" sx={{ fontWeight: 600, color: 'white', mb: 1 }}>
-                                {proposal.title}
-                              </Typography>
-                            }
-                            secondary={
-                              <Box>
-                                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 1 }}>
-                                  {proposal.description}
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                                  <Chip
-                                    label={variantToString(proposal.proposalType)}
-                                    size="small"
-                                    color="secondary"
-                                    variant="outlined"
-                                    sx={{ 
-                                      backgroundColor: 'rgba(156, 39, 176, 0.1)',
-                                      borderColor: '#9c27b0',
-                                      color: '#9c27b0'
-                                    }}
-                                  />
-                                  <Chip
-                                    label={variantToString(proposal.status)}
-                                    color={getProposalStatusColor(proposal.status)}
-                                    size="small"
-                                    sx={{
-                                      backgroundColor: variantToString(proposal.status) === 'Active' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(33, 150, 243, 0.1)',
-                                      color: variantToString(proposal.status) === 'Active' ? '#4caf50' : '#2196f3'
-                                    }}
-                                  />
-                                </Box>
-                                <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
-                                  Votes: {proposal.votesFor || 0} For / {proposal.votesAgainst || 0} Against | Quorum: {proposal.quorum || 0}
-                                </Typography>
+                                                     <ListItemText
+                             primary={
+                               <Typography variant="h6" sx={{ fontWeight: 600, color: 'white', mb: 1 }}>
+                                 {proposal.title}
+                               </Typography>
+                             }
+                             secondary={
+                               <Box>
+                                 <Typography variant="body2" sx={{ color: '#94A3B8', mb: 1 }}>
+                                   {proposal.description}
+                                 </Typography>
+                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                   <Chip
+                                     label={variantToString(proposal.type)}
+                                     size="small"
+                                     variant="outlined"
+                                     sx={{ 
+                                       backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                       borderColor: '#10B981',
+                                       color: '#10B981'
+                                     }}
+                                   />
+                                   <Chip
+                                     label={variantToString(proposal.status)}
+                                     size="small"
+                                     sx={{
+                                       backgroundColor: variantToString(proposal.status) === 'Active' 
+                                         ? 'rgba(16, 185, 129, 0.1)' 
+                                         : 'rgba(249, 115, 22, 0.1)',
+                                       borderColor: variantToString(proposal.status) === 'Active' 
+                                         ? '#10B981' 
+                                         : '#F97316',
+                                       color: variantToString(proposal.status) === 'Active' 
+                                         ? '#10B981' 
+                                         : '#F97316'
+                                     }}
+                                   />
+                                   <Button
+                                     variant="contained"
+                                     size="small"
+                                     onClick={() => {
+                                       setSelectedItem(proposal);
+                                       setVoteDialog(true);
+                                     }}
+                                     sx={{
+                                       backgroundColor: '#10B981',
+                                       '&:hover': {
+                                         backgroundColor: '#059669',
+                                       },
+                                     }}
+                                   >
+                                     Vote Now
+                                   </Button>
+                                 </Box>
+                                 <Typography variant="caption" sx={{ color: '#64748B' }}>
+                                   Votes: {proposal.votesFor || 0} For / {proposal.votesAgainst || 0} Against
+                                 </Typography>
                                 
                                 {/* Documents Section */}
                                 {proposal.documents && proposal.documents.length > 0 && (
@@ -558,27 +686,7 @@ const Voting = () => {
                               </Box>
                             }
                           />
-                          <Button
-                            variant="contained"
-                            size="small"
-                            disabled={variantToString(proposal.status) !== 'Active'}
-                            onClick={() => {
-                              setSelectedItem(proposal);
-                              setVoteDialog(true);
-                            }}
-                            sx={{
-                              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
-                              '&:hover': {
-                                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
-                              },
-                              '&.Mui-disabled': {
-                                background: '#2a2a2a',
-                                color: '#666666',
-                              },
-                            }}
-                          >
-                            Vote
-                          </Button>
+                          
                         </ListItem>
                         {index < filteredProposals.length - 1 && (
                           <Divider sx={{ borderColor: '#3a3a3a' }} />
@@ -586,178 +694,178 @@ const Voting = () => {
                       </React.Fragment>
                     ))}
                   </List>
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 4 }}>
-                    <VoteIcon sx={{ fontSize: 48, color: '#b0b0b0', mb: 2 }} />
-                    <Typography variant="h6" sx={{ color: '#b0b0b0', mb: 1 }}>
-                      No active proposals
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                      Check back later for new proposals to vote on
-                    </Typography>
-                  </Box>
-                )}
+                                 ) : (
+                   <Box sx={{ textAlign: 'center', py: 4 }}>
+                     <VoteIcon sx={{ fontSize: 48, color: '#94A3B8', mb: 2 }} />
+                     <Typography variant="h6" sx={{ color: '#94A3B8', mb: 1 }}>
+                       No active proposals
+                     </Typography>
+                     <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                       Check back later for new proposals to vote on
+                     </Typography>
+                   </Box>
+                 )}
               </CardContent>
             </Card>
           </Grid>
         </Grid>
       )}
 
-      {/* Voting Dialog */}
-      <Dialog 
-        open={voteDialog} 
-        onClose={() => setVoteDialog(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
-            borderRadius: 3,
-          }
-        }}
-      >
-        <DialogTitle sx={{ color: 'white', borderBottom: '1px solid #3a3a3a' }}>
-          Cast Your Vote
-        </DialogTitle>
-        <DialogContent sx={{ pt: 3 }}>
-          {selectedItem && (
-            <Box>
-              <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
-                {selectedItem.title}
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 3 }}>
-                {selectedItem.description}
-              </Typography>
-              
-              <Box sx={{ mb: 3, p: 2, backgroundColor: '#1a1a1a', borderRadius: 2, border: '1px solid #3a3a3a' }}>
-                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 1 }}>
-                  Your Voting Power: {userProfile?.governanceTokens || 0} tokens
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 1 }}>
-                  Reputation Score: {userProfile?.reputationScore || 0}
-                </Typography>
-                {selectedItem.votesFor !== undefined && (
-                  <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
-                    Current Votes: {selectedItem.votesFor || 0} For / {selectedItem.votesAgainst || 0} Against
-                  </Typography>
-                )}
-              </Box>
+             {/* Voting Dialog */}
+       <Dialog 
+         open={voteDialog} 
+         onClose={() => setVoteDialog(false)}
+         maxWidth="md"
+         fullWidth
+         PaperProps={{
+           sx: {
+             backgroundColor: '#FFFFFF',
+             border: '2px solid #E2E8F0',
+             borderRadius: 3,
+           }
+         }}
+       >
+         <DialogTitle sx={{ color: '#1E40AF', borderBottom: '1px solid #E2E8F0', fontWeight: 600 }}>
+           Cast Your Vote
+         </DialogTitle>
+                 <DialogContent sx={{ pt: 3 }}>
+           {selectedItem && (
+             <Box>
+               <Typography variant="h6" sx={{ color: '#0F172A', mb: 2, fontWeight: 600 }}>
+                 {selectedItem.title}
+               </Typography>
+               <Typography variant="body2" sx={{ color: '#64748B', mb: 3 }}>
+                 {selectedItem.description}
+               </Typography>
+               
+               <Box sx={{ mb: 3, p: 2, backgroundColor: '#F8FAFC', borderRadius: 2, border: '1px solid #E2E8F0' }}>
+                 <Typography variant="body2" sx={{ color: '#64748B', mb: 1 }}>
+                   Your Voting Power: {userProfile?.governanceTokens || 0} tokens
+                 </Typography>
+                 <Typography variant="body2" sx={{ color: '#64748B', mb: 1 }}>
+                   Reputation Score: {userProfile?.reputationScore || 0}
+                 </Typography>
+                 {selectedItem.votesFor !== undefined && (
+                   <Typography variant="body2" sx={{ color: '#64748B' }}>
+                     Current Votes: {selectedItem.votesFor || 0} For / {selectedItem.votesAgainst || 0} Against
+                   </Typography>
+                 )}
+               </Box>
 
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 2 }}>
-                  How do you want to vote?
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Button
-                    variant={voteChoice ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => setVoteChoice(true)}
-                    startIcon={<ThumbUpIcon />}
-                    sx={{
-                      background: voteChoice ? 'linear-gradient(135deg, #4caf50, #45a049)' : 'transparent',
-                      borderColor: voteChoice ? 'transparent' : '#4caf50',
-                      color: voteChoice ? 'white' : '#4caf50',
-                      '&:hover': {
-                        background: voteChoice ? 'linear-gradient(135deg, #45a049, #388e3c)' : 'rgba(76, 175, 80, 0.1)',
-                      },
-                    }}
-                  >
-                    Vote For
-                  </Button>
-                  <Button
-                    variant={!voteChoice ? "contained" : "outlined"}
-                    fullWidth
-                    onClick={() => setVoteChoice(false)}
-                    startIcon={<ThumbDownIcon />}
-                    sx={{
-                      background: !voteChoice ? 'linear-gradient(135deg, #f44336, #d32f2f)' : 'transparent',
-                      borderColor: !voteChoice ? 'transparent' : '#f44336',
-                      color: !voteChoice ? 'white' : '#f44336',
-                      '&:hover': {
-                        background: !voteChoice ? 'linear-gradient(135deg, #d32f2f, #c62828)' : 'rgba(244, 67, 54, 0.1)',
-                      },
-                    }}
-                  >
-                    Vote Against
-                  </Button>
-                </Box>
-              </Box>
+                             <Box sx={{ mb: 3 }}>
+                 <Typography variant="body2" sx={{ color: '#64748B', mb: 2, fontWeight: 500 }}>
+                   How do you want to vote?
+                 </Typography>
+                 <Box sx={{ display: 'flex', gap: 2 }}>
+                   <Button
+                     variant={voteChoice ? "contained" : "outlined"}
+                     fullWidth
+                     onClick={() => setVoteChoice(true)}
+                     startIcon={<ThumbUpIcon />}
+                     sx={{
+                       background: voteChoice ? '#10B981' : 'transparent',
+                       borderColor: voteChoice ? 'transparent' : '#10B981',
+                       color: voteChoice ? 'white' : '#10B981',
+                       '&:hover': {
+                         background: voteChoice ? '#059669' : 'rgba(16, 185, 129, 0.1)',
+                       },
+                     }}
+                   >
+                     Vote For
+                   </Button>
+                   <Button
+                     variant={!voteChoice ? "contained" : "outlined"}
+                     fullWidth
+                     onClick={() => setVoteChoice(false)}
+                     startIcon={<ThumbDownIcon />}
+                     sx={{
+                       background: !voteChoice ? '#EF4444' : 'transparent',
+                       borderColor: !voteChoice ? 'transparent' : '#EF4444',
+                       color: !voteChoice ? 'white' : '#EF4444',
+                       '&:hover': {
+                         background: !voteChoice ? '#DC2626' : 'rgba(239, 68, 68, 0.1)',
+                       },
+                     }}
+                   >
+                     Vote Against
+                   </Button>
+                 </Box>
+               </Box>
 
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Reason for your vote (optional)"
-                value={voteReason}
-                onChange={(e) => setVoteReason(e.target.value)}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: '#1a1a1a',
-                    borderColor: '#3a3a3a',
-                    color: 'white',
-                    '& fieldset': {
-                      borderColor: '#3a3a3a',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#4a4a4a',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#42A5F5',
-                    },
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#b0b0b0',
-                  },
-                  '& .MuiInputBase-input': {
-                    color: 'white',
-                  },
-                }}
-              />
+                             <TextField
+                 fullWidth
+                 multiline
+                 rows={3}
+                 label="Reason for your vote (optional)"
+                 value={voteReason}
+                 onChange={(e) => setVoteReason(e.target.value)}
+                 sx={{
+                   '& .MuiOutlinedInput-root': {
+                     backgroundColor: '#FFFFFF',
+                     borderColor: '#E2E8F0',
+                     color: '#0F172A',
+                     '& fieldset': {
+                       borderColor: '#E2E8F0',
+                     },
+                     '&:hover fieldset': {
+                       borderColor: '#1E40AF',
+                     },
+                     '&.Mui-focused fieldset': {
+                       borderColor: '#1E40AF',
+                     },
+                   },
+                   '& .MuiInputLabel-root': {
+                     color: '#64748B',
+                   },
+                   '& .MuiInputBase-input': {
+                     color: '#0F172A',
+                   },
+                 }}
+               />
 
-              <Box sx={{ mt: 2, p: 2, backgroundColor: '#1a1a1a', borderRadius: 2, border: '1px solid #3a3a3a' }}>
-                <Typography variant="body2" sx={{ color: '#b0b0b0', mb: 1 }}>
-                  Your Vote: {voteChoice ? '👍 FOR' : '👎 AGAINST'}
-                </Typography>
-                <Typography variant="caption" sx={{ color: '#666666' }}>
-                  This vote will be recorded on-chain and cannot be changed. Your voting power and reputation will be considered.
-                </Typography>
-              </Box>
+               <Box sx={{ mt: 2, p: 2, backgroundColor: '#F8FAFC', borderRadius: 2, border: '1px solid #E2E8F0' }}>
+                 <Typography variant="body2" sx={{ color: '#64748B', mb: 1 }}>
+                   Your Vote: {voteChoice ? '👍 FOR' : '👎 AGAINST'}
+                 </Typography>
+                 <Typography variant="caption" sx={{ color: '#94A3B8' }}>
+                   This vote will be recorded on-chain and cannot be changed. Your voting power and reputation will be considered.
+                 </Typography>
+               </Box>
             </Box>
           )}
         </DialogContent>
-        <DialogActions sx={{ p: 3, borderTop: '1px solid #3a3a3a' }}>
-          <Button
-            onClick={() => setVoteDialog(false)}
-            sx={{
-              color: '#b0b0b0',
-              borderColor: '#3a3a3a',
-              '&:hover': {
-                borderColor: '#4a4a4a',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-              },
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleVote}
-            variant="contained"
-            disabled={!selectedItem || (userProfile?.governanceTokens || 0) <= 0}
-            sx={{
-              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
-              },
-              '&.Mui-disabled': {
-                background: '#2a2a2a',
-                color: '#666666',
-              },
-            }}
-          >
-            Submit Vote
-          </Button>
-        </DialogActions>
+                 <DialogActions sx={{ p: 3, borderTop: '1px solid #E2E8F0' }}>
+           <Button
+             onClick={() => setVoteDialog(false)}
+             sx={{
+               color: '#64748B',
+               borderColor: '#E2E8F0',
+               '&:hover': {
+                 borderColor: '#1E40AF',
+                 backgroundColor: 'rgba(30, 64, 175, 0.05)',
+               },
+             }}
+           >
+             Cancel
+           </Button>
+           <Button
+             onClick={handleVote}
+             variant="contained"
+             disabled={!selectedItem || (userProfile?.governanceTokens || 0) <= 0}
+             sx={{
+               backgroundColor: '#1E40AF',
+               '&:hover': {
+                 backgroundColor: '#1E3A8A',
+               },
+               '&.Mui-disabled': {
+                 backgroundColor: '#E2E8F0',
+                 color: '#94A3B8',
+               },
+             }}
+           >
+             Submit Vote
+           </Button>
+         </DialogActions>
       </Dialog>
     </Box>
   );

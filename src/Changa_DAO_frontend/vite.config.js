@@ -7,7 +7,7 @@ import environment from 'vite-plugin-environment';
 dotenv.config({ path: '../../.env' });
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/Changa_DAO/' : '/',
+  base: '/Changa_DAO/',
   build: {
     emptyOutDir: true,
   },

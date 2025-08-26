@@ -2,7 +2,7 @@
   "name": "Changa_DAO_frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://miabritacreations.github.io/Changa_DAO",
+  "homepage": ".",
   "dependencies": {
     "@dfinity/agent": "^2.4.1",
     "@dfinity/auth-client": "^2.4.1",

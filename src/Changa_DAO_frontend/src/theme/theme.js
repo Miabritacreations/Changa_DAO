@@ -1,105 +1,129 @@
 import { createTheme } from '@mui/material/styles';
 
-// Color palettes based on Stripe/Linear integration with blockchain touches
+// Crowdfunding-focused color palette: Trust + Energy + Inspiration
 const lightColors = {
   primary: {
-    main: '#1E88E5',
-    light: '#42A5F5',
-    dark: '#1565C0',
+    main: '#1E40AF', // Navy Blue - Trust & Professionalism
+    light: '#3B82F6', // Royal Blue - Accessible & Friendly
+    dark: '#1E3A8A', // Dark Navy - Authority & Security
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#F9A825',
-    light: '#FFD54F',
-    dark: '#F57F17',
+    main: '#059669', // Emerald Green - Growth & Success
+    light: '#10B981', // Light Green - Progress & Achievement
+    dark: '#047857', // Dark Green - Stability & Reliability
     contrastText: '#FFFFFF',
   },
   accent: {
-    green: '#00E676',
-    red: '#FF5252',
-    cyan: '#00B8D9',
-    purple: '#7C4DFF',
+    orange: '#F97316', // Orange - Energy & Call-to-Action
+    yellow: '#EAB308', // Yellow - Optimism & Encouragement
+    teal: '#0D9488', // Teal - Modern & Fresh
+    purple: '#7C3AED', // Purple - Creativity & Innovation
+    green: '#10B981', // Green - Growth & Success
+    red: '#EF4444', // Red - Urgency & Attention
   },
   background: {
-    default: '#F5F7FA',
-    paper: '#FFFFFF',
+    default: '#F8FAFC', // Clean White - Minimalist & Focus
+    paper: '#FFFFFF', // Pure White - Clean & Professional
+    subtle: '#F1F5F9', // Light Gray - Subtle Background
     glass: 'rgba(255,255,255,0.08)',
   },
   text: {
-    primary: '#1C1C1C',
-    secondary: '#4F4F4F',
-    muted: '#6B7280',
+    primary: '#0F172A', // Dark Charcoal - Readable & Professional
+    secondary: '#475569', // Medium Gray - Balanced & Accessible
+    muted: '#64748B', // Light Gray - Subtle & Non-intrusive
   },
   border: {
-    light: '#E5E7EB',
-    medium: '#D1D5DB',
+    light: '#E2E8F0', // Light Border - Subtle Separation
+    medium: '#CBD5E1', // Medium Border - Clear Definition
   },
   success: {
-    main: '#00E676',
-    light: '#4CAF50',
+    main: '#10B981', // Green - Success & Achievement
+    light: '#34D399', // Light Green - Positive Feedback
   },
   error: {
-    main: '#FF5252',
-    light: '#F44336',
+    main: '#EF4444', // Red - Error & Attention
+    light: '#F87171', // Light Red - Warning & Alert
   },
   warning: {
-    main: '#FF9800',
-    light: '#FFB74D',
+    main: '#F59E0B', // Amber - Warning & Caution
+    light: '#FBBF24', // Light Amber - Gentle Warning
   },
   info: {
-    main: '#2196F3',
-    light: '#64B5F6',
+    main: '#3B82F6', // Blue - Information & Trust
+    light: '#60A5FA', // Light Blue - Friendly Info
+  },
+  // Crowdfunding-specific colors
+  crowdfunding: {
+    progress: '#10B981', // Green for progress bars
+    goal: '#059669', // Darker green for funding goals
+    remaining: '#64748B', // Gray for remaining targets
+    cta: '#F97316', // Orange for call-to-action buttons
+    trust: '#1E40AF', // Navy for trust indicators
+    energy: '#EAB308', // Yellow for energy and optimism
   },
 };
 
 const darkColors = {
   primary: {
-    main: '#42A5F5',
-    light: '#64B5F6',
-    dark: '#1976D2',
+    main: '#3B82F6', // Royal Blue - Trust & Professionalism (lighter for dark mode)
+    light: '#60A5FA', // Light Blue - Accessible & Friendly
+    dark: '#1E40AF', // Navy Blue - Authority & Security
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#FFD54F',
-    light: '#FFE082',
-    dark: '#FFA000',
-    contrastText: '#000000',
+    main: '#10B981', // Emerald Green - Growth & Success
+    light: '#34D399', // Light Green - Progress & Achievement
+    dark: '#059669', // Dark Green - Stability & Reliability
+    contrastText: '#FFFFFF',
   },
   accent: {
-    green: '#00E676',
-    red: '#FF5252',
-    cyan: '#00B8D9',
-    purple: '#7C4DFF',
+    orange: '#F97316', // Orange - Energy & Call-to-Action
+    yellow: '#EAB308', // Yellow - Optimism & Encouragement
+    teal: '#0D9488', // Teal - Modern & Fresh
+    purple: '#7C3AED', // Purple - Creativity & Innovation
+    green: '#10B981', // Green - Growth & Success
+    red: '#EF4444', // Red - Urgency & Attention
   },
   background: {
-    default: '#121212',
-    paper: '#1E1E1E',
+    default: '#0F172A', // Dark Charcoal - Professional & Focused
+    paper: '#1E293B', // Dark Slate - Clean & Modern
+    subtle: '#334155', // Dark Gray - Subtle Background
     glass: 'rgba(255,255,255,0.08)',
   },
   text: {
-    primary: '#FFFFFF',
-    secondary: '#BDBDBD',
-    muted: '#9CA3AF',
+    primary: '#F8FAFC', // Light Gray - Readable & Professional
+    secondary: '#CBD5E1', // Medium Gray - Balanced & Accessible
+    muted: '#94A3B8', // Light Gray - Subtle & Non-intrusive
   },
   border: {
-    light: '#374151',
-    medium: '#4B5563',
+    light: '#475569', // Medium Border - Subtle Separation
+    medium: '#64748B', // Light Border - Clear Definition
   },
   success: {
-    main: '#00E676',
-    light: '#4CAF50',
+    main: '#10B981', // Green - Success & Achievement
+    light: '#34D399', // Light Green - Positive Feedback
   },
   error: {
-    main: '#FF5252',
-    light: '#F44336',
+    main: '#EF4444', // Red - Error & Attention
+    light: '#F87171', // Light Red - Warning & Alert
   },
   warning: {
-    main: '#FF9800',
-    light: '#FFB74D',
+    main: '#F59E0B', // Amber - Warning & Caution
+    light: '#FBBF24', // Light Amber - Gentle Warning
   },
   info: {
-    main: '#2196F3',
-    light: '#64B5F6',
+    main: '#3B82F6', // Blue - Information & Trust
+    light: '#60A5FA', // Light Blue - Friendly Info
+  },
+  // Crowdfunding-specific colors for dark mode
+  crowdfunding: {
+    progress: '#10B981', // Green for progress bars
+    goal: '#059669', // Darker green for funding goals
+    remaining: '#64748B', // Gray for remaining targets
+    cta: '#F97316', // Orange for call-to-action buttons
+    trust: '#3B82F6', // Blue for trust indicators (lighter for dark mode)
+    energy: '#EAB308', // Yellow for energy and optimism
   },
 };
 
@@ -273,6 +297,26 @@ const componentOverrides = {
         borderRadius: 8,
         fontWeight: 600,
         fontSize: '0.75rem',
+      },
+    },
+  },
+  // Crowdfunding-specific component styles
+  MuiLinearProgress: {
+    styleOverrides: {
+      root: {
+        borderRadius: 8,
+        backgroundColor: 'rgba(100, 116, 139, 0.2)',
+      },
+      bar: {
+        borderRadius: 8,
+        background: 'linear-gradient(90deg, #10B981 0%, #059669 100%)',
+      },
+    },
+  },
+  MuiCircularProgress: {
+    styleOverrides: {
+      root: {
+        color: '#10B981',
       },
     },
   },

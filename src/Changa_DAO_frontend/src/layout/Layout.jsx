@@ -146,10 +146,10 @@ const Shell = () => {
                 transition: 'all 0.2s ease',
                 color: 'white',
                 '&.Mui-selected': {
-                  backgroundColor: '#42A5F5',
+                  backgroundColor: '#1E40AF',
                   color: 'white',
                   '&:hover': {
-                    backgroundColor: '#1E88E5',
+                    backgroundColor: '#1E3A8A',
                   },
                 },
                 '&:hover': {
@@ -187,9 +187,9 @@ const Shell = () => {
             fullWidth
             onClick={handleLogin}
             sx={{
-              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+              background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
               '&:hover': {
-                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
               },
             }}
           >

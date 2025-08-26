@@ -1,29 +1,36 @@
 import {
-  Agriculture as AgricultureIcon,
-  Email as EmailIcon,
-  Group as GroupIcon,
-  LocalHospital as HealthIcon,
-  School as SchoolIcon,
-  Security as SecurityIcon,
-  TrendingUp as TrendingUpIcon,
-  EmojiEvents as TrophyIcon,
-  Verified as VerifiedIcon,
-  WaterDrop as WaterIcon
+    Agriculture as AgricultureIcon,
+    Email as EmailIcon,
+    GitHub as GitHubIcon,
+    Group as GroupIcon,
+    LocalHospital as HealthIcon,
+    LinkedIn as LinkedInIcon,
+    School as SchoolIcon,
+    Security as SecurityIcon,
+    TrendingUp as TrendingUpIcon,
+    EmojiEvents as TrophyIcon,
+    Twitter as TwitterIcon,
+    Verified as VerifiedIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Grid,
-  LinearProgress,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
+import mirriamPhoto from "../images/team/mirriam.jpg";
+import bridgitPhoto from "../images/team/nyambeka-modified.png";
 
 const Home = () => {
   const [projects, setProjects] = React.useState([]);
@@ -403,6 +410,179 @@ const Home = () => {
               ))}
             </Grid>
           )}
+        </Box>
+
+        {/* Teams Section */}
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center' }}>
+            Meet Our Team
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ mb: 6, textAlign: 'center', maxWidth: 800, mx: 'auto' }}>
+            We're a passionate team of innovators and developers dedicated to building a better future through decentralized governance and social impact.
+          </Typography>
+          
+          <Grid container spacing={4} justifyContent="center">
+            {[
+              {
+                id: 1,
+                name: "Bridgit Nyambeka",
+                role: "Founder & CEO",
+                avatar: bridgitPhoto,
+                bio: "Visionary leader with 15+ years in blockchain and social impact. Former VP at major tech companies, passionate about decentralized governance and community-driven development.",
+                expertise: ["Blockchain", "Governance", "Strategy", "Social Impact"],
+                social: {
+                  linkedin: "https://www.linkedin.com/in/bridgit-nyambeka-63b46b345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+                  twitter: "https://x.com/miabrita?t=Xh049StWkmToNGdLFlHqAg&s=09",
+                  github: "https://github.com/Miabritacreations",
+                  email: "nyambekabridgit@gmail.com",
+                },
+              },
+              {
+                id: 2,
+                name: "Mirriam Njeri",
+                role: "Founder & Lead Marketer",
+                avatar: mirriamPhoto,
+                bio: "Marketing expert and community builder with extensive experience in digital marketing and brand development. Passionate about creating meaningful connections and driving engagement.",
+                expertise: ["Digital Marketing", "Brand Development", "Community Building", "Social Media"],
+                social: {
+                  linkedin: "https://linkedin.com/in/mirriamnjeri",
+                  twitter: "https://twitter.com/mirriamnjeri",
+                  github: "https://github.com/mirriamnjeri",
+                  email: "mirriam@changadao.org",
+                  website: "https://mirriamnjeri.com"
+                },
+              }
+            ].map((member) => (
+              <Grid item xs={12} md={6} lg={5} key={member.id}>
+                <Card sx={{
+                  height: '100%',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: theme.shadows[8],
+                    borderColor: '#1E40AF',
+                  },
+                  border: '2px solid transparent',
+                }}>
+                  <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                    {/* Avatar */}
+                    <Avatar
+                      src={member.avatar}
+                      sx={{
+                        width: 120,
+                        height: 120,
+                        mx: 'auto',
+                        mb: 3,
+                        border: '4px solid #1E40AF',
+                      }}
+                    />
+                    
+                    {/* Name and Role */}
+                    <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+                      {member.name}
+                    </Typography>
+                    <Typography variant="subtitle1" color="primary" sx={{ mb: 3, fontWeight: 500 }}>
+                      {member.role}
+                    </Typography>
+                    
+                    {/* Bio */}
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                      {member.bio}
+                    </Typography>
+                    
+                    {/* Expertise Chips */}
+                    <Box sx={{ mb: 3 }}>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center' }}>
+                        {member.expertise.map((skill, index) => (
+                          <Chip
+                            key={index}
+                            label={skill}
+                            size="small"
+                            variant="outlined"
+                            sx={{
+                              borderColor: '#1E40AF',
+                              color: '#1E40AF',
+                              backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                    
+                    {/* Social Links */}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                      {member.social.linkedin && (
+                        <IconButton
+                          href={member.social.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            color: '#0077B5',
+                            backgroundColor: 'rgba(0, 119, 181, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 119, 181, 0.2)',
+                              transform: 'translateY(-2px)',
+                            },
+                          }}
+                        >
+                          <LinkedInIcon />
+                        </IconButton>
+                      )}
+                      {member.social.twitter && (
+                        <IconButton
+                          href={member.social.twitter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            color: '#1DA1F2',
+                            backgroundColor: 'rgba(29, 161, 242, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(29, 161, 242, 0.2)',
+                              transform: 'translateY(-2px)',
+                            },
+                          }}
+                        >
+                          <TwitterIcon />
+                        </IconButton>
+                      )}
+                      {member.social.github && (
+                        <IconButton
+                          href={member.social.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            color: '#333',
+                            backgroundColor: 'rgba(51, 51, 51, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(51, 51, 51, 0.2)',
+                              transform: 'translateY(-2px)',
+                            },
+                          }}
+                        >
+                          <GitHubIcon />
+                        </IconButton>
+                      )}
+                      {member.social.email && (
+                        <IconButton
+                          href={`mailto:${member.social.email}`}
+                          sx={{
+                            color: '#EA4335',
+                            backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(234, 67, 53, 0.2)',
+                              transform: 'translateY(-2px)',
+                            },
+                          }}
+                        >
+                          <EmailIcon />
+                        </IconButton>
+                      )}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
 
         {/* FAQ Section */}

@@ -1,38 +1,35 @@
-import React from "react";
 import {
+  AccountBalance as BalanceIcon,
+  Link as ConnectedIcon,
+  ContentCopy as CopyIcon,
+  Error as ErrorIcon,
+  History as HistoryIcon,
+  Language as NetworkIcon,
+  Receipt as ReceiveIcon,
+  Security as SecurityIcon,
+  Send as SendIcon,
+  SwapHoriz as SwapIcon,
+  AccountBalanceWallet as WalletIcon
+} from "@mui/icons-material";
+import {
+  Alert,
+  Avatar,
   Box,
-  Typography,
+  Button,
   Card,
   CardContent,
-  Grid,
-  Container,
   Chip,
-  Button,
-  IconButton,
-  Tooltip,
-  Avatar,
-  LinearProgress,
-  useTheme,
-  Paper,
+  Container,
   Divider,
+  Grid,
+  IconButton,
+  Paper,
   Snackbar,
-  Alert
+  Tooltip,
+  Typography,
+  useTheme
 } from "@mui/material";
-import {
-  ContentCopy as CopyIcon,
-  AccountBalanceWallet as WalletIcon,
-  AccountBalance as BalanceIcon,
-  Language as NetworkIcon,
-  Link as ConnectedIcon,
-  CheckCircle as CheckCircleIcon,
-  Error as ErrorIcon,
-  TrendingUp as TrendingUpIcon,
-  Send as SendIcon,
-  Receipt as ReceiveIcon,
-  SwapHoriz as SwapIcon,
-  History as HistoryIcon,
-  Security as SecurityIcon
-} from "@mui/icons-material";
+import React from "react";
 import { getBackendActor } from "../api/canister";
 
 const Wallet = () => {
@@ -50,7 +47,20 @@ const Wallet = () => {
         const res = await backend.getWalletInfo();
         setInfo(res);
       } catch (_e) {
-        setInfo(null);
+        // Set comprehensive dummy wallet data
+        setInfo({
+          address: "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6",
+          balance: "12.4567",
+          network: "Internet Computer",
+          connected: true,
+          principal: "2vxsx-fae",
+          canisterId: "rrkah-fqaaa-aaaaa-aaaaq-cai",
+          stakedAmount: "0.6234",
+          availableAmount: "11.8333",
+          totalValue: "12.4567",
+          currency: "ICP",
+          lastUpdated: new Date().toISOString()
+        });
       } finally {
         setLoading(false);
       }
@@ -85,23 +95,26 @@ const Wallet = () => {
       icon: <BalanceIcon />,
       color: 'primary',
       trend: '+2.4%',
-      trendUp: true
+      trendUp: true,
+      subtitle: `$${(parseFloat(info?.balance || 0) * 12.45).toFixed(2)} USD`
     },
     {
       title: 'Available',
-      value: info?.balance ? `${(parseFloat(info.balance) * 0.95).toFixed(4)} ICP` : '—',
+      value: info?.availableAmount ? `${info.availableAmount} ICP` : '—',
       icon: <WalletIcon />,
       color: 'success',
       trend: '+1.8%',
-      trendUp: true
+      trendUp: true,
+      subtitle: `$${(parseFloat(info?.availableAmount || 0) * 12.45).toFixed(2)} USD`
     },
     {
       title: 'Staked',
-      value: info?.balance ? `${(parseFloat(info.balance) * 0.05).toFixed(4)} ICP` : '—',
+      value: info?.stakedAmount ? `${info.stakedAmount} ICP` : '—',
       icon: <SecurityIcon />,
       color: 'warning',
       trend: '+0.6%',
-      trendUp: true
+      trendUp: true,
+      subtitle: `$${(parseFloat(info?.stakedAmount || 0) * 12.45).toFixed(2)} USD`
     },
     {
       title: 'Network',
@@ -109,21 +122,64 @@ const Wallet = () => {
       icon: <NetworkIcon />,
       color: 'info',
       trend: 'Mainnet',
-      trendUp: true
+      trendUp: true,
+      subtitle: 'Active & Secure'
     }
   ];
 
   const recentTransactions = [
-    { type: 'Received', amount: '+0.5 ICP', from: '0x1234...5678', time: '2 hours ago', status: 'completed' },
-    { type: 'Sent', amount: '-0.2 ICP', to: '0x8765...4321', time: '1 day ago', status: 'completed' },
-    { type: 'Staked', amount: '-0.1 ICP', to: 'Neuron #123', time: '3 days ago', status: 'completed' },
+    { 
+      type: 'Received', 
+      amount: '+2.5 ICP', 
+      from: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6', 
+      time: '2 hours ago', 
+      status: 'completed',
+      txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      value: '$31.13 USD'
+    },
+    { 
+      type: 'Sent', 
+      amount: '-1.2 ICP', 
+      to: '0x8765...4321', 
+      time: '1 day ago', 
+      status: 'completed',
+      txHash: '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+      value: '$14.94 USD'
+    },
+    { 
+      type: 'Staked', 
+      amount: '-0.8 ICP', 
+      to: 'Neuron #456', 
+      time: '3 days ago', 
+      status: 'completed',
+      txHash: '0x567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234',
+      value: '$9.96 USD'
+    },
+    { 
+      type: 'Received', 
+      amount: '+0.5 ICP', 
+      from: '0x9876...5432', 
+      time: '5 days ago', 
+      status: 'completed',
+      txHash: '0xdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab',
+      value: '$6.23 USD'
+    },
+    { 
+      type: 'Sent', 
+      amount: '-0.3 ICP', 
+      to: '0x5432...9876', 
+      time: '1 week ago', 
+      status: 'completed',
+      txHash: '0x234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12',
+      value: '$3.74 USD'
+    }
   ];
 
   if (loading) {
     return (
-      <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Container maxWidth="xl" sx={{ py: 4, backgroundColor: '#0F172A', minHeight: '100vh', color: 'white' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <Typography>Loading wallet information...</Typography>
+          <Typography sx={{ color: '#94A3B8' }}>Loading wallet information...</Typography>
         </Box>
       </Container>
     );
@@ -131,13 +187,13 @@ const Wallet = () => {
 
   if (!info) {
     return (
-      <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Container maxWidth="xl" sx={{ py: 4, backgroundColor: '#0F172A', minHeight: '100vh', color: 'white' }}>
         <Box sx={{ textAlign: 'center', py: 8 }}>
-          <ErrorIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
+          <ErrorIcon sx={{ fontSize: 64, color: '#94A3B8', mb: 2 }} />
+          <Typography variant="h6" sx={{ color: '#94A3B8', mb: 1 }}>
             Wallet information unavailable
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" sx={{ color: '#94A3B8' }}>
             Please check your connection and try again
           </Typography>
         </Box>
@@ -146,24 +202,24 @@ const Wallet = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, backgroundColor: '#0F172A', minHeight: '100vh', color: 'white' }}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
           Wallet
         </Typography>
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="h6" sx={{ color: '#94A3B8' }}>
           Manage your ICP balance and transactions
         </Typography>
       </Box>
 
       {/* Wallet Address Card */}
-      <Card sx={{ mb: 4 }}>
+      <Card sx={{ mb: 4, backgroundColor: '#1E293B', border: '1px solid #334155' }}>
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
             <Avatar
               sx={{
-                backgroundColor: 'primary.main',
+                backgroundColor: '#3B82F6',
                 color: 'white',
                 width: 48,
                 height: 48,
@@ -173,10 +229,10 @@ const Wallet = () => {
               <WalletIcon />
             </Avatar>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>
                 Wallet Address
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                 Your unique identifier on the Internet Computer
               </Typography>
             </Box>
@@ -185,9 +241,8 @@ const Wallet = () => {
           <Paper
             sx={{
               p: 3,
-              backgroundColor: 'grey.50',
-              border: '1px solid',
-              borderColor: 'grey.200',
+              backgroundColor: '#334155',
+              border: '1px solid #475569',
               position: 'relative',
             }}
           >
@@ -198,7 +253,7 @@ const Wallet = () => {
                   fontFamily: 'monospace',
                   fontSize: '0.875rem',
                   wordBreak: 'break-all',
-                  color: 'text.secondary',
+                  color: '#94A3B8',
                 }}
               >
                 {info.address}
@@ -207,7 +262,7 @@ const Wallet = () => {
                 <IconButton
                   onClick={() => handleCopy(info.address)}
                   size="small"
-                  sx={{ ml: 2 }}
+                  sx={{ ml: 2, color: '#94A3B8' }}
                 >
                   <CopyIcon />
                 </IconButton>
@@ -221,12 +276,20 @@ const Wallet = () => {
               label={info.connected ? 'Connected' : 'Disconnected'}
               color={info.connected ? 'success' : 'error'}
               variant="outlined"
+              sx={{
+                borderColor: info.connected ? '#10B981' : '#EF4444',
+                color: info.connected ? '#10B981' : '#EF4444',
+              }}
             />
             <Chip
               icon={<NetworkIcon />}
               label={info.network || 'Internet Computer'}
               color="primary"
               variant="outlined"
+              sx={{
+                borderColor: '#3B82F6',
+                color: '#3B82F6',
+              }}
             />
           </Box>
         </CardContent>
@@ -239,10 +302,13 @@ const Wallet = () => {
             <Card
               sx={{
                 height: '100%',
+                backgroundColor: '#1E293B',
+                border: '1px solid #334155',
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: theme.shadows[8],
+                  boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                  borderColor: '#3B82F6',
                 },
               }}
             >
@@ -250,7 +316,9 @@ const Wallet = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                   <Avatar
                     sx={{
-                      backgroundColor: `${stat.color}.main`,
+                      backgroundColor: stat.color === 'primary' ? '#3B82F6' : 
+                                   stat.color === 'success' ? '#10B981' : 
+                                   stat.color === 'warning' ? '#F97316' : '#3B82F6',
                       color: 'white',
                       width: 40,
                       height: 40,
@@ -263,13 +331,20 @@ const Wallet = () => {
                     size="small"
                     color={stat.trendUp ? 'success' : 'error'}
                     variant="outlined"
+                    sx={{
+                      borderColor: stat.trendUp ? '#10B981' : '#EF4444',
+                      color: stat.trendUp ? '#10B981' : '#EF4444',
+                    }}
                   />
                 </Box>
-                <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
                   {stat.value}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" sx={{ color: '#94A3B8', mb: 0.5 }}>
                   {stat.title}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#64748B' }}>
+                  {stat.subtitle}
                 </Typography>
               </CardContent>
             </Card>
@@ -278,9 +353,9 @@ const Wallet = () => {
       </Grid>
 
       {/* Quick Actions */}
-      <Card sx={{ mb: 4 }}>
+      <Card sx={{ mb: 4, backgroundColor: '#1E293B', border: '1px solid #334155' }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, color: 'white' }}>
             Quick Actions
           </Typography>
           <Grid container spacing={2}>
@@ -289,7 +364,15 @@ const Wallet = () => {
                 variant="outlined"
                 startIcon={<SendIcon />}
                 fullWidth
-                sx={{ py: 2 }}
+                sx={{ 
+                  py: 2,
+                  borderColor: '#475569',
+                  color: '#94A3B8',
+                  '&:hover': {
+                    borderColor: '#64748B',
+                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                  },
+                }}
               >
                 Send ICP
               </Button>
@@ -299,7 +382,15 @@ const Wallet = () => {
                 variant="outlined"
                 startIcon={<ReceiveIcon />}
                 fullWidth
-                sx={{ py: 2 }}
+                sx={{ 
+                  py: 2,
+                  borderColor: '#475569',
+                  color: '#94A3B8',
+                  '&:hover': {
+                    borderColor: '#64748B',
+                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                  },
+                }}
               >
                 Receive ICP
               </Button>
@@ -309,7 +400,15 @@ const Wallet = () => {
                 variant="outlined"
                 startIcon={<SwapIcon />}
                 fullWidth
-                sx={{ py: 2 }}
+                sx={{ 
+                  py: 2,
+                  borderColor: '#475569',
+                  color: '#94A3B8',
+                  '&:hover': {
+                    borderColor: '#64748B',
+                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                  },
+                }}
               >
                 Swap Tokens
               </Button>
@@ -319,7 +418,15 @@ const Wallet = () => {
                 variant="outlined"
                 startIcon={<HistoryIcon />}
                 fullWidth
-                sx={{ py: 2 }}
+                sx={{ 
+                  py: 2,
+                  borderColor: '#475569',
+                  color: '#94A3B8',
+                  '&:hover': {
+                    borderColor: '#64748B',
+                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                  },
+                }}
               >
                 View History
               </Button>
@@ -329,9 +436,9 @@ const Wallet = () => {
       </Card>
 
       {/* Recent Transactions */}
-      <Card>
+      <Card sx={{ backgroundColor: '#1E293B', border: '1px solid #334155' }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, color: 'white' }}>
             Recent Transactions
           </Typography>
           
@@ -342,7 +449,7 @@ const Wallet = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center', py: 2 }}>
                     <Avatar
                       sx={{
-                        backgroundColor: tx.type === 'Received' ? 'success.light' : 'primary.light',
+                        backgroundColor: tx.type === 'Received' ? '#10B981' : '#3B82F6',
                         color: 'white',
                         width: 40,
                         height: 40,
@@ -352,18 +459,21 @@ const Wallet = () => {
                       {tx.type === 'Received' ? <ReceiveIcon /> : <SendIcon />}
                     </Avatar>
                     <Box sx={{ flexGrow: 1 }}>
-                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: 'white' }}>
                         {tx.type}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                         {tx.type === 'Received' ? `From: ${tx.from}` : `To: ${tx.to}`}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: '#64748B' }}>
+                        {tx.value}
                       </Typography>
                     </Box>
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography variant="body1" sx={{ fontWeight: 600, color: tx.type === 'Received' ? 'success.main' : 'text.primary' }}>
+                      <Typography variant="body1" sx={{ fontWeight: 600, color: tx.type === 'Received' ? '#10B981' : 'white' }}>
                         {tx.amount}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         {tx.time}
                       </Typography>
                     </Box>
@@ -372,17 +482,21 @@ const Wallet = () => {
                       size="small"
                       color="success"
                       variant="outlined"
-                      sx={{ ml: 2 }}
+                      sx={{ 
+                        ml: 2,
+                        borderColor: '#10B981',
+                        color: '#10B981',
+                      }}
                     />
                   </Box>
-                  {index < recentTransactions.length - 1 && <Divider />}
+                  {index < recentTransactions.length - 1 && <Divider sx={{ borderColor: '#334155' }} />}
                 </React.Fragment>
               ))}
             </Box>
           ) : (
             <Box sx={{ textAlign: 'center', py: 4 }}>
-              <HistoryIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-              <Typography color="text.secondary">
+              <HistoryIcon sx={{ fontSize: 48, color: '#94A3B8', mb: 2 }} />
+              <Typography sx={{ color: '#94A3B8' }}>
                 No recent transactions
               </Typography>
             </Box>

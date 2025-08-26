@@ -1,33 +1,33 @@
 import {
-    Timeline as ActivityIcon,
-    Assessment as AssessmentIcon,
-    CheckCircle as CheckCircleIcon,
-    Group as GroupIcon,
-    AttachMoney as MoneyIcon,
-    HowToVote as ProposalsIcon,
-    School as SchoolIcon,
-    TrendingDown as TrendingDownIcon,
-    TrendingUp as TrendingUpIcon,
-    Visibility as ViewAllIcon,
-    HowToVote as VotingIcon,
-    WaterDrop as WaterIcon
+  Timeline as ActivityIcon,
+  Assessment as AssessmentIcon,
+  CheckCircle as CheckCircleIcon,
+  Group as GroupIcon,
+  AttachMoney as MoneyIcon,
+  HowToVote as ProposalsIcon,
+  School as SchoolIcon,
+  TrendingDown as TrendingDownIcon,
+  TrendingUp as TrendingUpIcon,
+  Visibility as ViewAllIcon,
+  HowToVote as VotingIcon,
+  WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-    Avatar,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Chip,
-    Divider,
-    Grid,
-    LinearProgress,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-    useTheme
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Grid,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  useTheme
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
@@ -175,7 +175,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      backgroundColor: '#1a1a1a',
+      backgroundColor: '#0F172A',
       color: 'white',
       p: 3
     }}>
@@ -184,14 +184,14 @@ const Dashboard = () => {
         <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
           Dashboard
         </Typography>
-        <Typography variant="h6" sx={{ color: '#b0b0b0' }}>
+        <Typography variant="h6" sx={{ color: '#94A3B8' }}>
           Welcome back! Here's what's happening with your investments.
         </Typography>
       </Box>
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <Typography sx={{ color: 'white' }}>Loading dashboard data...</Typography>
+          <Typography sx={{ color: '#94A3B8' }}>Loading dashboard data...</Typography>
         </Box>
       ) : (
         <>
@@ -201,13 +201,14 @@ const Dashboard = () => {
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Card
                   sx={{
-                    backgroundColor: '#2a2a2a',
-                    border: '1px solid #3a3a3a',
+                    backgroundColor: '#1E293B',
+                    border: '1px solid #334155',
                     borderRadius: 3,
                     transition: 'all 0.3s ease',
                     '&:hover': {
                       transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
+                      boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                      borderColor: '#3B82F6',
                     },
                   }}
                 >
@@ -230,16 +231,16 @@ const Dashboard = () => {
                         color={metric.trendUp ? 'success' : 'error'}
                         variant="outlined"
                         sx={{ 
-                          backgroundColor: metric.trendUp ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
-                          borderColor: metric.trendUp ? '#4caf50' : '#f44336',
-                          color: metric.trendUp ? '#4caf50' : '#f44336'
+                          backgroundColor: metric.trendUp ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                          borderColor: metric.trendUp ? '#10B981' : '#EF4444',
+                          color: metric.trendUp ? '#10B981' : '#EF4444'
                         }}
                       />
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
                       {metric.value}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                    <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                       {metric.title}
                     </Typography>
                   </CardContent>
@@ -253,8 +254,8 @@ const Dashboard = () => {
             {/* Recent Projects */}
             <Grid item xs={12} lg={8}>
               <Card sx={{ 
-                backgroundColor: '#2a2a2a',
-                border: '1px solid #3a3a3a',
+                backgroundColor: '#1E293B',
+                border: '1px solid #334155',
                 borderRadius: 3
               }}>
                 <CardContent sx={{ p: 4 }}>
@@ -266,11 +267,11 @@ const Dashboard = () => {
                       variant="outlined"
                       endIcon={<ViewAllIcon />}
                       sx={{
-                        borderColor: '#4caf50',
-                        color: '#4caf50',
+                        borderColor: '#10B981',
+                        color: '#10B981',
                         '&:hover': {
-                          borderColor: '#45a049',
-                          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                          borderColor: '#059669',
+                          backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         },
                       }}
                     >
@@ -284,7 +285,7 @@ const Dashboard = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                           <Avatar
                             sx={{
-                              backgroundColor: 'primary.main',
+                              backgroundColor: '#3B82F6',
                               color: 'white',
                               width: 40,
                               height: 40,

@@ -2,6 +2,7 @@ import {
   Add as AddIcon,
   Agriculture as AgricultureIcon,
   CalendarToday as CalendarIcon,
+  Cancel as CancelIcon,
   CheckCircle as CheckCircleIcon,
   Edit as EditIcon,
   FilterList as FilterIcon,
@@ -12,7 +13,6 @@ import {
   Schedule as ScheduleIcon,
   School as SchoolIcon,
   Search as SearchIcon,
-  AccountBalanceWallet as TreasuryIcon,
   WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
@@ -73,7 +73,170 @@ const Projects = () => {
         const list = await backend.getProposals();
         setProjects(list);
       } catch (_e) {
-        setProjects([]);
+        // Set comprehensive dummy data with different project statuses
+        const dummyProjects = [
+          {
+            id: 1,
+            title: "Solar Power for Rural Clinics",
+            description: "Install solar panels to power medical equipment in 3 clinics serving 10,000 people. This project will provide reliable electricity for life-saving medical procedures.",
+            category: "Healthcare",
+            location: "Nairobi, Kenya",
+            status: "Active",
+            raised: 28000,
+            goal: 35000,
+            percent: 80,
+            startDate: "2024-01-15",
+            endDate: "2024-06-30",
+            nftSupply: 100,
+            nftPrice: 350,
+            tags: ["Renewable Energy", "Healthcare", "Rural Development"]
+          },
+          {
+            id: 2,
+            title: "Digital Learning Center",
+            description: "Modern computer lab and digital literacy program for underserved students. Includes 50 computers, internet connectivity, and certified instructors.",
+            category: "Education",
+            location: "Mombasa, Kenya",
+            status: "Active",
+            raised: 12000,
+            goal: 15000,
+            percent: 80,
+            startDate: "2024-02-01",
+            endDate: "2024-08-15",
+            nftSupply: 75,
+            nftPrice: 200,
+            tags: ["Education", "Technology", "Youth Empowerment"]
+          },
+          {
+            id: 3,
+            title: "Clean Water for Village",
+            description: "Build a sustainable water system with purification for 500 families. Includes borehole drilling, water treatment, and distribution network.",
+            category: "Water",
+            location: "Kisumu, Kenya",
+            status: "Active",
+            raised: 18750,
+            goal: 25000,
+            percent: 75,
+            startDate: "2024-01-20",
+            endDate: "2024-07-30",
+            nftSupply: 125,
+            nftPrice: 200,
+            tags: ["Water", "Infrastructure", "Community Health"]
+          },
+          {
+            id: 4,
+            title: "Community Health Outreach",
+            description: "Mobile health screenings and vaccinations across rural wards. Provides essential healthcare services to remote communities.",
+            category: "Healthcare",
+            location: "Nakuru, Kenya",
+            status: "Completed",
+            raised: 6000,
+            goal: 6000,
+            percent: 100,
+            startDate: "2023-10-01",
+            endDate: "2024-03-15",
+            nftSupply: 60,
+            nftPrice: 100,
+            tags: ["Healthcare", "Mobile Services", "Prevention"]
+          },
+          {
+            id: 5,
+            title: "Irrigation for Smallholders",
+            description: "Low-cost drip irrigation to increase farm yields by 40%. Supports 200 small-scale farmers with sustainable farming practices.",
+            category: "Agriculture",
+            location: "Eldoret, Kenya",
+            status: "Active",
+            raised: 9000,
+            goal: 20000,
+            percent: 45,
+            startDate: "2024-03-01",
+            endDate: "2024-09-30",
+            nftSupply: 100,
+            nftPrice: 200,
+            tags: ["Agriculture", "Sustainability", "Food Security"]
+          },
+          {
+            id: 6,
+            title: "Youth Skills Training Center",
+            description: "Vocational training center for unemployed youth. Offers courses in carpentry, welding, and electrical work.",
+            category: "Education",
+            location: "Thika, Kenya",
+            status: "Failed",
+            raised: 8000,
+            goal: 25000,
+            percent: 32,
+            startDate: "2023-11-01",
+            endDate: "2024-05-30",
+            nftSupply: 100,
+            nftPrice: 250,
+            tags: ["Education", "Vocational Training", "Youth Employment"]
+          },
+          {
+            id: 7,
+            title: "Emergency Medical Response",
+            description: "Ambulance service and emergency response system for rural areas. Includes vehicle, equipment, and trained personnel.",
+            category: "Healthcare",
+            location: "Kakamega, Kenya",
+            status: "Completed",
+            raised: 15000,
+            goal: 15000,
+            percent: 100,
+            startDate: "2023-08-01",
+            endDate: "2024-01-31",
+            nftSupply: 75,
+            nftPrice: 200,
+            tags: ["Healthcare", "Emergency Services", "Public Safety"]
+          },
+          {
+            id: 8,
+            title: "Sustainable Fish Farming",
+            description: "Aquaculture project to provide protein and income for coastal communities. Includes training and market access.",
+            category: "Agriculture",
+            location: "Lamu, Kenya",
+            status: "Active",
+            raised: 22000,
+            goal: 30000,
+            percent: 73,
+            startDate: "2024-02-15",
+            endDate: "2024-08-31",
+            nftSupply: 150,
+            nftPrice: 200,
+            tags: ["Agriculture", "Aquaculture", "Coastal Development"]
+          },
+          {
+            id: 9,
+            title: "Renewable Energy Microgrid",
+            description: "Community-owned solar microgrid to provide electricity for 300 households. Includes battery storage and smart metering.",
+            category: "Infrastructure",
+            location: "Garissa, Kenya",
+            status: "Failed",
+            raised: 12000,
+            goal: 40000,
+            percent: 30,
+            startDate: "2023-12-01",
+            endDate: "2024-06-30",
+            nftSupply: 200,
+            nftPrice: 200,
+            tags: ["Renewable Energy", "Infrastructure", "Community Ownership"]
+          },
+          {
+            id: 10,
+            title: "Women's Entrepreneurship Hub",
+            description: "Business incubator and training center for women entrepreneurs. Provides mentorship, funding access, and networking.",
+            category: "Business",
+            location: "Nyeri, Kenya",
+            status: "Active",
+            raised: 18000,
+            goal: 25000,
+            percent: 72,
+            startDate: "2024-01-10",
+            endDate: "2024-07-31",
+            nftSupply: 100,
+            nftPrice: 250,
+            tags: ["Business", "Women Empowerment", "Entrepreneurship"]
+          }
+        ];
+        setProjects(dummyProjects);
       } finally {
         setLoading(false);
       }
@@ -107,14 +270,16 @@ const Projects = () => {
   const getStatusColor = (status) => {
     // Handle Motoko variant objects
     const statusStr = typeof status === 'object' ? Object.keys(status)[0] : status;
-    switch (statusStr) {
-      case 'Active':
+    switch (statusStr?.toLowerCase()) {
+      case 'active':
         return 'success';
-      case 'Completed':
+      case 'completed':
         return 'info';
-      case 'PendingReview':
+      case 'failed':
+        return 'error';
+      case 'pendingreview':
         return 'warning';
-      case 'Draft':
+      case 'draft':
         return 'default';
       default:
         return 'default';
@@ -124,14 +289,16 @@ const Projects = () => {
   const getStatusIcon = (status) => {
     // Handle Motoko variant objects
     const statusStr = typeof status === 'object' ? Object.keys(status)[0] : status;
-    switch (statusStr) {
-      case 'Active':
+    switch (statusStr?.toLowerCase()) {
+      case 'active':
         return <CheckCircleIcon />;
-      case 'Completed':
+      case 'completed':
         return <CheckCircleIcon />;
-      case 'PendingReview':
+      case 'failed':
+        return <CancelIcon />;
+      case 'pendingreview':
         return <ScheduleIcon />;
-      case 'Draft':
+      case 'draft':
         return <EditIcon />;
       default:
         return <InfoIcon />;
@@ -152,9 +319,9 @@ const Projects = () => {
 
   const projectStats = [
     { label: 'Total Projects', value: projects.length, icon: <ProjectsIcon />, color: 'primary' },
-    { label: 'Active Projects', value: projects.filter(p => p.status === 'Active').length, icon: <ScheduleIcon />, color: 'warning' },
-    { label: 'Completed', value: projects.filter(p => p.status === 'Completed').length, icon: <CheckCircleIcon />, color: 'success' },
-    { label: 'Total Funding', value: `$${projects.reduce((sum, p) => sum + (p.raised || 0), 0).toLocaleString()}`, icon: <TreasuryIcon />, color: 'info' },
+    { label: 'Active Projects', value: projects.filter(p => variantToString(p.status) === 'Active').length, icon: <ScheduleIcon />, color: 'warning' },
+    { label: 'Completed', value: projects.filter(p => variantToString(p.status) === 'Completed').length, icon: <CheckCircleIcon />, color: 'success' },
+    { label: 'Failed', value: projects.filter(p => variantToString(p.status) === 'Failed').length, icon: <CancelIcon />, color: 'error' },
   ];
 
   const handleCreateProject = async () => {
@@ -226,7 +393,7 @@ const Projects = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      backgroundColor: '#1a1a1a',
+      backgroundColor: '#0F172A',
       color: 'white',
       p: 3
     }}>
@@ -236,7 +403,7 @@ const Projects = () => {
           <Typography variant="h3" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
             Projects
           </Typography>
-          <Typography variant="h6" sx={{ color: '#b0b0b0' }}>
+          <Typography variant="h6" sx={{ color: '#94A3B8' }}>
             Explore and manage community projects
           </Typography>
         </Box>
@@ -245,9 +412,9 @@ const Projects = () => {
           startIcon={<AddIcon />}
           onClick={() => setCreateProjectDialog(true)}
           sx={{
-            background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+            background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+              background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
             },
           }}
         >
@@ -262,13 +429,14 @@ const Projects = () => {
             <Card
               sx={{
                 height: '100%',
-                backgroundColor: '#2a2a2a',
-                border: '1px solid #3a3a3a',
+                backgroundColor: '#1E293B',
+                border: '1px solid #334155',
                 borderRadius: 3,
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
+                  boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                  borderColor: '#3B82F6',
                 },
               }}
             >
@@ -289,7 +457,7 @@ const Projects = () => {
                 <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'white' }}>
                   {stat.value}
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                   {stat.label}
                 </Typography>
               </CardContent>
@@ -316,31 +484,31 @@ const Projects = () => {
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  backgroundColor: '#2a2a2a',
-                  borderColor: '#3a3a3a',
+                  backgroundColor: '#1E293B',
+                  borderColor: '#334155',
                   color: 'white',
                   '& fieldset': {
-                    borderColor: '#3a3a3a',
+                    borderColor: '#334155',
                   },
                   '&:hover fieldset': {
-                    borderColor: '#4a4a4a',
+                    borderColor: '#475569',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: '#42A5F5',
+                    borderColor: '#3B82F6',
                   },
                 },
                 '& .MuiInputBase-input': {
                   color: 'white',
                 },
                 '& .MuiInputBase-input::placeholder': {
-                  color: '#b0b0b0',
+                  color: '#94A3B8',
                   opacity: 1,
                 },
               }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ backgroundColor: '#2a2a2a', border: '1px solid #3a3a3a' }}>
+            <Paper sx={{ backgroundColor: '#1E293B', border: '1px solid #334155' }}>
               <Tabs
                 value={filter}
                 onChange={handleFilterChange}
@@ -350,13 +518,13 @@ const Projects = () => {
                   '& .MuiTab-root': {
                     textTransform: 'none',
                     fontWeight: 600,
-                    color: '#b0b0b0',
+                    color: '#94A3B8',
                     '&.Mui-selected': {
-                      color: '#42A5F5',
+                      color: '#3B82F6',
                     },
                   },
                   '& .MuiTabs-indicator': {
-                    backgroundColor: '#42A5F5',
+                    backgroundColor: '#3B82F6',
                   },
                 }}
               >
@@ -367,21 +535,21 @@ const Projects = () => {
                   iconPosition="start"
                 />
                 <Tab
-                  label={`Active (${projects.filter(p => p.status === 'Active').length})`}
+                  label={`Available (${projects.filter(p => variantToString(p.status) === 'Active').length})`}
                   value="active"
                   icon={<ScheduleIcon />}
                   iconPosition="start"
                 />
                 <Tab
-                  label={`Completed (${projects.filter(p => p.status === 'Completed').length})`}
+                  label={`Completed (${projects.filter(p => variantToString(p.status) === 'Completed').length})`}
                   value="completed"
                   icon={<CheckCircleIcon />}
                   iconPosition="start"
                 />
                 <Tab
-                  label={`Planning (${projects.filter(p => p.status === 'Planning').length})`}
-                  value="planning"
-                  icon={<FilterIcon />}
+                  label={`Failed (${projects.filter(p => variantToString(p.status) === 'Failed').length})`}
+                  value="failed"
+                  icon={<CancelIcon />}
                   iconPosition="start"
                 />
               </Tabs>
@@ -392,7 +560,7 @@ const Projects = () => {
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-          <Typography sx={{ color: 'white' }}>Loading projects...</Typography>
+          <Typography sx={{ color: '#94A3B8' }}>Loading projects...</Typography>
         </Box>
       ) : (
         <Grid container spacing={3}>
@@ -401,13 +569,14 @@ const Projects = () => {
               <Card
                 sx={{
                   height: '100%',
-                  backgroundColor: '#2a2a2a',
-                  border: '1px solid #3a3a3a',
+                  backgroundColor: '#1E293B',
+                  border: '1px solid #334155',
                   borderRadius: 3,
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.3)',
+                    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                    borderColor: '#3B82F6',
                   },
                 }}
               >
@@ -417,7 +586,7 @@ const Projects = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar
                         sx={{
-                          backgroundColor: 'primary.light',
+                          backgroundColor: '#3B82F6',
                           color: 'white',
                           width: 40,
                           height: 40,
@@ -429,12 +598,11 @@ const Projects = () => {
                         <Chip
                           label={project.category || 'General'}
                           size="small"
-                          color="primary"
                           variant="outlined"
                           sx={{ 
-                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                            borderColor: '#2196f3',
-                            color: '#2196f3'
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: '#3B82F6',
+                            color: '#3B82F6'
                           }}
                         />
                       </Box>
@@ -445,10 +613,12 @@ const Projects = () => {
                       color={getStatusColor(project.status)}
                       variant="filled"
                       sx={{
-                        backgroundColor: variantToString(project.status) === 'Active' ? 'rgba(76, 175, 80, 0.1)' :
-                          variantToString(project.status) === 'Completed' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
-                        color: variantToString(project.status) === 'Active' ? '#4caf50' :
-                          variantToString(project.status) === 'Completed' ? '#4caf50' : '#ff9800'
+                        backgroundColor: variantToString(project.status) === 'Active' ? 'rgba(16, 185, 129, 0.1)' :
+                          variantToString(project.status) === 'Completed' ? 'rgba(59, 130, 246, 0.1)' :
+                          variantToString(project.status) === 'Failed' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(249, 115, 22, 0.1)',
+                        color: variantToString(project.status) === 'Active' ? '#10B981' :
+                          variantToString(project.status) === 'Completed' ? '#3B82F6' :
+                          variantToString(project.status) === 'Failed' ? '#EF4444' : '#F97316'
                       }}
                     />
                   </Box>
@@ -457,21 +627,21 @@ const Projects = () => {
                   <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: 'white' }}>
                     {project.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ mb: 3, lineHeight: 1.6, color: '#b0b0b0' }}>
+                  <Typography variant="body2" sx={{ mb: 3, lineHeight: 1.6, color: '#94A3B8' }}>
                     {project.description}
                   </Typography>
 
                   {/* Location and Date */}
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <LocationIcon sx={{ fontSize: 16, color: '#b0b0b0' }} />
-                      <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                      <LocationIcon sx={{ fontSize: 16, color: '#94A3B8' }} />
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         {project.location || 'Location TBD'}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CalendarIcon sx={{ fontSize: 16, color: '#b0b0b0' }} />
-                      <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                      <CalendarIcon sx={{ fontSize: 16, color: '#94A3B8' }} />
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         {project.startDate || 'Start Date TBD'}
                       </Typography>
                     </Box>
@@ -481,7 +651,7 @@ const Projects = () => {
                   {project.percent && (
                     <Box sx={{ mb: 3 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                        <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                        <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                           Progress
                         </Typography>
                         <Typography variant="body2" sx={{ fontWeight: 600, color: 'white' }}>
@@ -494,9 +664,11 @@ const Projects = () => {
                         sx={{ 
                           height: 8, 
                           borderRadius: 4,
-                          backgroundColor: '#3a3a3a',
+                          backgroundColor: '#334155',
                           '& .MuiLinearProgress-bar': {
-                            backgroundColor: project.percent >= 90 ? '#ff9800' : '#4caf50',
+                            backgroundColor: variantToString(project.status) === 'Failed' ? '#EF4444' :
+                              variantToString(project.status) === 'Completed' ? '#3B82F6' :
+                              project.percent >= 90 ? '#F97316' : '#10B981',
                           }
                         }}
                       />
@@ -509,7 +681,7 @@ const Projects = () => {
                       <Typography variant="h6" sx={{ fontWeight: 700, color: '#42A5F5' }}>
                         {project.raised ? `$${project.raised.toLocaleString()}` : '—'}
                       </Typography>
-                      <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         Raised
                       </Typography>
                     </Box>
@@ -517,7 +689,7 @@ const Projects = () => {
                       <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
                         {project.goal ? `$${project.goal.toLocaleString()}` : '—'}
                       </Typography>
-                      <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         Goal
                       </Typography>
                     </Box>
@@ -525,13 +697,13 @@ const Projects = () => {
                       <Typography variant="h6" sx={{ fontWeight: 700, color: 'white' }}>
                         {project.contributors || 0}
                       </Typography>
-                      <Typography variant="caption" sx={{ color: '#b0b0b0' }}>
+                      <Typography variant="caption" sx={{ color: '#94A3B8' }}>
                         Contributors
                       </Typography>
                     </Box>
                   </Box>
 
-                  <Divider sx={{ my: 2, borderColor: '#3a3a3a' }} />
+                  <Divider sx={{ my: 2, borderColor: '#334155' }} />
 
                   {/* Actions */}
                   <Box sx={{ display: 'flex', gap: 2 }}>
@@ -546,15 +718,15 @@ const Projects = () => {
                         }
                       }}
                       sx={{
-                        borderColor: '#3a3a3a',
-                        color: '#b0b0b0',
+                        borderColor: '#475569',
+                        color: '#94A3B8',
                         '&:hover': {
-                          borderColor: '#4a4a4a',
-                          backgroundColor: 'rgba(255,255,255,0.05)',
+                          borderColor: '#64748B',
+                          backgroundColor: 'rgba(148, 163, 184, 0.1)',
                         },
                         '&.Mui-disabled': {
-                          borderColor: '#2a2a2a',
-                          color: '#666666',
+                          borderColor: '#334155',
+                          color: '#64748B',
                         },
                       }}
                     >
@@ -565,13 +737,13 @@ const Projects = () => {
                       fullWidth
                       disabled={variantToString(project.status) !== 'Active'}
                       sx={{
-                        background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+                        background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
                         '&:hover': {
-                          background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                          background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
                         },
                         '&.Mui-disabled': {
-                          background: '#2a2a2a',
-                          color: '#666666',
+                          background: '#334155',
+                          color: '#64748B',
                         },
                       }}
                     >

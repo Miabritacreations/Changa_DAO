@@ -7,8 +7,11 @@ import environment from 'vite-plugin-environment';
 dotenv.config({ path: '../../.env' });
 
 export default defineConfig({
+  base: '/Changa_DAO/',
   build: {
     emptyOutDir: true,
+    assetsDir: 'assets',
+    copyPublicDir: true
   },
   optimizeDeps: {
     esbuildOptions: {

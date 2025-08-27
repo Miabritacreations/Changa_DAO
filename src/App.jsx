@@ -97,6 +97,7 @@ const router = createBrowserRouter(
     },
   ],
   {
+    basename: "/Changa_DAO",
     future: {
       v7_startTransition: true,
       v7_relativeSplatPath: true,

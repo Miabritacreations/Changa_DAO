@@ -1,0 +1,22 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/Changa_DAO/((?!assets/|images/|favicon.ico|logo2.svg).*)",
+      "destination": "/Changa_DAO/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/Changa_DAO/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

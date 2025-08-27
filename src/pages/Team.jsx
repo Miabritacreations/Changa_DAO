@@ -1,32 +1,32 @@
 import {
-  Business as BusinessIcon,
-  Email as EmailIcon,
-  GitHub as GitHubIcon,
-  Group as GroupIcon,
-  LinkedIn as LinkedInIcon,
-  Psychology as PsychologyIcon,
-  Star as StarIcon,
-  Twitter as TwitterIcon,
-  Language as WebsiteIcon
+    Business as BusinessIcon,
+    Email as EmailIcon,
+    GitHub as GitHubIcon,
+    Group as GroupIcon,
+    LinkedIn as LinkedInIcon,
+    Psychology as PsychologyIcon,
+    Star as StarIcon,
+    Twitter as TwitterIcon,
+    Language as WebsiteIcon
 } from '@mui/icons-material';
 import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  LinearProgress,
-  Paper,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Card,
+    CardContent,
+    Chip,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Typography,
+    useTheme
 } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react';
-import mirriamPhoto from '../images/team/mirriam.jpg';
-import bridgitPhoto from '../images/team/nyambeka-modified.png';
+const mirriamPhoto = '/Changa_DAO/images/team/mirriam.jpg';
+const bridgitPhoto = '/Changa_DAO/images/team/nyambeka-modified.png';
 
 const Team = memo(() => {
   const theme = useTheme();

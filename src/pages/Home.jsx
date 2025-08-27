@@ -29,8 +29,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
-import mirriamPhoto from "../images/team/mirriam.jpg";
-import bridgitPhoto from "../images/team/nyambeka-modified.png";
+const mirriamPhoto = "/Changa_DAO/images/team/mirriam.jpg";
+const bridgitPhoto = "/Changa_DAO/images/team/nyambeka-modified.png";
 
 const Home = () => {
   const [projects, setProjects] = React.useState([]);

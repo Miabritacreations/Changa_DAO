@@ -63,7 +63,7 @@ npm start
 
 ### 5. Open the App
 
-Visit [http://localhost:3000]((http://localhost:5173/Changa_DAO/)) in your browser.
+Visit [(http://localhost:5173/Changa_DAO/)]((http://localhost:5173/Changa_DAO/)) in your browser.
 
 ## 🧩 Customization
 

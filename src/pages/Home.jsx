@@ -29,8 +29,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
-const mirriamPhoto = "/Changa_DAO/images/team/mirriam.jpg";
-const bridgitPhoto = "/Changa_DAO/images/team/nyambeka-modified.png";
+const mirriamPhoto = "/images/team/mirriam.jpg";
+const bridgitPhoto = "/images/team/nyambeka-modified.png";
 
 const Home = () => {
   const [projects, setProjects] = React.useState([]);
@@ -40,8 +40,17 @@ const Home = () => {
   React.useEffect(() => {
     (async () => {
       try {
-        const backend = await getBackendActor();
-        const list = await backend.getProposals();
+        // Add timeout to prevent hanging on backend calls
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Backend timeout')), 5000)
+        );
+        
+        const backendPromise = getBackendActor().then(backend => 
+          backend.getProposals()
+        );
+        
+        const list = await Promise.race([backendPromise, timeoutPromise]);
+        
         if (!list || list.length === 0) {
           setProjects([
             { id: 1n, title: 'Solar Power for Rural Clinics', description: 'Install solar panels to power medical equipment in 3 clinics serving 10,000 people.', status: 'Active', category: 'Healthcare', raised: 28000, goal: 35000, percent: 80 },
@@ -53,7 +62,9 @@ const Home = () => {
         } else {
           setProjects(list);
         }
-      } catch (_e) {
+      } catch (error) {
+        console.error("Failed to load projects from backend:", error);
+        // Use fallback data immediately
         setProjects([
           { id: 1n, title: 'Solar Power for Rural Clinics', description: 'Install solar panels to power medical equipment in 3 clinics serving 10,000 people.', status: 'Active', category: 'Healthcare', raised: 28000, goal: 35000, percent: 80 },
           { id: 2n, title: 'Digital Learning Center', description: 'Modern computer lab and digital literacy program for underserved students.', status: 'Active', category: 'Education', raised: 12000, goal: 15000, percent: 80 },

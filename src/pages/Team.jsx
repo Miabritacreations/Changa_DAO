@@ -25,8 +25,8 @@ import {
     useTheme
 } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react';
-const mirriamPhoto = '/Changa_DAO/images/team/mirriam.jpg';
-const bridgitPhoto = '/Changa_DAO/images/team/nyambeka-modified.png';
+const mirriamPhoto = '/images/team/mirriam.jpg';
+const bridgitPhoto = '/images/team/nyambeka-modified.png';
 
 const Team = memo(() => {
   const theme = useTheme();
@@ -70,11 +70,10 @@ const Team = memo(() => {
         bio: "Marketing expert and community builder with extensive experience in digital marketing and brand development. Passionate about creating meaningful connections and driving engagement in the blockchain space. Leading Changa DAO's marketing strategy and community growth initiatives.",
         expertise: ["Digital Marketing", "Brand Development", "Community Building", "Social Media"],
         social: {
-          linkedin: "https://linkedin.com/in/mirriamnjeri",
-          twitter: "https://twitter.com/mirriamnjeri",
-          github: "https://github.com/mirriamnjeri",
-          email: "mirriam@changadao.org",
-          website: "https://mirriamnjeri.com"
+          linkedin: "https://www.linkedin.com/in/mirriam-njeri-13437735a",
+
+          github: "https://github.com/Mirriamnjeri",
+          email: " njerimirriam128@gmail.com",
         },
         icon: <BusinessIcon />
       }

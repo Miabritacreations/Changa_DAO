@@ -30,10 +30,12 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build && npm run copy-assets",
-    "copy-assets": "if not exist dist\\images\\team mkdir dist\\images\\team && copy public\\images\\team\\* dist\\images\\team\\",
+    "build": "vite build",
+    "build:gh-pages": "GITHUB_PAGES=true vite build",
+    "postbuild": "npm run copy-assets",
+    "copy-assets": "node scripts/copy-assets.js",
     "preview": "vite preview --port 3000",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:gh-pages",
     "deploy": "gh-pages -d dist",
     "vercel": "vercel",
     "vercel-deploy": "vercel --prod"

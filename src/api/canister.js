@@ -179,13 +179,11 @@ const idlFactory = ({ IDL }) => {
 const canisterId =
   import.meta.env.CANISTER_ID_CHANGA_DAO_BACKEND ||
   window?.CANISTER_ID_CHANGA_DAO_BACKEND ||
-  process.env.CANISTER_ID_CHANGA_DAO_BACKEND;
+  (typeof process !== 'undefined' ? process.env?.CANISTER_ID_CHANGA_DAO_BACKEND : undefined) ||
+  'mgln7-qyaaa-aaaaj-qnspa-cai'; // Mainnet canister ID as fallback
 
-const isLocal =
-  import.meta.env.DFX_NETWORK === 'local' ||
-  process.env.DFX_NETWORK === 'local' ||
-  location.hostname === 'localhost' ||
-  location.hostname === '127.0.0.1';
+// Force mainnet for now - set to true only when you have a local replica running
+const isLocal = false;
 
 const host = isLocal ? 'http://127.0.0.1:4943' : 'https://ic0.app';
 
@@ -193,6 +191,8 @@ let cachedActor = null;
 
 export async function getBackendActor() {
   if (cachedActor) return cachedActor;
+
+  console.log('🔗 Connecting to backend:', { host, canisterId, isLocal });
 
   const authClient = await AuthClient.create();
   const identity = (await authClient.isAuthenticated()) ? authClient.getIdentity() : undefined;
@@ -207,13 +207,21 @@ export async function getBackendActor() {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       cachedActor = Actor.createActor(idlFactory, { agent, canisterId });
-      // Probe a lightweight query to confirm connectivity
+      // Probe a lightweight query to confirm connectivity with timeout
       if (cachedActor.getDashboardData) {
-        await cachedActor.getDashboardData().catch(() => {});
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Connection timeout')), 3000)
+        );
+        await Promise.race([
+          cachedActor.getDashboardData().catch(() => {}),
+          timeoutPromise
+        ]);
       }
+      console.log('✅ Backend connection successful');
       break;
     } catch (e) {
       lastError = e;
+      console.log(`❌ Backend connection attempt ${attempt + 1} failed:`, e.message);
       await new Promise(r => setTimeout(r, 300 * (attempt + 1)));
     }
   }

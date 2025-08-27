@@ -1,51 +1,47 @@
 import react from '@vitejs/plugin-react';
-import dotenv from 'dotenv';
 import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
-import environment from 'vite-plugin-environment';
 
-dotenv.config({ path: '../../.env' });
-
-export default defineConfig({
-  base: '/Changa_DAO/',
-  build: {
-    emptyOutDir: true,
-    assetsDir: 'assets',
-    copyPublicDir: true
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: "globalThis",
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production';
+  const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+  
+  return {
+    base: isProduction && isGitHubPages ? '/Changa_DAO/' : '/',
+    optimizeDeps: {
+      esbuildOptions: {
+        define: {
+          global: "globalThis",
+        },
       },
     },
-  },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:4943",
-        changeOrigin: true,
+    define: {
+      'process.env': {},
+    },
+    server: {
+      port: 5173,
+    },
+    build: {
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            dfinity: ['@dfinity/agent', '@dfinity/auth-client', '@dfinity/identity'],
+          },
+        },
       },
     },
-  },
-  plugins: [
-    react(),
-    environment("all", { prefix: "CANISTER_" }),
-    environment("all", { prefix: "DFX_" }),
-  ],
-  resolve: {
-    alias: [
-      {
-        find: "declarations",
-        replacement: fileURLToPath(
-          new URL("../declarations", import.meta.url)
-        ),
-      },
-      {
-        find: "@",
-        replacement: fileURLToPath(new URL("./src", import.meta.url)),
-      },
+    plugins: [
+      react(),
     ],
-    dedupe: ['@dfinity/agent'],
-  },
+    resolve: {
+      alias: [
+        {
+          find: "@",
+          replacement: fileURLToPath(new URL("./src", import.meta.url)),
+        },
+      ],
+    },
+  };
 });

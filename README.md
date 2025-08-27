@@ -1,4 +1,4 @@
-# Changa DAO
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/3fb3311c-437a-4e74-b9da-942f98416e7f" /># Changa DAO
 
 A full-stack, modern Decentralized Autonomous Organization (DAO) platform built with React (frontend) and Dfinity/ICP Motoko canisters (backend).
 
@@ -63,7 +63,7 @@ npm start
 
 ### 5. Open the App
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000]((http://localhost:5173/Changa_DAO/)) in your browser.
 
 ## 🧩 Customization
 

@@ -1,4 +1,4 @@
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/3fb3311c-437a-4e74-b9da-942f98416e7f" /># Changa DAO
+# Changa DAO
 
 A full-stack, modern Decentralized Autonomous Organization (DAO) platform built with React (frontend) and Dfinity/ICP Motoko canisters (backend).
 

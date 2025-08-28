@@ -34,7 +34,7 @@
     "build:gh-pages": "vite build",
     "postbuild": "npm run copy-assets",
     "copy-assets": "node scripts/copy-assets.js",
-    "preview": "vite preview --port 3000 --mode preview",
+    "preview": "vite preview --port 3000",
     "predeploy": "npm run build:gh-pages",
     "deploy": "gh-pages -d dist",
     "vercel": "vercel",

@@ -1,28 +1,28 @@
 import {
-    Business as BusinessIcon,
-    Email as EmailIcon,
-    GitHub as GitHubIcon,
-    Group as GroupIcon,
-    LinkedIn as LinkedInIcon,
-    Psychology as PsychologyIcon,
-    Star as StarIcon,
-    Twitter as TwitterIcon,
-    Language as WebsiteIcon
+  Business as BusinessIcon,
+  Email as EmailIcon,
+  GitHub as GitHubIcon,
+  Group as GroupIcon,
+  LinkedIn as LinkedInIcon,
+  Psychology as PsychologyIcon,
+  Star as StarIcon,
+  Twitter as TwitterIcon,
+  Language as WebsiteIcon
 } from '@mui/icons-material';
 import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Chip,
-    Container,
-    Divider,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Paper,
-    Typography,
-    useTheme
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Paper,
+  Typography,
+  useTheme
 } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react';
 import mirriamPhoto from '../images/team/mirriam.jpg';

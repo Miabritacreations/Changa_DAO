@@ -1,4 +1,3 @@
- HEAD
 node_modules
 
 # Various IDEs and Editors
@@ -26,4 +25,3 @@ dist/
 
 # environment variables
 .env
- 3cb32b18e61f1f54f72dce288f955385ad27e594

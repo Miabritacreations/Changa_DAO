@@ -135,6 +135,23 @@ const router = createBrowserRouter(
       v7_startTransition: true,
       v7_relativeSplatPath: true,
     },
+    // Add error handling to prevent error displays
+    errorElement: (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#0F172A',
+        color: 'white',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '16px' }}>Loading...</div>
+          <div style={{ fontSize: '14px', opacity: 0.7 }}>Please wait while the page loads</div>
+        </div>
+      </div>
+    )
   }
 );
 

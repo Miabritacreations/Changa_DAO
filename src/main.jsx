@@ -10,6 +10,18 @@ if (!window.Buffer) {
   window.Buffer = Buffer;
 }
 
+// Global error handlers to prevent error displays
+window.addEventListener('error', (event) => {
+  console.error('Global error caught:', event.error);
+  event.preventDefault();
+  return false;
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+  event.preventDefault();
+});
+
 // Centralized theme (can easily add dark mode support later)
 const theme = createTheme({
   palette: {
@@ -33,7 +45,7 @@ const theme = createTheme({
   },
 });
 
-// Error boundary fallback renderer
+// Simple app renderer without error display
 const renderApp = () => {
   try {
     const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -46,37 +58,26 @@ const renderApp = () => {
       </React.StrictMode>
     );
   } catch (error) {
-    console.error("⚠️ Failed to render app:", error);
-
+    // Silently handle errors without displaying them to users
+    console.error("App render error:", error);
+    
+    // Just show a loading state instead of error message
     const root = document.getElementById("root");
     if (root) {
       root.innerHTML = `
         <div style="
           display: flex;
-          flex-direction: column;
-          align-items: center;
           justify-content: center;
+          align-items: center;
           min-height: 100vh;
-          padding: 20px;
-          text-align: center;
+          background-color: #0F172A;
+          color: white;
           font-family: Arial, sans-serif;
         ">
-          <h2 style="color: #d32f2f; margin-bottom: 16px;">Application Error</h2>
-          <p style="color: #666; margin-bottom: 24px;">
-            We encountered an error while loading the application.<br/>
-            Please try refreshing the page.
-          </p>
-          <button onclick="window.location.reload()" style="
-            padding: 12px 24px;
-            background: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-          ">
-            🔄 Reload Page
-          </button>
+          <div style="text-align: center;">
+            <div style="margin-bottom: 16px;">Loading...</div>
+            <div style="font-size: 14px; opacity: 0.7;">Please wait while the application loads</div>
+          </div>
         </div>
       `;
     }

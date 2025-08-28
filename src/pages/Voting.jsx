@@ -180,15 +180,15 @@ const Voting = () => {
         setSelectedItem(null);
         setVoteChoice(true);
         setVoteReason('');
-        alert(`Vote submitted successfully!`);
+        // Vote success handled silently
         // Refresh data
         window.location.reload();
       } else {
-        alert('Failed to submit vote: ' + result.err);
+        console.error('Failed to submit vote:', result.err);
       }
     } catch (error) {
       console.error('Error voting:', error);
-      alert('Error submitting vote. Please try again.');
+              console.error('Error submitting vote:', error);
     }
   };
 
@@ -662,7 +662,7 @@ const Voting = () => {
                                             },
                                           }}
                                           onClick={() => {
-                                            alert(`Opening document: ${doc.name}\nHash: ${doc.hash}`);
+                                            console.log(`Opening document: ${doc.name}\nHash: ${doc.hash}`);
                                           }}
                                         />
                                       ))}

@@ -359,11 +359,11 @@ const Projects = () => {
         // Refresh projects
         window.location.reload();
       } else {
-        alert('Failed to create project: ' + result.err);
+        console.error('Failed to create project:', result.err);
       }
     } catch (error) {
       console.error('Error creating project:', error);
-      alert('Error creating project. Please try again.');
+              console.error('Error creating project:', error);
     }
   };
 
@@ -378,15 +378,15 @@ const Projects = () => {
         setMintDialog(false);
         setSelectedProject(null);
         setMintQuantity(1);
-        alert(`Successfully minted ${mintQuantity} NFT(s)!`);
+        // NFT minting success handled silently
         // Refresh projects
         window.location.reload();
       } else {
-        alert('Failed to mint NFT: ' + result.err);
+        console.error('Failed to mint NFT:', result.err);
       }
     } catch (error) {
       console.error('Error minting NFT:', error);
-      alert('Error minting NFT. Please try again.');
+              console.error('Error minting NFT:', error);
     }
   };
 

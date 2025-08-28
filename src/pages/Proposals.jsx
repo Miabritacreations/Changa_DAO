@@ -199,15 +199,15 @@ const Proposals = () => {
           endDate: Date.now() + (7 * 24 * 60 * 60 * 1000)
         });
         setAttachedDocuments([]);
-        alert('Proposal created successfully!');
+        // Success handled silently
         // Refresh proposals
         window.location.reload();
       } else {
-        alert('Failed to create proposal: ' + result.err);
+        console.error('Failed to create proposal:', result.err);
       }
     } catch (error) {
       console.error('Error creating proposal:', error);
-      alert('Error creating proposal. Please try again.');
+              console.error('Error creating proposal:', error);
     }
   };
 
@@ -227,12 +227,12 @@ const Proposals = () => {
       ];
       
       if (file.size > maxSize) {
-        alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+        console.warn(`File ${file.name} is too large. Maximum size is 10MB.`);
         return false;
       }
       
       if (!allowedTypes.includes(file.type)) {
-        alert(`File type ${file.type} is not supported.`);
+        console.warn(`File type ${file.type} is not supported.`);
         return false;
       }
       
@@ -269,12 +269,12 @@ const Proposals = () => {
       ];
       
       if (file.size > maxSize) {
-        alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+        console.warn(`File ${file.name} is too large. Maximum size is 10MB.`);
         return false;
       }
       
       if (!allowedTypes.includes(file.type)) {
-        alert(`File type ${file.type} is not supported.`);
+        console.warn(`File type ${file.type} is not supported.`);
         return false;
       }
       
@@ -334,15 +334,15 @@ const Proposals = () => {
         setVotingDialog(false);
         setSelectedProposal(null);
         setVoteChoice(true);
-        alert(`Vote submitted successfully!`);
+        // Vote success handled silently
         // Refresh proposals
         window.location.reload();
       } else {
-        alert('Failed to submit vote: ' + result.err);
+        console.error('Failed to submit vote:', result.err);
       }
     } catch (error) {
       console.error('Error voting:', error);
-      alert('Error submitting vote. Please try again.');
+              console.error('Error submitting vote:', error);
     }
   };
 
@@ -574,7 +574,7 @@ const Proposals = () => {
                             }}
                             onClick={() => {
                               // In a real implementation, you'd open the document
-                              alert(`Opening document: ${doc.name}\nHash: ${doc.hash}`);
+                              console.log(`Opening document: ${doc.name}\nHash: ${doc.hash}`);
                             }}
                           />
                         ))}

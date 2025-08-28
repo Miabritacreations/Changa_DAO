@@ -80,12 +80,12 @@ const Shell = () => {
         },
         onError: (err) => {
           console.error('II login error', err);
-          alert('Login failed. If a popup was blocked, allow popups and try again.');
+          // Remove alert - let the user try again silently
         }
       });
     } catch (e) {
       console.error('II login exception', e);
-      alert('Login failed. Try a different browser, and ensure popups are allowed.');
+      // Remove alert - let the user try again silently
     }
   };
 
@@ -114,8 +114,7 @@ const Shell = () => {
   const handleNavClick = (item) => {
     console.log('Navigation clicked:', item.path, 'Authenticated:', isAuthenticated, 'Public:', item.public);
     if (!item.public && !isAuthenticated) {
-      // Show login prompt for protected routes
-      alert('Please connect your Internet Identity to access this feature.');
+      // Remove alert - just don't navigate
       return;
     }
     // Navigation will be handled by React Router Link

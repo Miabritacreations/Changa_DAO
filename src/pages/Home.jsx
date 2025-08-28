@@ -1,36 +1,36 @@
 import {
-    Agriculture as AgricultureIcon,
-    Email as EmailIcon,
-    GitHub as GitHubIcon,
-    Group as GroupIcon,
-    LocalHospital as HealthIcon,
-    LinkedIn as LinkedInIcon,
-    School as SchoolIcon,
-    Security as SecurityIcon,
-    TrendingUp as TrendingUpIcon,
-    EmojiEvents as TrophyIcon,
-    Twitter as TwitterIcon,
-    Verified as VerifiedIcon,
-    WaterDrop as WaterIcon
+  Agriculture as AgricultureIcon,
+  Email as EmailIcon,
+  GitHub as GitHubIcon,
+  Group as GroupIcon,
+  LocalHospital as HealthIcon,
+  LinkedIn as LinkedInIcon,
+  School as SchoolIcon,
+  Security as SecurityIcon,
+  TrendingUp as TrendingUpIcon,
+  EmojiEvents as TrophyIcon,
+  Twitter as TwitterIcon,
+  Verified as VerifiedIcon,
+  WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-    Avatar,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Chip,
-    Container,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Typography,
-    useTheme
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Typography,
+  useTheme
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
-const mirriamPhoto = "/images/team/mirriam.jpg";
-const bridgitPhoto = "/images/team/nyambeka-modified.png";
+import mirriamPhoto from "../images/team/mirriam.jpg";
+import bridgitPhoto from "../images/team/nyambeka-modified.png";
 
 const Home = () => {
   const [projects, setProjects] = React.useState([]);
@@ -232,7 +232,7 @@ const Home = () => {
           <Typography variant="h2" sx={{ mb: 3, fontWeight: 700 }}>
             About Changa DAO
           </Typography>
-          <Typography variant="h6" sx={{ mb: 4, color: 'text.secondary', lineHeight: 1.6 }}>
+          <Typography variant="h6" sx={{ mb: 4, color: '#87CEEB', lineHeight: 1.6 }}>
             Changa DAO is a blockchain-powered crowdfunding platform that helps communities bring real-world social projects to life.
             From schools and boreholes to health clinics, we enable communities to raise funds transparently, track progress with
             geo-tagged proof, and release funds milestone by milestone.
@@ -461,10 +461,9 @@ const Home = () => {
                 bio: "Marketing expert and community builder with extensive experience in digital marketing and brand development. Passionate about creating meaningful connections and driving engagement.",
                 expertise: ["Digital Marketing", "Brand Development", "Community Building", "Social Media"],
                 social: {
-                  linkedin: "https://linkedin.com/in/mirriamnjeri",
-                  twitter: "https://twitter.com/mirriamnjeri",
+                  linkedin: "https://www.linkedin.com/in/mirriam-njeri-13437735a",
                   github: "https://github.com/mirriamnjeri",
-                  email: "mirriam@changadao.org",
+                  email: "njerimirriam128@gmail.com",
                   website: "https://mirriamnjeri.com"
                 },
               }
@@ -686,7 +685,7 @@ const Home = () => {
               </Button>
             </Box>
             <Typography variant="body2" sx={{ mt: 3, opacity: 0.8 }}>
-              📧 hello@changadao.org | 🌍 Twitter | LinkedIn | Telegram
+              📧 changadao342@gmail.com | 🐦 <a href="https://x.com/Changa_DAO?t=nw2EI9ZQxSKE3_akS-atyQ&s=09" target="_blank" rel="noopener noreferrer" style={{color: 'white', textDecoration: 'underline'}}>@Changa_DAO</a>
             </Typography>
           </Card>
         </Box>

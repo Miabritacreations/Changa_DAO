@@ -1,33 +1,33 @@
 import {
-  Timeline as ActivityIcon,
-  Assessment as AssessmentIcon,
-  CheckCircle as CheckCircleIcon,
-  Group as GroupIcon,
-  AttachMoney as MoneyIcon,
-  HowToVote as ProposalsIcon,
-  School as SchoolIcon,
-  TrendingDown as TrendingDownIcon,
-  TrendingUp as TrendingUpIcon,
-  Visibility as ViewAllIcon,
-  HowToVote as VotingIcon,
-  WaterDrop as WaterIcon
+    Timeline as ActivityIcon,
+    Assessment as AssessmentIcon,
+    CheckCircle as CheckCircleIcon,
+    Group as GroupIcon,
+    AttachMoney as MoneyIcon,
+    HowToVote as ProposalsIcon,
+    School as SchoolIcon,
+    TrendingDown as TrendingDownIcon,
+    TrendingUp as TrendingUpIcon,
+    Visibility as ViewAllIcon,
+    HowToVote as VotingIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Grid,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Divider,
+    Grid,
+    LinearProgress,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
 import { getBackendActor } from "../api/canister";
@@ -91,46 +91,90 @@ const Dashboard = () => {
   const recentProjects = [
     {
       id: 1,
-      title: 'Rural School Construction',
-      category: 'Education',
-      location: 'Kenya',
-      progress: 75,
-      raised: 45000,
-      goal: 60000,
+      title: 'Solar Power for Rural Clinics',
+      category: 'Healthcare',
+      location: 'Nairobi, Kenya',
+      progress: 80,
+      raised: 28000,
+      goal: 35000,
       status: 'active',
-      icon: <SchoolIcon />
+      icon: <SchoolIcon />,
+      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop&crop=center"
     },
     {
       id: 2,
-      title: 'Clean Water Borehole',
-      category: 'Infrastructure',
-      location: 'Tanzania',
-      progress: 90,
-      raised: 28000,
-      goal: 30000,
-      status: 'near-completion',
-      icon: <WaterIcon />
+      title: 'Digital Learning Center',
+      category: 'Education',
+      location: 'Mombasa, Kenya',
+      progress: 80,
+      raised: 12000,
+      goal: 15000,
+      status: 'active',
+      icon: <SchoolIcon />,
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=250&fit=crop&crop=center"
+    },
+    {
+      id: 3,
+      title: 'Clean Water for Village',
+      category: 'Water',
+      location: 'Kisumu, Kenya',
+      progress: 75,
+      raised: 18750,
+      goal: 25000,
+      status: 'active',
+      icon: <WaterIcon />,
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop&crop=center"
+    },
+    {
+      id: 4,
+      title: 'Community Health Outreach',
+      category: 'Health',
+      location: 'Eldoret, Kenya',
+      progress: 100,
+      raised: 6000,
+      goal: 6000,
+      status: 'completed',
+      icon: <SchoolIcon />,
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop&crop=center"
     }
   ];
 
   const recentActivity = [
     {
       id: 1,
-      description: 'Rural School Construction completed foundation phase',
+      description: 'Solar Power Project reached 80% funding milestone',
       time: '2 hours ago',
       type: 'milestone'
     },
     {
       id: 2,
-      description: 'New proposal available for community voting',
+      description: 'New proposal "Emergency Response Fund" available for voting',
       time: '5 hours ago',
       type: 'voting'
     },
     {
       id: 3,
-      description: '$15,000 released to Clean Water project',
+      description: '$12,000 released to Digital Learning Center project',
       time: '1 day ago',
       type: 'funds'
+    },
+    {
+      id: 4,
+      description: 'Community Health Outreach project completed successfully',
+      time: '2 days ago',
+      type: 'milestone'
+    },
+    {
+      id: 5,
+      description: 'Your vote on "Treasury Investment Strategy" was recorded',
+      time: '3 days ago',
+      type: 'voting'
+    },
+    {
+      id: 6,
+      description: 'New project "Women Entrepreneurs Hub" proposal submitted',
+      time: '4 days ago',
+      type: 'voting'
     }
   ];
 

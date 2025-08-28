@@ -74,47 +74,73 @@ const Voting = () => {
       } catch (error) {
         console.error('Error loading voting data:', error);
         
-        // Set dummy data when backend fails
+        // Set comprehensive dummy data when backend fails
         const dummyProjects = [
           {
             id: 1,
-            title: "Clean Water Initiative",
-            description: "Providing clean drinking water to rural communities in Kenya. This project aims to install 50 water purification systems across 10 villages.",
-            category: "Water",
+            title: "Solar Power for Rural Clinics",
+            description: "Install solar panels to power medical equipment in 3 clinics serving 10,000 people. This project will provide reliable electricity for life-saving medical procedures.",
+            category: "Healthcare",
             status: "Active",
-            fundingGoal: 50000,
-            currentFunding: 35000,
-            endDate: "2024-03-15"
+            fundingGoal: 35000,
+            currentFunding: 28000,
+            endDate: "2024-06-30",
+            image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop&crop=center"
           },
           {
             id: 2,
-            title: "Digital Literacy Program",
-            description: "Teaching computer skills to 500 students in underserved schools. Includes laptops, internet access, and certified instructors.",
+            title: "Digital Learning Center",
+            description: "Modern computer lab and digital literacy program for underserved students. Includes 50 computers, internet connectivity, and certified instructors.",
             category: "Education",
             status: "Active",
-            fundingGoal: 75000,
-            currentFunding: 28000,
-            endDate: "2024-04-20"
+            fundingGoal: 15000,
+            currentFunding: 12000,
+            endDate: "2024-08-15",
+            image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=250&fit=crop&crop=center"
           },
           {
             id: 3,
-            title: "Healthcare Mobile Clinic",
-            description: "Mobile medical clinic to serve remote communities. Provides basic healthcare, vaccinations, and health education.",
-            category: "Health",
-            status: "PendingReview",
-            fundingGoal: 120000,
-            currentFunding: 0,
-            endDate: "2024-05-10"
+            title: "Clean Water for Village",
+            description: "Build a sustainable water system with purification for 500 families. This project will provide clean drinking water and reduce waterborne diseases.",
+            category: "Water",
+            status: "Active",
+            fundingGoal: 25000,
+            currentFunding: 18750,
+            endDate: "2024-07-31",
+            image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop&crop=center"
           },
           {
             id: 4,
-            title: "Sustainable Farming Training",
-            description: "Training 200 farmers in modern, sustainable agricultural techniques. Includes seeds, tools, and ongoing support.",
+            title: "Community Health Outreach",
+            description: "Mobile health screenings and vaccinations across rural wards. This initiative will reach 5,000 people in remote areas.",
+            category: "Health",
+            status: "PendingReview",
+            fundingGoal: 6000,
+            currentFunding: 6000,
+            endDate: "2024-05-20",
+            image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop&crop=center"
+          },
+          {
+            id: 5,
+            title: "Irrigation for Smallholders",
+            description: "Low-cost drip irrigation to increase farm yields by 40%. This project will help 100 small-scale farmers improve their productivity.",
             category: "Agriculture",
             status: "Active",
-            fundingGoal: 45000,
-            currentFunding: 42000,
-            endDate: "2024-03-30"
+            fundingGoal: 20000,
+            currentFunding: 9000,
+            endDate: "2024-09-15",
+            image: "https://images.unsplash.com/photo-1574943320219-553eb213f72f?w=400&h=250&fit=crop&crop=center"
+          },
+          {
+            id: 6,
+            title: "Renewable Energy Training",
+            description: "Skills development program for solar panel installation and maintenance. Training 50 local technicians for sustainable employment.",
+            category: "Education",
+            status: "Draft",
+            fundingGoal: 15000,
+            currentFunding: 0,
+            endDate: "2024-10-31",
+            image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=250&fit=crop&crop=center"
           }
         ];
 
@@ -122,32 +148,99 @@ const Voting = () => {
           {
             id: 1,
             title: "Increase Community Fund Allocation",
-            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects.",
+            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects and better community support across all regions.",
             type: "GovernanceChange",
             status: "Active",
             votesFor: 45,
             votesAgainst: 12,
-            endDate: "2024-03-10"
+            endDate: "2024-03-10",
+            quorum: 50,
+            totalVotes: 57,
+            documents: [
+              { name: "Financial Analysis.pdf", hash: "ipfs://QmHash1" },
+              { name: "Community Impact Report.docx", hash: "ipfs://QmHash2" }
+            ]
           },
           {
             id: 2,
             title: "New Project Approval: Solar Energy Initiative",
-            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000.",
+            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000 with expected ROI of 25% over 5 years.",
             type: "ProjectApproval",
             status: "Active",
             votesFor: 38,
             votesAgainst: 8,
-            endDate: "2024-03-12"
+            endDate: "2024-03-12",
+            quorum: 40,
+            totalVotes: 46,
+            documents: [
+              { name: "Project Proposal.pdf", hash: "ipfs://QmHash3" },
+              { name: "Technical Specifications.pdf", hash: "ipfs://QmHash4" },
+              { name: "Cost Analysis.xlsx", hash: "ipfs://QmHash5" }
+            ]
           },
           {
             id: 3,
             title: "Emergency Response Fund",
-            description: "Creation of a $25,000 emergency fund for rapid response to natural disasters and urgent community needs.",
+            description: "Creation of a $25,000 emergency fund for rapid response to natural disasters and urgent community needs. This will provide immediate assistance during crises.",
             type: "TreasuryAllocation",
             status: "Active",
             votesFor: 52,
             votesAgainst: 5,
-            endDate: "2024-03-08"
+            endDate: "2024-03-08",
+            quorum: 45,
+            totalVotes: 57,
+            documents: [
+              { name: "Emergency Fund Proposal.pdf", hash: "ipfs://QmHash6" },
+              { name: "Risk Assessment.pdf", hash: "ipfs://QmHash7" }
+            ]
+          },
+          {
+            id: 4,
+            title: "Milestone Approval: Water Project Phase 1",
+            description: "Approval for the completion of Phase 1 of the Clean Water Project. All milestones have been met and verified through geo-tagged proof.",
+            type: "MilestoneApproval",
+            status: "Active",
+            votesFor: 28,
+            votesAgainst: 3,
+            endDate: "2024-03-15",
+            quorum: 25,
+            totalVotes: 31,
+            documents: [
+              { name: "Phase 1 Completion Report.pdf", hash: "ipfs://QmHash8" },
+              { name: "Verification Photos.zip", hash: "ipfs://QmHash9" }
+            ]
+          },
+          {
+            id: 5,
+            title: "Community Governance Restructure",
+            description: "Restructure the DAO governance to include more community representatives and improve decision-making processes for better inclusivity.",
+            type: "GovernanceChange",
+            status: "Passed",
+            votesFor: 65,
+            votesAgainst: 18,
+            endDate: "2024-02-28",
+            quorum: 60,
+            totalVotes: 83,
+            documents: [
+              { name: "Governance Restructure Plan.pdf", hash: "ipfs://QmHash10" },
+              { name: "Community Feedback Summary.pdf", hash: "ipfs://QmHash11" }
+            ]
+          },
+          {
+            id: 6,
+            title: "Treasury Investment Strategy",
+            description: "Proposal to diversify treasury investments into DeFi protocols to generate additional income for community projects.",
+            type: "TreasuryAllocation",
+            status: "Failed",
+            votesFor: 22,
+            votesAgainst: 35,
+            endDate: "2024-02-25",
+            quorum: 50,
+            totalVotes: 57,
+            documents: [
+              { name: "Investment Strategy.pdf", hash: "ipfs://QmHash12" },
+              { name: "Risk Analysis.pdf", hash: "ipfs://QmHash13" }
+            ]
           }
         ];
 

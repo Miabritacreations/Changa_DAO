@@ -78,37 +78,41 @@ const Proposals = () => {
       } catch (error) {
         console.error('Error loading proposals:', error);
         
-        // Set dummy data when backend fails
+        // Set comprehensive dummy data when backend fails
         const dummyProposals = [
           {
             id: 1,
             title: "Increase Community Fund Allocation",
-            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects and better community support.",
+            description: "Proposal to increase the community development fund from 10% to 15% of total treasury. This will allow for more impactful projects and better community support across all regions. The additional funding will enable faster project completion and support more communities in need.",
             proposalType: "GovernanceChange",
             status: "Active",
             votesFor: 45,
             votesAgainst: 12,
             quorum: 50,
             endDate: Date.now() + (3 * 24 * 60 * 60 * 1000), // 3 days from now
+            totalVotes: 57,
             documents: [
               { name: "Financial Analysis.pdf", hash: "ipfs://QmHash1" },
-              { name: "Community Impact Report.docx", hash: "ipfs://QmHash2" }
+              { name: "Community Impact Report.docx", hash: "ipfs://QmHash2" },
+              { name: "Budget Allocation Plan.xlsx", hash: "ipfs://QmHash3" }
             ]
           },
           {
             id: 2,
             title: "New Project Approval: Solar Energy Initiative",
-            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000 with expected ROI of 25% over 5 years.",
+            description: "Approval for a new solar energy project to provide renewable power to 3 communities. Estimated cost: $80,000 with expected ROI of 25% over 5 years. This project will create 15 local jobs and provide sustainable energy for 1,200 households.",
             proposalType: "ProjectApproval",
             status: "Active",
             votesFor: 38,
             votesAgainst: 8,
             quorum: 40,
             endDate: Date.now() + (5 * 24 * 60 * 60 * 1000), // 5 days from now
+            totalVotes: 46,
             documents: [
-              { name: "Project Proposal.pdf", hash: "ipfs://QmHash3" },
-              { name: "Technical Specifications.pdf", hash: "ipfs://QmHash4" },
-              { name: "Cost Analysis.xlsx", hash: "ipfs://QmHash5" }
+              { name: "Project Proposal.pdf", hash: "ipfs://QmHash4" },
+              { name: "Technical Specifications.pdf", hash: "ipfs://QmHash5" },
+              { name: "Cost Analysis.xlsx", hash: "ipfs://QmHash6" },
+              { name: "Environmental Impact Assessment.pdf", hash: "ipfs://QmHash7" }
             ]
           },
           {

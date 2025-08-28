@@ -25,8 +25,8 @@ import {
     useTheme
 } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react';
-const mirriamPhoto = '/images/team/mirriam.jpg';
-const bridgitPhoto = '/images/team/nyambeka-modified.png';
+import mirriamPhoto from '../images/team/mirriam.jpg';
+import bridgitPhoto from '../images/team/nyambeka-modified.png';
 
 const Team = memo(() => {
   const theme = useTheme();

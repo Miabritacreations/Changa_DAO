@@ -2,16 +2,16 @@ import React from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
+import Fund from "./pages/Fund";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Proposals from "./pages/Proposals";
+import Propose from "./pages/Propose";
+import Track from "./pages/Track";
 import UserProfile from "./pages/UserProfile";
+import Verify from "./pages/Verify";
 import Voting from "./pages/Voting";
 import Wallet from "./pages/Wallet";
-import Propose from "./pages/Propose";
-import Fund from "./pages/Fund";
-import Verify from "./pages/Verify";
-import Track from "./pages/Track";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -73,7 +73,7 @@ const RequireAuth = ({ children }) => {
 const getBasename = () => {
   // For GitHub Pages deployment
   if (import.meta.env.PROD && window.location.hostname.includes('github.io')) {
-    return '/Changa_DAO/';
+    return '/Changa_DAO';
   }
   // For local development
   return '/';
@@ -145,6 +145,11 @@ const router = createBrowserRouter(
         {
           path: "track",
           element: <Track />,
+        },
+        // Catch-all route for any unmatched paths
+        {
+          path: "*",
+          element: <Navigate to="/" replace />,
         },
       ],
     },

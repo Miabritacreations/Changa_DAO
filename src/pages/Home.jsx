@@ -356,76 +356,88 @@ const Home = () => {
             </Button>
           </Box>
 
-          {loading ? (
-            <Typography sx={{ color: '#94A3B8' }}>Loading projects...</Typography>
-          ) : (
-            <Grid container spacing={3}>
-              {projects.slice(0, 4).map((project) => (
-                <Grid item xs={12} md={6} key={Number(project.id)}>
-                  <Card sx={{ height: '100%', backgroundColor: '#1E293B', border: '1px solid #334155', transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', borderColor: '#3B82F6' } }}>
-                    <CardContent sx={{ p: 4 }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                          <Box sx={{ color: '#3B82F6' }}>
-                            {getCategoryIcon(project.category)}
-                          </Box>
-                          <Chip
-                            label={project.category}
-                            size="small"
-                            variant="outlined"
-                            sx={{ borderColor: '#3B82F6', color: '#3B82F6', backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
-                          />
+          <Grid container spacing={3}>
+            {[
+              { id: 1, title: 'Solar Power for Rural Clinics', description: 'Install solar panels to power medical equipment in 3 clinics serving 10,000 people.', status: 'Active', category: 'Healthcare', raised: 28000, goal: 35000, percent: 80, image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop&crop=center' },
+              { id: 2, title: 'Digital Learning Center', description: 'Modern computer lab and digital literacy program for underserved students.', status: 'Active', category: 'Education', raised: 12000, goal: 15000, percent: 80, image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=250&fit=crop&crop=center' },
+              { id: 3, title: 'Clean Water for Village', description: 'Build a sustainable water system with purification for 500 families.', status: 'Active', category: 'Water', raised: 18750, goal: 25000, percent: 75, image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop&crop=center' },
+              { id: 4, title: 'Community Health Outreach', description: 'Mobile health screenings and vaccinations across rural wards.', status: 'Passed', category: 'Health', raised: 6000, goal: 6000, percent: 100, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop&crop=center' },
+              { id: 5, title: 'Irrigation for Smallholders', description: 'Low-cost drip irrigation to increase farm yields by 40%.', status: 'Active', category: 'Agriculture', raised: 9000, goal: 20000, percent: 45, image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72f?w=400&h=250&fit=crop&crop=center' },
+              { id: 6, title: 'Renewable Energy Training', description: 'Skills development program for solar panel installation and maintenance.', status: 'Draft', category: 'Education', raised: 0, goal: 15000, percent: 0, image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=250&fit=crop&crop=center' }
+            ].map((project) => (
+              <Grid item xs={12} md={6} lg={4} key={project.id}>
+                <Card sx={{ height: '100%', backgroundColor: '#1E293B', border: '1px solid #334155', transition: 'all 0.3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', borderColor: '#3B82F6' }, overflow: 'hidden' }}>
+                  <Box
+                    sx={{
+                      height: 200,
+                      backgroundImage: `url(${project.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      position: 'relative'
+                    }}
+                  />
+                  <CardContent sx={{ p: 4 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                        <Box sx={{ color: '#3B82F6' }}>
+                          {getCategoryIcon(project.category)}
                         </Box>
                         <Chip
-                          label={variantToString(project.status)}
-                          color={getStatusColor(project.status)}
+                          label={project.category}
                           size="small"
-                          sx={{ 
-                            backgroundColor: variantToString(project.status) === 'Active' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(249, 115, 22, 0.1)',
-                            color: variantToString(project.status) === 'Active' ? '#10B981' : '#F97316',
-                            border: variantToString(project.status) === 'Active' ? '1px solid #10B981' : '1px solid #F97316'
-                          }}
+                          variant="outlined"
+                          sx={{ borderColor: '#3B82F6', color: '#3B82F6', backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
                         />
                       </Box>
+                      <Chip
+                        label={project.status}
+                        color={getStatusColor(project.status)}
+                        size="small"
+                        sx={{ 
+                          backgroundColor: project.status === 'Active' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(249, 115, 22, 0.1)',
+                          color: project.status === 'Active' ? '#10B981' : '#F97316',
+                          border: project.status === 'Active' ? '1px solid #10B981' : '1px solid #F97316'
+                        }}
+                      />
+                    </Box>
 
-                      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
-                        {project.title}
-                      </Typography>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
+                      {project.title}
+                    </Typography>
 
-                      <Typography variant="body2" sx={{ mb: 3, color: '#94A3B8' }}>
-                        {project.description}
-                      </Typography>
+                    <Typography variant="body2" sx={{ mb: 3, color: '#94A3B8' }}>
+                      {project.description}
+                    </Typography>
 
-                      <Box sx={{ mb: 2 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                          <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-                            Progress
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-                            {(project.percent || 0)}%
-                          </Typography>
-                        </Box>
-                        <LinearProgress
-                          variant="determinate"
-                          value={project.percent || 0}
-                          sx={{ height: 8, borderRadius: 4, backgroundColor: '#334155', '& .MuiLinearProgress-bar': { backgroundColor: '#10B981' } }}
-                        />
-                      </Box>
-
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ mb: 2 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                         <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-                          ${project.raised?.toLocaleString()} raised
+                          Progress
                         </Typography>
                         <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-                          Goal: ${project.goal?.toLocaleString()}
+                          {project.percent}%
                         </Typography>
                       </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          )}
+                      <LinearProgress
+                        variant="determinate"
+                        value={project.percent}
+                        sx={{ height: 8, borderRadius: 4, backgroundColor: '#334155', '& .MuiLinearProgress-bar': { backgroundColor: '#10B981' } }}
+                      />
+                    </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                        ${project.raised.toLocaleString()} raised
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                        Goal: ${project.goal.toLocaleString()}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
 
         {/* Teams Section */}
@@ -671,6 +683,9 @@ const Home = () => {
               <Button
                 variant="outlined"
                 size="large"
+                href="mailto:changadao342@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 sx={{
                   borderColor: 'white',
                   color: 'white',

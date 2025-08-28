@@ -8,6 +8,10 @@ import Proposals from "./pages/Proposals";
 import UserProfile from "./pages/UserProfile";
 import Voting from "./pages/Voting";
 import Wallet from "./pages/Wallet";
+import Propose from "./pages/Propose";
+import Fund from "./pages/Fund";
+import Verify from "./pages/Verify";
+import Track from "./pages/Track";
 
 const RequireAuth = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -125,6 +129,22 @@ const router = createBrowserRouter(
               <Projects />
             </RequireAuth>
           ),
+        },
+        {
+          path: "propose",
+          element: <Propose />,
+        },
+        {
+          path: "fund",
+          element: <Fund />,
+        },
+        {
+          path: "verify",
+          element: <Verify />,
+        },
+        {
+          path: "track",
+          element: <Track />,
         },
       ],
     },

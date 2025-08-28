@@ -166,6 +166,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 size="large"
+                onClick={() => window.location.href = '/Changa_DAO/dashboard'}
                 sx={{
                   backgroundColor: 'white',
                   color: 'primary.main',
@@ -179,6 +180,12 @@ const Home = () => {
               <Button
                 variant="outlined"
                 size="large"
+                onClick={() => {
+                  const howItWorksSection = document.getElementById('how-it-works');
+                  if (howItWorksSection) {
+                    howItWorksSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 sx={{
                   borderColor: 'white',
                   color: 'white',
@@ -300,19 +307,35 @@ const Home = () => {
         </Box>
 
         {/* How It Works */}
-        <Box sx={{ mb: 8 }}>
+        <Box id="how-it-works" sx={{ mb: 8 }}>
           <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             How It Works
           </Typography>
           <Grid container spacing={4}>
             {[
-              { step: '1', title: 'Propose', description: 'Communities propose projects (schools, boreholes, clinics…)', icon: <GroupIcon /> },
-              { step: '2', title: 'Fund', description: 'Fundraising via NFTs (donors & investors get proof tokens)', icon: <TrendingUpIcon /> },
-              { step: '3', title: 'Verify', description: 'Milestone-based funding (funds released only after verification)', icon: <VerifiedIcon /> },
-              { step: '4', title: 'Track', description: 'Impact tracking with geo-tagged media + transparent dashboards', icon: <SecurityIcon /> },
+              { step: '1', title: 'Propose', description: 'Communities propose projects (schools, boreholes, clinics…)', icon: <GroupIcon />, path: '/Changa_DAO/propose' },
+              { step: '2', title: 'Fund', description: 'Fundraising via NFTs (donors & investors get proof tokens)', icon: <TrendingUpIcon />, path: '/Changa_DAO/fund' },
+              { step: '3', title: 'Verify', description: 'Milestone-based funding (funds released only after verification)', icon: <VerifiedIcon />, path: '/Changa_DAO/verify' },
+              { step: '4', title: 'Track', description: 'Impact tracking with geo-tagged media + transparent dashboards', icon: <SecurityIcon />, path: '/Changa_DAO/track' },
             ].map((step, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
-                <Card sx={{ height: '100%', textAlign: 'center', position: 'relative', backgroundColor: '#1E293B', border: '1px solid #334155' }}>
+                <Card 
+                  onClick={() => window.location.href = step.path}
+                  sx={{ 
+                    height: '100%', 
+                    textAlign: 'center', 
+                    position: 'relative', 
+                    backgroundColor: '#1E293B', 
+                    border: '1px solid #334155',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
+                      borderColor: '#3B82F6',
+                    },
+                  }}
+                >
                   <CardContent sx={{ p: 4 }}>
                     <Box
                       sx={{
@@ -338,6 +361,9 @@ const Home = () => {
                     <Typography variant="body2" sx={{ color: '#94A3B8' }}>
                       {step.description}
                     </Typography>
+                    <Typography variant="body2" sx={{ color: '#3B82F6', mt: 2, fontWeight: 600 }}>
+                      Learn More →
+                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -351,7 +377,10 @@ const Home = () => {
             <Typography variant="h3" sx={{ fontWeight: 700, color: 'white' }}>
               Featured Projects
             </Typography>
-            <Button variant="outlined" sx={{ borderColor: '#3B82F6', color: '#3B82F6', '&:hover': { borderColor: '#1E40AF', backgroundColor: 'rgba(59, 130, 246, 0.1)' } }}>
+            <Button 
+              variant="outlined" 
+              onClick={() => window.location.href = '/Changa_DAO/projects'}
+              sx={{ borderColor: '#3B82F6', color: '#3B82F6', '&:hover': { borderColor: '#1E40AF', backgroundColor: 'rgba(59, 130, 246, 0.1)' } }}>
               View all projects
             </Button>
           </Box>
@@ -670,6 +699,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 size="large"
+                onClick={() => window.location.href = '/Changa_DAO/dashboard'}
                 sx={{
                   backgroundColor: 'white',
                   color: 'primary.main',

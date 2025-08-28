@@ -52,7 +52,7 @@ const Team = memo(() => {
       name: "Bridgit Nyambeka",
       role: "Founder & CEO",
       avatar: bridgitPhoto,
-      bio: "Visionary leader in blockchain and social impact, passionate about decentralized governance and community-driven development.",
+      bio: "Visionary leader in blockchain and social impact, passionate about decentralized governance, tech and community-driven development.",
       expertise: ["Blockchain", "Governance", "Strategy", "Social Impact"],
       social: {
         linkedin: "https://www.linkedin.com/in/bridgit-nyambeka-63b46b345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
@@ -71,7 +71,6 @@ const Team = memo(() => {
         expertise: ["Digital Marketing", "Brand Development", "Community Building", "Social Media"],
         social: {
           linkedin: "https://www.linkedin.com/in/mirriam-njeri-13437735a",
-
           github: "https://github.com/Mirriamnjeri",
           email: " njerimirriam128@gmail.com",
         },

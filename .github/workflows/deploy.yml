@@ -1,0 +1,84 @@
+name: AI Agent Deployment
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Deployment platform'
+        required: true
+        default: 'vercel'
+        type: choice
+        options:
+        - vercel
+        - netlify
+        - github-pages
+        - icp
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd src/Changa_DAO_frontend
+        npm ci
+        
+    - name: Build project
+      run: |
+        cd src/Changa_DAO_frontend
+        npm run build
+        
+    - name: Deploy to Vercel
+      if: github.event.inputs.platform == 'vercel' || github.event.inputs.platform == ''
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./src/Changa_DAO_frontend
+        
+    - name: Deploy to Netlify
+      if: github.event.inputs.platform == 'netlify'
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: './src/Changa_DAO_frontend/dist'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from AI Agent"
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        
+    - name: Deploy to GitHub Pages
+      if: github.event.inputs.platform == 'github-pages'
+      run: |
+        cd src/Changa_DAO_frontend
+        npm run deploy
+        
+    - name: Deploy to ICP
+      if: github.event.inputs.platform == 'icp'
+      run: |
+        curl -L https://internetcomputer.org/install.sh | sh
+        export PATH="$PATH:$HOME/bin"
+        dfx identity new ai-agent --disable-encryption
+        dfx identity use ai-agent
+        dfx deploy --network ic
+        
+    - name: Notify deployment
+      run: |
+        echo "Deployment completed successfully!"
+        echo "Platform: ${{ github.event.inputs.platform || 'vercel' }}"
+        echo "Repository: ${{ github.repository }}"
+        echo "Commit: ${{ github.sha }}"

@@ -1,46 +1,48 @@
 import {
-  Add as AddIcon,
-  Agriculture as AgricultureIcon,
-  CalendarToday as CalendarIcon,
-  Cancel as CancelIcon,
-  CheckCircle as CheckCircleIcon,
-  Edit as EditIcon,
-  FilterList as FilterIcon,
-  LocalHospital as HealthIcon,
-  Info as InfoIcon,
-  LocationOn as LocationIcon,
-  Business as ProjectsIcon,
-  Schedule as ScheduleIcon,
-  School as SchoolIcon,
-  Search as SearchIcon,
-  WaterDrop as WaterIcon
+    Add as AddIcon,
+    Agriculture as AgricultureIcon,
+    CalendarToday as CalendarIcon,
+    Cancel as CancelIcon,
+    CheckCircle as CheckCircleIcon,
+    Edit as EditIcon,
+    FilterList as FilterIcon,
+    LocalHospital as HealthIcon,
+    Info as InfoIcon,
+    LocationOn as LocationIcon,
+    Business as ProjectsIcon,
+    Schedule as ScheduleIcon,
+    School as SchoolIcon,
+    Search as SearchIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Grid,
-  InputAdornment,
-  LinearProgress,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Divider,
+    Grid,
+    InputAdornment,
+    LinearProgress,
+    Paper,
+    Tab,
+    Tabs,
+    TextField,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
-import { getBackendActor } from "../api/canister";
+import { getProposals } from "../api/proposals";
+import { useAuth } from "../contexts/AuthContext";
 
 const Projects = () => {
+  const { isAuthenticated, setShowLoginModal } = useAuth();
   const [projects, setProjects] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [filter, setFilter] = React.useState('all');
@@ -69,8 +71,7 @@ const Projects = () => {
   React.useEffect(() => {
     (async () => {
       try {
-        const backend = await getBackendActor();
-        const list = await backend.getProposals();
+        const list = await getProposals();
         setProjects(list);
       } catch (_e) {
         // Set comprehensive dummy data with different project statuses
@@ -78,7 +79,7 @@ const Projects = () => {
           {
             id: 1,
             title: "Solar Power for Rural Clinics",
-            description: "Install solar panels to power medical equipment in 3 clinics serving 10,000 people. This project will provide reliable electricity for life-saving medical procedures.",
+            description: "Install solar panels to power medical equipment in 3 clinics serving 10,000 people. This project will provide reliable electricity for life-saving medical procedures and improve healthcare outcomes in underserved rural areas.",
             category: "Healthcare",
             location: "Nairobi, Kenya",
             status: "Active",
@@ -89,12 +90,16 @@ const Projects = () => {
             endDate: "2024-06-30",
             nftSupply: 100,
             nftPrice: 350,
-            tags: ["Renewable Energy", "Healthcare", "Rural Development"]
+            tags: ["Renewable Energy", "Healthcare", "Rural Development"],
+            beneficiaries: 10000,
+            teamSize: 8,
+            verified: true,
+            featured: true
           },
           {
             id: 2,
             title: "Digital Learning Center",
-            description: "Modern computer lab and digital literacy program for underserved students. Includes 50 computers, internet connectivity, and certified instructors.",
+            description: "Modern computer lab and digital literacy program for underserved students. Includes 50 computers, internet connectivity, and certified instructors to bridge the digital divide.",
             category: "Education",
             location: "Mombasa, Kenya",
             status: "Active",
@@ -105,12 +110,16 @@ const Projects = () => {
             endDate: "2024-08-15",
             nftSupply: 75,
             nftPrice: 200,
-            tags: ["Education", "Technology", "Youth Empowerment"]
+            tags: ["Education", "Technology", "Youth Empowerment"],
+            beneficiaries: 500,
+            teamSize: 5,
+            verified: true,
+            featured: true
           },
           {
             id: 3,
             title: "Clean Water for Village",
-            description: "Build a sustainable water system with purification for 500 families. Includes borehole drilling, water treatment, and distribution network.",
+            description: "Build a sustainable water system with purification for 500 families. Includes borehole drilling, water treatment, and distribution network to provide clean drinking water.",
             category: "Water",
             location: "Kisumu, Kenya",
             status: "Active",
@@ -121,12 +130,16 @@ const Projects = () => {
             endDate: "2024-07-30",
             nftSupply: 125,
             nftPrice: 200,
-            tags: ["Water", "Infrastructure", "Community Health"]
+            tags: ["Water", "Infrastructure", "Community Health"],
+            beneficiaries: 2500,
+            teamSize: 12,
+            verified: true,
+            featured: false
           },
           {
             id: 4,
             title: "Community Health Outreach",
-            description: "Mobile health screenings and vaccinations across rural wards. Provides essential healthcare services to remote communities.",
+            description: "Mobile health screenings and vaccinations across rural wards. Provides essential healthcare services to remote communities with limited access to medical facilities.",
             category: "Healthcare",
             location: "Nakuru, Kenya",
             status: "Completed",
@@ -137,12 +150,16 @@ const Projects = () => {
             endDate: "2024-03-15",
             nftSupply: 60,
             nftPrice: 100,
-            tags: ["Healthcare", "Mobile Services", "Prevention"]
+            tags: ["Healthcare", "Mobile Services", "Prevention"],
+            beneficiaries: 8000,
+            teamSize: 6,
+            verified: true,
+            featured: false
           },
           {
             id: 5,
             title: "Irrigation for Smallholders",
-            description: "Low-cost drip irrigation to increase farm yields by 40%. Supports 200 small-scale farmers with sustainable farming practices.",
+            description: "Low-cost drip irrigation to increase farm yields by 40%. Supports 200 small-scale farmers with sustainable farming practices and market access.",
             category: "Agriculture",
             location: "Eldoret, Kenya",
             status: "Active",
@@ -153,12 +170,16 @@ const Projects = () => {
             endDate: "2024-09-30",
             nftSupply: 100,
             nftPrice: 200,
-            tags: ["Agriculture", "Sustainability", "Food Security"]
+            tags: ["Agriculture", "Sustainability", "Food Security"],
+            beneficiaries: 1000,
+            teamSize: 10,
+            verified: true,
+            featured: false
           },
           {
             id: 6,
             title: "Youth Skills Training Center",
-            description: "Vocational training center for unemployed youth. Offers courses in carpentry, welding, and electrical work.",
+            description: "Vocational training center for unemployed youth. Offers courses in carpentry, welding, and electrical work to create employment opportunities.",
             category: "Education",
             location: "Thika, Kenya",
             status: "Failed",
@@ -169,12 +190,16 @@ const Projects = () => {
             endDate: "2024-05-30",
             nftSupply: 100,
             nftPrice: 250,
-            tags: ["Education", "Vocational Training", "Youth Employment"]
+            tags: ["Education", "Vocational Training", "Youth Employment"],
+            beneficiaries: 200,
+            teamSize: 4,
+            verified: false,
+            featured: false
           },
           {
             id: 7,
             title: "Emergency Medical Response",
-            description: "Ambulance service and emergency response system for rural areas. Includes vehicle, equipment, and trained personnel.",
+            description: "Ambulance service and emergency response system for rural areas. Includes vehicle, equipment, and trained personnel to save lives in critical situations.",
             category: "Healthcare",
             location: "Kakamega, Kenya",
             status: "Completed",
@@ -185,12 +210,16 @@ const Projects = () => {
             endDate: "2024-01-31",
             nftSupply: 75,
             nftPrice: 200,
-            tags: ["Healthcare", "Emergency Services", "Public Safety"]
+            tags: ["Healthcare", "Emergency Services", "Public Safety"],
+            beneficiaries: 15000,
+            teamSize: 15,
+            verified: true,
+            featured: true
           },
           {
             id: 8,
             title: "Sustainable Fish Farming",
-            description: "Aquaculture project to provide protein and income for coastal communities. Includes training and market access.",
+            description: "Aquaculture project to provide protein and income for coastal communities. Includes training and market access for sustainable fish farming practices.",
             category: "Agriculture",
             location: "Lamu, Kenya",
             status: "Active",
@@ -201,12 +230,16 @@ const Projects = () => {
             endDate: "2024-08-31",
             nftSupply: 150,
             nftPrice: 200,
-            tags: ["Agriculture", "Aquaculture", "Coastal Development"]
+            tags: ["Agriculture", "Aquaculture", "Coastal Development"],
+            beneficiaries: 800,
+            teamSize: 7,
+            verified: true,
+            featured: false
           },
           {
             id: 9,
             title: "Renewable Energy Microgrid",
-            description: "Community-owned solar microgrid to provide electricity for 300 households. Includes battery storage and smart metering.",
+            description: "Community-owned solar microgrid to provide electricity for 300 households. Includes battery storage and smart metering for sustainable energy access.",
             category: "Infrastructure",
             location: "Garissa, Kenya",
             status: "Failed",
@@ -217,12 +250,16 @@ const Projects = () => {
             endDate: "2024-06-30",
             nftSupply: 200,
             nftPrice: 200,
-            tags: ["Renewable Energy", "Infrastructure", "Community Ownership"]
+            tags: ["Renewable Energy", "Infrastructure", "Community Ownership"],
+            beneficiaries: 1500,
+            teamSize: 6,
+            verified: false,
+            featured: false
           },
           {
             id: 10,
             title: "Women's Entrepreneurship Hub",
-            description: "Business incubator and training center for women entrepreneurs. Provides mentorship, funding access, and networking.",
+            description: "Business incubator and training center for women entrepreneurs. Provides mentorship, funding access, and networking opportunities.",
             category: "Business",
             location: "Nyeri, Kenya",
             status: "Active",
@@ -233,7 +270,111 @@ const Projects = () => {
             endDate: "2024-07-31",
             nftSupply: 100,
             nftPrice: 250,
-            tags: ["Business", "Women Empowerment", "Entrepreneurship"]
+            tags: ["Business", "Women Empowerment", "Entrepreneurship"],
+            beneficiaries: 150,
+            teamSize: 8,
+            verified: true,
+            featured: false
+          },
+          {
+            id: 11,
+            title: "Mobile Library Services",
+            description: "Mobile library van to bring books and educational resources to remote villages. Includes digital learning tools and reading programs.",
+            category: "Education",
+            location: "Machakos, Kenya",
+            status: "Active",
+            raised: 8500,
+            goal: 12000,
+            percent: 71,
+            startDate: "2024-02-20",
+            endDate: "2024-08-31",
+            nftSupply: 80,
+            nftPrice: 150,
+            tags: ["Education", "Mobile Services", "Literacy"],
+            beneficiaries: 3000,
+            teamSize: 4,
+            verified: true,
+            featured: false
+          },
+          {
+            id: 12,
+            title: "Community Sports Complex",
+            description: "Multi-purpose sports facility for youth development and community recreation. Includes football field, basketball court, and training facilities.",
+            category: "Sports",
+            location: "Kisii, Kenya",
+            status: "Active",
+            raised: 32000,
+            goal: 45000,
+            percent: 71,
+            startDate: "2024-01-05",
+            endDate: "2024-09-30",
+            nftSupply: 180,
+            nftPrice: 250,
+            tags: ["Sports", "Youth Development", "Community Recreation"],
+            beneficiaries: 5000,
+            teamSize: 12,
+            verified: true,
+            featured: true
+          },
+          {
+            id: 13,
+            title: "Organic Farming Cooperative",
+            description: "Support for organic farming practices and market access for small-scale farmers. Includes certification, training, and direct market connections.",
+            category: "Agriculture",
+            location: "Meru, Kenya",
+            status: "Completed",
+            raised: 18000,
+            goal: 18000,
+            percent: 100,
+            startDate: "2023-09-01",
+            endDate: "2024-02-28",
+            nftSupply: 90,
+            nftPrice: 200,
+            tags: ["Agriculture", "Organic Farming", "Market Access"],
+            beneficiaries: 300,
+            teamSize: 9,
+            verified: true,
+            featured: false
+          },
+          {
+            id: 14,
+            title: "Mental Health Support Center",
+            description: "Community mental health center providing counseling, therapy, and support groups. Addresses mental health stigma and provides accessible care.",
+            category: "Healthcare",
+            location: "Nakuru, Kenya",
+            status: "Active",
+            raised: 25000,
+            goal: 35000,
+            percent: 71,
+            startDate: "2024-01-15",
+            endDate: "2024-08-31",
+            nftSupply: 120,
+            nftPrice: 290,
+            tags: ["Healthcare", "Mental Health", "Community Support"],
+            beneficiaries: 2000,
+            teamSize: 10,
+            verified: true,
+            featured: false
+          },
+          {
+            id: 15,
+            title: "Digital Skills for Seniors",
+            description: "Technology training program for elderly community members. Helps seniors stay connected and access digital services safely.",
+            category: "Education",
+            location: "Mombasa, Kenya",
+            status: "Active",
+            raised: 6000,
+            goal: 10000,
+            percent: 60,
+            startDate: "2024-03-01",
+            endDate: "2024-09-30",
+            nftSupply: 50,
+            nftPrice: 120,
+            tags: ["Education", "Digital Literacy", "Senior Care"],
+            beneficiaries: 200,
+            teamSize: 3,
+            verified: true,
+            featured: false
           }
         ];
         setProjects(dummyProjects);
@@ -410,15 +551,36 @@ const Projects = () => {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => setCreateProjectDialog(true)}
+          onClick={() => {
+            if (!isAuthenticated) {
+              setShowLoginModal(true);
+              return;
+            }
+            setCreateProjectDialog(true);
+          }}
           sx={{
-            background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
+            background: 'linear-gradient(135deg, #10B981, #059669, #047857)',
+            backgroundSize: '200% 200%',
+            animation: 'gradientShift 3s ease infinite',
+            boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
+              background: 'linear-gradient(135deg, #059669, #047857, #065F46)',
+              backgroundSize: '200% 200%',
+              animation: 'gradientShift 2s ease infinite',
+              boxShadow: '0 6px 20px rgba(16, 185, 129, 0.4)',
+              transform: 'translateY(-2px)',
+            },
+            '&:active': {
+              transform: 'translateY(0px)',
+            },
+            '@keyframes gradientShift': {
+              '0%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+              '100%': { backgroundPosition: '0% 50%' },
             },
           }}
         >
-          Create Project
+          {isAuthenticated ? '🚀 Create Project' : '🔐 Connect to Create'}
         </Button>
       </Box>
 
@@ -780,14 +942,24 @@ const Projects = () => {
         fullWidth
         PaperProps={{
           sx: {
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
+            background: 'linear-gradient(135deg, #1E293B, #334155)',
+            border: '2px solid',
+            borderImage: 'linear-gradient(135deg, #10B981, #059669, #047857) 1',
             borderRadius: 3,
+            boxShadow: '0 20px 40px rgba(16, 185, 129, 0.2)',
           }
         }}
       >
-        <DialogTitle sx={{ color: 'white', borderBottom: '1px solid #3a3a3a' }}>
-          Create New Project
+        <DialogTitle sx={{ 
+          color: 'white', 
+          borderBottom: '2px solid',
+          borderImage: 'linear-gradient(135deg, #10B981, #059669, #047857) 1',
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1))',
+          textAlign: 'center',
+          fontSize: '1.5rem',
+          fontWeight: 'bold'
+        }}>
+          🚀 Create New Project
         </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
           <Grid container spacing={3}>
@@ -977,15 +1149,21 @@ const Projects = () => {
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions sx={{ p: 3, borderTop: '1px solid #3a3a3a' }}>
+        <DialogActions sx={{ 
+          p: 3, 
+          borderTop: '2px solid',
+          borderImage: 'linear-gradient(135deg, #10B981, #059669, #047857) 1',
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(5, 150, 105, 0.05))'
+        }}>
           <Button
             onClick={() => setCreateProjectDialog(false)}
+            variant="outlined"
             sx={{
-              color: '#b0b0b0',
-              borderColor: '#3a3a3a',
+              color: '#94A3B8',
+              borderColor: '#94A3B8',
               '&:hover': {
-                borderColor: '#4a4a4a',
-                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderColor: '#64748B',
+                backgroundColor: 'rgba(148, 163, 184, 0.1)',
               },
             }}
           >
@@ -996,17 +1174,34 @@ const Projects = () => {
             variant="contained"
             disabled={!newProject.title || !newProject.description || !newProject.category || !newProject.location || newProject.goalAmount <= 0 || newProject.nftPrice <= 0}
             sx={{
-              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+              background: 'linear-gradient(135deg, #10B981, #059669, #047857)',
+              backgroundSize: '200% 200%',
+              animation: 'gradientShift 3s ease infinite',
+              boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)',
               '&:hover': {
-                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                background: 'linear-gradient(135deg, #059669, #047857, #065F46)',
+                backgroundSize: '200% 200%',
+                animation: 'gradientShift 2s ease infinite',
+                boxShadow: '0 6px 20px rgba(16, 185, 129, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              '&:active': {
+                transform: 'translateY(0px)',
               },
               '&.Mui-disabled': {
-                background: '#2a2a2a',
-                color: '#666666',
+                background: '#334155',
+                color: '#64748B',
+                boxShadow: 'none',
+                animation: 'none',
+              },
+              '@keyframes gradientShift': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
               },
             }}
           >
-            Create Project
+            🚀 Create Project
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Fund from "./pages/Fund";
@@ -14,56 +15,25 @@ import Voting from "./pages/Voting";
 import Wallet from "./pages/Wallet";
 
 const RequireAuth = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const { isAuthenticated, setShowLoginModal } = useAuth();
+  const [hasShownModal, setHasShownModal] = React.useState(false);
 
   React.useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Add timeout to prevent hanging
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Auth timeout')), 3000)
-        );
-        
-        const authPromise = import("@dfinity/auth-client").then((mod) =>
-          mod.AuthClient.create()
-        ).then(client => client.isAuthenticated());
-        
-        const loggedIn = await Promise.race([authPromise, timeoutPromise]);
-        setIsAuthenticated(loggedIn);
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkAuth();
-  }, []);
+    if (!isAuthenticated && !hasShownModal) {
+      setShowLoginModal(true);
+      setHasShownModal(true);
+    }
+  }, [isAuthenticated, hasShownModal, setShowLoginModal]);
 
-  if (loading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        backgroundColor: '#0F172A',
-        color: 'white',
-        fontSize: '18px'
-      }}>
-        <div>
-          <div>Checking authentication...</div>
-          <div style={{ fontSize: '14px', marginTop: '10px', opacity: 0.7 }}>
-            This may take a few seconds
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Reset the flag when user becomes authenticated
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      setHasShownModal(false);
+    }
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return null; // Don't render the protected content
   }
   
   return children;
@@ -92,11 +62,7 @@ const router = createBrowserRouter(
         },
         {
           path: "proposals",
-          element: (
-            <RequireAuth>
-              <Proposals />
-            </RequireAuth>
-          ),
+          element: <Proposals />,
         },
         {
           path: "voting",
@@ -124,11 +90,7 @@ const router = createBrowserRouter(
         },
         {
           path: "projects",
-          element: (
-            <RequireAuth>
-              <Projects />
-            </RequireAuth>
-          ),
+          element: <Projects />,
         },
         {
           path: "propose",
@@ -181,7 +143,11 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 };
 
 export default App;

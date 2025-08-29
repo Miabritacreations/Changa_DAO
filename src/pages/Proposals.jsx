@@ -1,53 +1,55 @@
 import {
-  Add as AddIcon,
-  Agriculture as AgricultureIcon,
-  AttachFile as AttachFileIcon,
-  Cancel as CancelIcon,
-  CheckCircle as CheckCircleIcon,
-  CloudUpload as CloudUploadIcon,
-  Delete as DeleteIcon,
-  FilterList as FilterIcon,
-  LocalHospital as HealthIcon,
-  Business as ProjectsIcon,
-  Schedule as ScheduleIcon,
-  School as SchoolIcon,
-  AccountBalanceWallet as TreasuryIcon,
-  HowToVote as VoteIcon,
-  WaterDrop as WaterIcon
+    Add as AddIcon,
+    Agriculture as AgricultureIcon,
+    AttachFile as AttachFileIcon,
+    Cancel as CancelIcon,
+    CheckCircle as CheckCircleIcon,
+    CloudUpload as CloudUploadIcon,
+    Delete as DeleteIcon,
+    FilterList as FilterIcon,
+    LocalHospital as HealthIcon,
+    Business as ProjectsIcon,
+    Schedule as ScheduleIcon,
+    School as SchoolIcon,
+    AccountBalanceWallet as TreasuryIcon,
+    HowToVote as VoteIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Grid,
-  IconButton,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  MenuItem,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Divider,
+    Grid,
+    IconButton,
+    LinearProgress,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    MenuItem,
+    Paper,
+    Tab,
+    Tabs,
+    TextField,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
-import { getBackendActor } from "../api/canister";
+import { getProposals } from "../api/proposals";
+import { useAuth } from "../contexts/AuthContext";
 
 const Proposals = () => {
+  const { isAuthenticated, setShowLoginModal } = useAuth();
   const [proposals, setProposals] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [filter, setFilter] = React.useState('all');
@@ -72,8 +74,7 @@ const Proposals = () => {
   React.useEffect(() => {
     (async () => {
       try {
-        const backend = await getBackendActor();
-        const list = await backend.getProposals();
+        const list = await getProposals();
         setProposals(list);
       } catch (error) {
         console.error('Error loading proposals:', error);
@@ -433,15 +434,36 @@ const Proposals = () => {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => setCreateProposalDialog(true)}
+          onClick={() => {
+            if (!isAuthenticated) {
+              setShowLoginModal(true);
+              return;
+            }
+            setCreateProposalDialog(true);
+          }}
           sx={{
-            background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
+            background: 'linear-gradient(135deg, #8B5CF6, #A855F7, #EC4899)',
+            backgroundSize: '200% 200%',
+            animation: 'gradientShift 3s ease infinite',
+            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
+              background: 'linear-gradient(135deg, #7C3AED, #9333EA, #DB2777)',
+              backgroundSize: '200% 200%',
+              animation: 'gradientShift 2s ease infinite',
+              boxShadow: '0 6px 20px rgba(139, 92, 246, 0.4)',
+              transform: 'translateY(-2px)',
+            },
+            '&:active': {
+              transform: 'translateY(0px)',
+            },
+            '@keyframes gradientShift': {
+              '0%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+              '100%': { backgroundPosition: '0% 50%' },
             },
           }}
         >
-          Create Proposal
+          {isAuthenticated ? '✨ Create Proposal' : '🔐 Connect to Create'}
         </Button>
       </Box>
 
@@ -705,14 +727,24 @@ const Proposals = () => {
         fullWidth
         PaperProps={{
           sx: {
-            backgroundColor: '#2a2a2a',
-            border: '1px solid #3a3a3a',
+            background: 'linear-gradient(135deg, #1E293B, #334155)',
+            border: '2px solid',
+            borderImage: 'linear-gradient(135deg, #8B5CF6, #A855F7, #EC4899) 1',
             borderRadius: 3,
+            boxShadow: '0 20px 40px rgba(139, 92, 246, 0.2)',
           }
         }}
       >
-        <DialogTitle sx={{ color: 'white', borderBottom: '1px solid #3a3a3a' }}>
-          Create New Proposal
+        <DialogTitle sx={{ 
+          color: 'white', 
+          borderBottom: '2px solid',
+          borderImage: 'linear-gradient(135deg, #8B5CF6, #A855F7, #EC4899) 1',
+          background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1))',
+          textAlign: 'center',
+          fontSize: '1.5rem',
+          fontWeight: 'bold'
+        }}>
+          ✨ Create New Proposal
         </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
           <Grid container spacing={3}>
@@ -951,15 +983,21 @@ const Proposals = () => {
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions sx={{ p: 3, borderTop: '1px solid #3a3a3a' }}>
+        <DialogActions sx={{ 
+          p: 3, 
+          borderTop: '2px solid',
+          borderImage: 'linear-gradient(135deg, #8B5CF6, #A855F7, #EC4899) 1',
+          background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(168, 85, 247, 0.05))'
+        }}>
           <Button
             onClick={() => setCreateProposalDialog(false)}
+            variant="outlined"
             sx={{
-              color: '#b0b0b0',
-              borderColor: '#3a3a3a',
+              color: '#94A3B8',
+              borderColor: '#94A3B8',
               '&:hover': {
-                borderColor: '#4a4a4a',
-                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderColor: '#64748B',
+                backgroundColor: 'rgba(148, 163, 184, 0.1)',
               },
             }}
           >
@@ -970,17 +1008,34 @@ const Proposals = () => {
             variant="contained"
             disabled={!newProposal.title || !newProposal.description || newProposal.quorum <= 0}
             sx={{
-              background: 'linear-gradient(135deg, #42A5F5, #1E88E5)',
+              background: 'linear-gradient(135deg, #8B5CF6, #A855F7, #EC4899)',
+              backgroundSize: '200% 200%',
+              animation: 'gradientShift 3s ease infinite',
+              boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
               '&:hover': {
-                background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                background: 'linear-gradient(135deg, #7C3AED, #9333EA, #DB2777)',
+                backgroundSize: '200% 200%',
+                animation: 'gradientShift 2s ease infinite',
+                boxShadow: '0 6px 20px rgba(139, 92, 246, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              '&:active': {
+                transform: 'translateY(0px)',
               },
               '&.Mui-disabled': {
-                background: '#2a2a2a',
-                color: '#666666',
+                background: '#334155',
+                color: '#64748B',
+                boxShadow: 'none',
+                animation: 'none',
+              },
+              '@keyframes gradientShift': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
               },
             }}
           >
-            Create Proposal
+            ✨ Create Proposal
           </Button>
         </DialogActions>
       </Dialog>

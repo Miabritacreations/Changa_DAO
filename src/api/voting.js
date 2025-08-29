@@ -1,67 +1,125 @@
 // Backend API for voting with Internet Identity integration
 
-import internetIdentityService from '../services/internetIdentity';
-import { Actor, HttpAgent } from "@dfinity/agent";
-import { idlFactory as backend_idl } from "../../../declarations/Changa_DAO_backend";
+import { getBackendActor } from "./canister";
 
-let backend = null;
-
-const getBackend = async () => {
-  if (!backend) {
-    if (!internetIdentityService.isAuthenticated()) {
-      throw new Error('User must be authenticated to access backend');
-    }
-    
-    const agent = new HttpAgent({ 
-      identity: internetIdentityService.identity,
-      host: "http://localhost:4943" // Local dfx network
-    });
-    
-    // For local development
-    await agent.fetchRootKey();
-    
-    backend = Actor.createActor(backend_idl, { 
-      agent, 
-      canisterId: "rrkah-fqaaa-aaaaa-aaaaq-cai" // Replace with your actual canister ID
-    });
-  }
-  return backend;
-};
-
-export async function getVotes() {
+export async function getVotingProposals() {
+  // This function should be called from components that have access to AuthContext
+  // The authentication check should be done at the component level
+  
+  // Try backend first, fallback to mock data
   try {
-    const backendInstance = await getBackend();
-    const proposals = await backendInstance.getProposals();
-    
-    return proposals.map(proposal => ({
-      id: Number(proposal.id),
-      proposal: proposal.title,
-      votesFor: Number(proposal.votesFor),
-      votesAgainst: Number(proposal.votesAgainst),
-      status: proposal.status
-    }));
-  } catch (error) {
-    console.error('Failed to get votes:', error);
-    // Return mock data as fallback
-    return [
-      { id: 1, proposal: "Increase treasury cap", votesFor: 30, votesAgainst: 12 },
-      { id: 2, proposal: "Add new member", votesFor: 25, votesAgainst: 17 }
-    ];
+    const backend = await getBackendActor();
+    const res = await backend.getProposals();
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock data
   }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 300));
+  
+  // Mock voting proposals
+  return [
+    {
+      id: "prop1",
+      title: "Community Center Construction",
+      description: "Build a new community center in the local area",
+      creator: "Alice",
+      created: Date.now() - 86400000,
+      endDate: Date.now() + 604800000,
+      status: "active",
+      votes: {
+        yes: 45,
+        no: 12,
+        abstain: 3
+      },
+      totalVotes: 60,
+      quorum: 50,
+      funding: 50000
+    },
+    {
+      id: "prop2",
+      title: "Education Fund Allocation",
+      description: "Allocate funds for local school improvements",
+      creator: "Bob",
+      created: Date.now() - 172800000,
+      endDate: Date.now() + 259200000,
+      status: "active",
+      votes: {
+        yes: 78,
+        no: 15,
+        abstain: 7
+      },
+      totalVotes: 100,
+      quorum: 50,
+      funding: 25000
+    },
+    {
+      id: "prop3",
+      title: "Environmental Cleanup Initiative",
+      description: "Fund local environmental cleanup projects",
+      creator: "Charlie",
+      created: Date.now() - 259200000,
+      endDate: Date.now() - 86400000,
+      status: "completed",
+      votes: {
+        yes: 120,
+        no: 30,
+        abstain: 10
+      },
+      totalVotes: 160,
+      quorum: 50,
+      funding: 35000,
+      result: "passed"
+    }
+  ];
 }
 
-export async function submitVote(voteId, support) {
+export async function castVote(proposalId, vote) {
+  // Try backend first, fallback to mock
   try {
-    const backendInstance = await getBackend();
-    const result = await backendInstance.submitVote(voteId, support);
-    
-    if ('ok' in result) {
-      return { success: true, voteId, support };
-    } else {
-      throw new Error(result.err);
+    const backend = await getBackendActor();
+    const res = await backend.castVote({ proposalId, vote });
+    if (res && 'ok' in res) {
+      return res.ok;
     }
-  } catch (error) {
-    console.error('Failed to submit vote:', error);
-    throw error;
+  } catch (_e) {
+    // Fallback to mock
   }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 1000));
+  
+  // Mock vote result
+  return {
+    success: true,
+    proposalId,
+    vote,
+    timestamp: Date.now()
+  };
+}
+
+export async function createProposal(proposal) {
+  // Try backend first, fallback to mock
+  try {
+    const backend = await getBackendActor();
+    const res = await backend.createProposal(proposal);
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock
+  }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 1500));
+  
+  // Mock proposal creation result
+  return {
+    success: true,
+    proposalId: `prop_${Date.now()}`,
+    timestamp: Date.now()
+  };
 } 

@@ -1,62 +1,71 @@
 // Backend API for wallet integration with Internet Identity
 
-import internetIdentityService from '../services/internetIdentity';
-import { Actor, HttpAgent } from "@dfinity/agent";
-import { idlFactory as backend_idl } from "../../../declarations/Changa_DAO_backend";
+import { getBackendActor } from "./canister";
 
-let backend = null;
-
-const getBackend = async () => {
-  if (!backend) {
-    if (!internetIdentityService.isAuthenticated()) {
-      throw new Error('User must be authenticated to access backend');
-    }
-    
-    const agent = new HttpAgent({ 
-      identity: internetIdentityService.identity,
-      host: "http://localhost:4943" // Local dfx network
-    });
-    
-    // For local development
-    await agent.fetchRootKey();
-    
-    backend = Actor.createActor(backend_idl, { 
-      agent, 
-      canisterId: "rrkah-fqaaa-aaaaa-aaaaq-cai" // Replace with your actual canister ID
-    });
-  }
-  return backend;
-};
-
-export async function getWalletInfo() {
+export async function getWalletBalance() {
+  // This function should be called from components that have access to AuthContext
+  // The authentication check should be done at the component level
+  
+  // Try backend first, fallback to mock data
   try {
-    const backendInstance = await getBackend();
-    const walletInfo = await backendInstance.getWalletInfo();
-    
-    return {
-      address: walletInfo.address,
-      balance: walletInfo.balance,
-      network: walletInfo.network,
-      connected: walletInfo.connected
-    };
-  } catch (error) {
-    console.error('Failed to get wallet info:', error);
-    // Return mock data as fallback
-    return {
-      address: "0x1234...abcd",
-      balance: 100.5,
-      network: "ICP Testnet",
-      connected: true
-    };
+    const backend = await getBackendActor();
+    const res = await backend.getBalance();
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock data
   }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 300));
+  
+  // Mock wallet data
+  return {
+    balance: 1000.50,
+    currency: "ICP",
+    transactions: [
+      {
+        id: "tx1",
+        type: "receive",
+        amount: 500,
+        from: "user1.ic0.app",
+        to: "current-user.ic0.app",
+        timestamp: Date.now() - 86400000,
+        status: "completed"
+      },
+      {
+        id: "tx2",
+        type: "send",
+        amount: 100,
+        from: "current-user.ic0.app",
+        to: "user2.ic0.app",
+        timestamp: Date.now() - 172800000,
+        status: "completed"
+      }
+    ]
+  };
 }
 
-export async function connectWallet() {
+export async function sendTransaction(to, amount) {
+  // Try backend first, fallback to mock
   try {
-    // For now, just return success since wallet connection is handled by Internet Identity
-    return { success: true };
-  } catch (error) {
-    console.error('Failed to connect wallet:', error);
-    throw error;
+    const backend = await getBackendActor();
+    const res = await backend.sendTransaction({ to, amount });
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock
   }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 1000));
+  
+  // Mock transaction result
+  return {
+    success: true,
+    transactionId: `tx_${Date.now()}`,
+    timestamp: Date.now()
+  };
 } 

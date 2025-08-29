@@ -267,22 +267,60 @@ const Fund = () => {
             Start funding community projects today and become part of a global movement 
             creating positive change through transparent, accountable development.
           </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => navigate('/Changa_DAO/projects')}
-            sx={{
-              background: 'linear-gradient(135deg, #3B82F6, #1E40AF)',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1E40AF, #1E3A8A)',
-              },
-              px: 4,
-              py: 2,
-              fontSize: '1.1rem',
-            }}
-          >
-            Browse Projects
-          </Button>
+          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/projects')}
+              sx={{
+                background: 'linear-gradient(135deg, #3B82F6, #1E40AF)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #1E40AF, #1E3A8A)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Browse Projects
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/dashboard')}
+              sx={{
+                borderColor: '#3B82F6',
+                color: '#3B82F6',
+                '&:hover': {
+                  borderColor: '#1E40AF',
+                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Go to Dashboard
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/track')}
+              sx={{
+                borderColor: '#10B981',
+                color: '#10B981',
+                '&:hover': {
+                  borderColor: '#059669',
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Track Your Impact
+            </Button>
+          </Box>
         </Box>
       </Container>
     </Box>

@@ -4,7 +4,8 @@ import { defineConfig } from 'vite';
 import environment from 'vite-plugin-environment';
 
 export default defineConfig({
-  base: '/Changa_DAO/',
+  // Remove base path for local development
+  // base: '/Changa_DAO/',
   build: {
     emptyOutDir: true,
     outDir: 'dist',

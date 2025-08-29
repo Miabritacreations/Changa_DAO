@@ -1,55 +1,100 @@
 // Backend API for dashboard data with Internet Identity integration
 
-import internetIdentityService from '../services/internetIdentity';
-import { Actor, HttpAgent } from "@dfinity/agent";
-import { idlFactory as backend_idl } from "../../../declarations/Changa_DAO_backend";
-
-let backend = null;
-
-const getBackend = async () => {
-  if (!backend) {
-    if (!internetIdentityService.isAuthenticated()) {
-      throw new Error('User must be authenticated to access backend');
-    }
-    
-    const agent = new HttpAgent({ 
-      identity: internetIdentityService.identity,
-      host: "http://localhost:4943" // Local dfx network
-    });
-    
-    // For local development
-    await agent.fetchRootKey();
-    
-    backend = Actor.createActor(backend_idl, { 
-      agent, 
-      canisterId: "rrkah-fqaaa-aaaaa-aaaaq-cai" // Replace with your actual canister ID
-    });
-  }
-  return backend;
-};
+import { getBackendActor } from "./canister";
 
 export async function getDashboardData() {
+  // This function should be called from components that have access to AuthContext
+  // The authentication check should be done at the component level
+  
+  // Try backend first, fallback to mock data
   try {
-    const backendInstance = await getBackend();
-    const data = await backendInstance.getDashboardData();
-    
-    return {
-      totalMembers: Number(data.totalMembers),
-      totalProposals: Number(data.totalProposals),
-      treasury: data.treasury,
-      recentActivity: data.recentActivity
-    };
-  } catch (error) {
-    console.error('Failed to get dashboard data:', error);
-    // Return mock data as fallback
-    return {
-      totalMembers: 42,
-      totalProposals: 17,
-      treasury: 12345.67,
-      recentActivity: [
-        "Proposal #17 created",
-        "You voted on Proposal #16"
-      ]
-    };
+    const backend = await getBackendActor();
+    const res = await backend.getDashboardData();
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock data
   }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 300));
+  
+  // Mock dashboard data
+  return {
+    totalProjects: 15,
+    activeProposals: 8,
+    totalMembers: 1250,
+    totalFunds: 50000,
+    recentActivity: [
+      {
+        id: "act1",
+        type: "proposal_created",
+        title: "New Community Center Proposal",
+        user: "Alice",
+        timestamp: Date.now() - 3600000,
+        status: "active"
+      },
+      {
+        id: "act2",
+        type: "vote_cast",
+        title: "Education Fund Allocation",
+        user: "Bob",
+        timestamp: Date.now() - 7200000,
+        status: "completed"
+      },
+      {
+        id: "act3",
+        type: "project_funded",
+        title: "Clean Water Initiative",
+        user: "Charlie",
+        timestamp: Date.now() - 10800000,
+        status: "funded"
+      }
+    ],
+    stats: {
+      proposalsThisMonth: 12,
+      votesThisMonth: 89,
+      fundsDistributed: 15000,
+      newMembers: 45
+    }
+  };
+}
+
+export async function getRecentTransactions() {
+  // Try backend first, fallback to mock data
+  try {
+    const backend = await getBackendActor();
+    const res = await backend.getRecentTransactions();
+    if (res && 'ok' in res) {
+      return res.ok;
+    }
+  } catch (_e) {
+    // Fallback to mock data
+  }
+  
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 200));
+  
+  // Mock transaction data
+  return [
+    {
+      id: "tx1",
+      type: "fund_transfer",
+      amount: 5000,
+      from: "DAO Treasury",
+      to: "Project A",
+      timestamp: Date.now() - 86400000,
+      status: "completed"
+    },
+    {
+      id: "tx2",
+      type: "member_contribution",
+      amount: 100,
+      from: "Member123",
+      to: "DAO Treasury",
+      timestamp: Date.now() - 172800000,
+      status: "completed"
+    }
+  ];
 } 

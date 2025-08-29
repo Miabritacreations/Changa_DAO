@@ -1,33 +1,34 @@
 import {
-  Agriculture as AgricultureIcon,
-  Email as EmailIcon,
-  GitHub as GitHubIcon,
-  Group as GroupIcon,
-  LocalHospital as HealthIcon,
-  LinkedIn as LinkedInIcon,
-  School as SchoolIcon,
-  Security as SecurityIcon,
-  TrendingUp as TrendingUpIcon,
-  EmojiEvents as TrophyIcon,
-  Twitter as TwitterIcon,
-  Verified as VerifiedIcon,
-  WaterDrop as WaterIcon
+    Agriculture as AgricultureIcon,
+    Email as EmailIcon,
+    GitHub as GitHubIcon,
+    Group as GroupIcon,
+    LocalHospital as HealthIcon,
+    LinkedIn as LinkedInIcon,
+    School as SchoolIcon,
+    Security as SecurityIcon,
+    TrendingUp as TrendingUpIcon,
+    EmojiEvents as TrophyIcon,
+    Twitter as TwitterIcon,
+    Verified as VerifiedIcon,
+    WaterDrop as WaterIcon
 } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Grid,
-  IconButton,
-  LinearProgress,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { getBackendActor } from "../api/canister";
 import mirriamPhoto from "../images/team/mirriam.jpg";
 import bridgitPhoto from "../images/team/nyambeka-modified.png";
@@ -36,6 +37,7 @@ const Home = () => {
   const [projects, setProjects] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     (async () => {
@@ -166,7 +168,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => window.location.href = '/Changa_DAO/dashboard'}
+                onClick={() => navigate('/projects')}
                 sx={{
                   backgroundColor: 'white',
                   color: 'primary.main',
@@ -175,7 +177,7 @@ const Home = () => {
                   },
                 }}
               >
-                Launch App
+                Browse Projects
               </Button>
               <Button
                 variant="outlined"
@@ -311,16 +313,51 @@ const Home = () => {
           <Typography variant="h3" sx={{ mb: 4, fontWeight: 700, textAlign: 'center', color: 'white' }}>
             How It Works
           </Typography>
+          <Typography variant="h6" sx={{ mb: 6, textAlign: 'center', maxWidth: 800, mx: 'auto', color: '#94A3B8' }}>
+            Click on any step below to learn more about how Changa DAO works and get started with your own project
+          </Typography>
           <Grid container spacing={4}>
             {[
-              { step: '1', title: 'Propose', description: 'Communities propose projects (schools, boreholes, clinics…)', icon: <GroupIcon />, path: '/Changa_DAO/propose' },
-              { step: '2', title: 'Fund', description: 'Fundraising via NFTs (donors & investors get proof tokens)', icon: <TrendingUpIcon />, path: '/Changa_DAO/fund' },
-              { step: '3', title: 'Verify', description: 'Milestone-based funding (funds released only after verification)', icon: <VerifiedIcon />, path: '/Changa_DAO/verify' },
-              { step: '4', title: 'Track', description: 'Impact tracking with geo-tagged media + transparent dashboards', icon: <SecurityIcon />, path: '/Changa_DAO/track' },
+              { 
+                step: '1', 
+                title: 'Propose', 
+                description: 'Communities propose projects (schools, boreholes, clinics…)', 
+                icon: <GroupIcon />, 
+                path: '/Changa_DAO/propose',
+                details: 'Submit your community project proposal with detailed plans, budget, and impact metrics.',
+                features: ['Project templates', 'Community feedback', 'Budget planning', 'Impact assessment']
+              },
+              { 
+                step: '2', 
+                title: 'Fund', 
+                description: 'Fundraising via NFTs (donors & investors get proof tokens)', 
+                icon: <TrendingUpIcon />, 
+                path: '/Changa_DAO/fund',
+                details: 'Launch your fundraising campaign with NFT-based impact tokens for transparent tracking.',
+                features: ['NFT impact tokens', 'Multiple payment options', 'Transparent tracking', 'Investor dashboard']
+              },
+              { 
+                step: '3', 
+                title: 'Verify', 
+                description: 'Milestone-based funding (funds released only after verification)', 
+                icon: <VerifiedIcon />, 
+                path: '/Changa_DAO/verify',
+                details: 'Submit milestone completion with geo-tagged proof for community verification.',
+                features: ['Milestone tracking', 'Geo-tagged proof', 'Community verification', 'Smart contract execution']
+              },
+              { 
+                step: '4', 
+                title: 'Track', 
+                description: 'Impact tracking with geo-tagged media + transparent dashboards', 
+                icon: <SecurityIcon />, 
+                path: '/Changa_DAO/track',
+                details: 'Monitor project progress in real-time with transparent dashboards and impact metrics.',
+                features: ['Real-time tracking', 'Impact metrics', 'Community updates', 'Transparent reporting']
+              },
             ].map((step, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Card 
-                  onClick={() => window.location.href = step.path}
+                  onClick={() => navigate(step.path.replace('/Changa_DAO', ''))}
                   sx={{ 
                     height: '100%', 
                     textAlign: 'center', 
@@ -358,17 +395,69 @@ const Home = () => {
                     <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'white' }}>
                       {step.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#94A3B8' }}>
+                    <Typography variant="body2" sx={{ color: '#94A3B8', mb: 3 }}>
                       {step.description}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#3B82F6', mt: 2, fontWeight: 600 }}>
+                    
+                    {/* Features List */}
+                    <Box sx={{ textAlign: 'left', mb: 3 }}>
+                      {step.features.map((feature, idx) => (
+                        <Box key={idx} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                          <Box sx={{ 
+                            width: 6, 
+                            height: 6, 
+                            borderRadius: '50%', 
+                            backgroundColor: '#3B82F6', 
+                            mr: 1.5 
+                          }} />
+                          <Typography variant="caption" sx={{ color: '#94A3B8', fontSize: '0.75rem' }}>
+                            {feature}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                    
+                    {/* Click to Learn More Button */}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        borderColor: '#3B82F6',
+                        color: '#3B82F6',
+                        fontSize: '0.75rem',
+                        '&:hover': {
+                          borderColor: '#1E40AF',
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        },
+                      }}
+                    >
                       Learn More →
-                    </Typography>
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>
             ))}
           </Grid>
+          
+          {/* Call to Action */}
+          <Box sx={{ textAlign: 'center', mt: 6 }}>
+            <Typography variant="h6" sx={{ mb: 3, color: '#94A3B8' }}>
+              Ready to get started?
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/propose')}
+              sx={{
+                background: 'linear-gradient(135deg, #1E40AF, #3B82F6)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #1E3A8A, #1E40AF)',
+                },
+              }}
+            >
+              Start Your Project
+            </Button>
+          </Box>
         </Box>
 
         {/* Featured Projects */}
@@ -379,7 +468,7 @@ const Home = () => {
             </Typography>
             <Button 
               variant="outlined" 
-              onClick={() => window.location.href = '/Changa_DAO/projects'}
+              onClick={() => navigate('/projects')}
               sx={{ borderColor: '#3B82F6', color: '#3B82F6', '&:hover': { borderColor: '#1E40AF', backgroundColor: 'rgba(59, 130, 246, 0.1)' } }}>
               View all projects
             </Button>
@@ -699,7 +788,7 @@ const Home = () => {
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => window.location.href = '/Changa_DAO/dashboard'}
+                onClick={() => navigate('/projects')}
                 sx={{
                   backgroundColor: 'white',
                   color: 'primary.main',
@@ -708,7 +797,7 @@ const Home = () => {
                   },
                 }}
               >
-                Launch App
+                Browse Projects
               </Button>
               <Button
                 variant="outlined"

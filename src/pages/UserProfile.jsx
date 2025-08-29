@@ -45,9 +45,10 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getUserProfile, updateUserProfile } from "../api/profile";
-import internetIdentityService from "../services/internetIdentity";
+import { useAuth } from "../contexts/AuthContext";
 
 const UserProfile = () => {
+  const { isAuthenticated, handleLogout: authLogout } = useAuth();
   const [profile, setProfile] = useState(null);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState({
@@ -76,117 +77,79 @@ const UserProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const theme = useTheme();
 
   console.log('UserProfile component loaded');
 
   useEffect(() => {
     loadProfile();
-  }, []);
-
-  // Refresh profile when authentication status changes
-  useEffect(() => {
-    const checkAuthStatus = () => {
-      const currentAuthStatus = internetIdentityService.isAuthenticated();
-      if (currentAuthStatus !== isAuthenticated) {
-        setIsAuthenticated(currentAuthStatus);
-        loadProfile();
-      }
-    };
-
-    // Check auth status periodically
-    const interval = setInterval(checkAuthStatus, 2000);
-    return () => clearInterval(interval);
   }, [isAuthenticated]);
 
   const loadProfile = async () => {
     try {
-      // Check if user is authenticated with Internet Identity
-      const isAuth = internetIdentityService.isAuthenticated();
-      setIsAuthenticated(isAuth);
+      setLoading(true);
+      setError(null);
       
-      if (isAuth) {
-        // User is authenticated, try to load their real profile
-        const data = await getUserProfile();
-        setProfile(data);
-      } else {
-        // User is not authenticated, show demo profile
+      if (!isAuthenticated) {
+        // Show default profile for unauthenticated users
         setProfile({
-          name: "Demo User",
-          email: "demo@changadao.com",
-          avatar: "https://i.pravatar.cc/150?u=demo",
-          bio: "This is a demo profile. Connect with Internet Identity to access and edit your real profile.",
-          location: "Nairobi, Kenya",
-          phone: "+254 700 000 000",
-          organization: "Changa DAO Community",
-          website: "https://changadao.com",
-          linkedin: "linkedin.com/in/demouser",
-          twitter: "@demouser",
-          github: "github.com/demouser",
-          education: "Bachelor's in Computer Science",
-          skills: "React, TypeScript, Blockchain, DAO Governance",
-          interests: "DeFi, Community Building, Sustainable Development",
+          name: "Guest User",
+          email: "guest@example.com",
+          avatar: "https://i.pravatar.cc/150?u=guest",
+          bio: "Please connect your Internet Identity to view your profile.",
+          location: "",
+          phone: "",
+          organization: "",
+          website: "",
+          linkedin: "",
+          twitter: "",
+          github: "",
+          education: "",
+          skills: "",
+          interests: "",
           showEmail: true,
           showPhone: true,
           showLocation: true,
-          principal: "demo-principal",
-          createdAt: Date.now(),
-          updatedAt: Date.now()
+          principal: null
         });
+        return;
       }
+
+      const userProfile = await getUserProfile();
+      setProfile(userProfile);
     } catch (error) {
-      console.error('Error loading profile:', error);
-      // Fallback to demo profile if there's an error
-      setProfile({
-        name: "Demo User",
-        email: "demo@changadao.com",
-        avatar: "https://i.pravatar.cc/150?u=demo",
-        bio: "This is a demo profile. Connect with Internet Identity to access your real profile.",
-        location: "Nairobi, Kenya",
-        phone: "+254 700 000 000",
-        organization: "Changa DAO Community",
-        website: "https://changadao.com",
-        linkedin: "linkedin.com/in/demouser",
-        twitter: "@demouser",
-        github: "github.com/demouser",
-        education: "Bachelor's in Computer Science",
-        skills: "React, TypeScript, Blockchain, DAO Governance",
-        interests: "DeFi, Community Building, Sustainable Development",
-        showEmail: true,
-        showPhone: true,
-        showLocation: true,
-        principal: "demo-principal",
-        createdAt: Date.now(),
-        updatedAt: Date.now()
-      });
+      console.error('Failed to load profile:', error);
+      setError('Failed to load profile. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const handleEditOpen = () => {
+    if (!isAuthenticated) {
+      setError('Please connect your Internet Identity to edit your profile.');
+      return;
+    }
+    
     setEdit({
-      name: profile.name || "",
-      email: profile.email || "",
-      avatar: profile.avatar || "",
-      bio: profile.bio || "",
-      location: profile.location || "",
-      phone: profile.phone || "",
-      organization: profile.organization || "",
-      website: profile.website || "",
-      linkedin: profile.linkedin || "",
-      twitter: profile.twitter || "",
-      github: profile.github || "",
-      education: profile.education || "",
-      skills: profile.skills || "",
-      interests: profile.interests || "",
-      showEmail: profile.showEmail !== false,
-      showPhone: profile.showPhone !== false,
-      showLocation: profile.showLocation !== false
+      name: profile?.name || "",
+      email: profile?.email || "",
+      avatar: profile?.avatar || "",
+      bio: profile?.bio || "",
+      location: profile?.location || "",
+      phone: profile?.phone || "",
+      organization: profile?.organization || "",
+      website: profile?.website || "",
+      linkedin: profile?.linkedin || "",
+      twitter: profile?.twitter || "",
+      github: profile?.github || "",
+      education: profile?.education || "",
+      skills: profile?.skills || "",
+      interests: profile?.interests || "",
+      showEmail: profile?.showEmail ?? true,
+      showPhone: profile?.showPhone ?? true,
+      showLocation: profile?.showLocation ?? true
     });
-    setAvatarFile(null);
-    setAvatarPreview(null);
     setError(null);
     setSuccess(null);
     setOpen(true);
@@ -198,31 +161,9 @@ const UserProfile = () => {
     setSuccess(null);
   };
 
-  const handleAuthenticateAndEdit = async () => {
-    try {
-      setLoading(true);
-      const result = await internetIdentityService.authenticate();
-      
-      if (result.success) {
-        // User is now authenticated, reload profile and open edit dialog
-        setIsAuthenticated(true);
-        await loadProfile();
-        handleEditOpen();
-      } else {
-        setError('Authentication failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      setError('Authentication failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleLogout = async () => {
     try {
-      await internetIdentityService.logout();
-      setIsAuthenticated(false);
+      await authLogout();
       await loadProfile();
       setSuccess('Successfully logged out');
       setTimeout(() => setSuccess(null), 3000);
@@ -334,7 +275,7 @@ const UserProfile = () => {
             <CardContent sx={{ p: 4, textAlign: 'center' }}>
               <Box sx={{ position: 'relative', display: 'inline-block', mb: 3 }}>
                 <Avatar
-                  src={avatarPreview || profile.avatar}
+                  src={avatarPreview || profile?.avatar}
                   sx={{
                     width: 120,
                     height: 120,
@@ -368,11 +309,11 @@ const UserProfile = () => {
               </Box>
               
               <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, color: 'white' }}>
-                {profile.name || 'User Name'}
+                {profile?.name || 'User Name'}
               </Typography>
               
               <Typography sx={{ color: '#94A3B8', mb: 2 }}>
-                {profile.email || 'user@example.com'}
+                {profile?.email || 'user@example.com'}
               </Typography>
 
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 3 }}>
@@ -401,7 +342,7 @@ const UserProfile = () => {
               <Button
                 variant="contained"
                 startIcon={<EditIcon />}
-                onClick={isAuthenticated ? handleEditOpen : handleAuthenticateAndEdit}
+                onClick={handleEditOpen}
                 fullWidth
                 disabled={loading}
                 sx={{
@@ -457,7 +398,7 @@ const UserProfile = () => {
                         Full Name
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.name || 'Not specified'}
+                        {profile?.name || 'Not specified'}
                       </Typography>
                     </Box>
                   </Box>
@@ -471,7 +412,7 @@ const UserProfile = () => {
                         Email Address
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.showEmail ? (profile.email || 'Not specified') : 'Hidden'}
+                        {profile?.showEmail ? (profile?.email || 'Not specified') : 'Hidden'}
                       </Typography>
                     </Box>
                   </Box>
@@ -485,7 +426,7 @@ const UserProfile = () => {
                         Location
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.showLocation ? (profile.location || 'Not specified') : 'Hidden'}
+                        {profile?.showLocation ? (profile?.location || 'Not specified') : 'Hidden'}
                       </Typography>
                     </Box>
                   </Box>
@@ -499,7 +440,7 @@ const UserProfile = () => {
                         Phone Number
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.showPhone ? (profile.phone || 'Not specified') : 'Hidden'}
+                        {profile?.showPhone ? (profile?.phone || 'Not specified') : 'Hidden'}
                       </Typography>
                     </Box>
                   </Box>
@@ -513,7 +454,7 @@ const UserProfile = () => {
                         Organization
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.organization || 'Not specified'}
+                        {profile?.organization || 'Not specified'}
                       </Typography>
                     </Box>
                   </Box>
@@ -527,21 +468,21 @@ const UserProfile = () => {
                         Bio
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                        {profile.bio || 'No bio provided'}
+                        {profile?.bio || 'No bio provided'}
                       </Typography>
                     </Box>
                   </Box>
                 </Grid>
 
                 {/* Social Links */}
-                {(profile.website || profile.linkedin || profile.twitter || profile.github) && (
+                {(profile?.website || profile?.linkedin || profile?.twitter || profile?.github) && (
                   <Grid item xs={12}>
                     <Divider sx={{ my: 2, borderColor: '#334155' }} />
                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: 'white' }}>
                       Social Links
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                      {profile.website && (
+                      {profile?.website && (
                         <Chip
                           icon={<WebsiteIcon />}
                           label="Website"
@@ -549,7 +490,7 @@ const UserProfile = () => {
                           sx={{ borderColor: '#475569', color: '#94A3B8' }}
                         />
                       )}
-                      {profile.linkedin && (
+                      {profile?.linkedin && (
                         <Chip
                           icon={<LinkedInIcon />}
                           label="LinkedIn"
@@ -557,7 +498,7 @@ const UserProfile = () => {
                           sx={{ borderColor: '#475569', color: '#94A3B8' }}
                         />
                       )}
-                      {profile.twitter && (
+                      {profile?.twitter && (
                         <Chip
                           icon={<TwitterIcon />}
                           label="Twitter"
@@ -565,7 +506,7 @@ const UserProfile = () => {
                           sx={{ borderColor: '#475569', color: '#94A3B8' }}
                         />
                       )}
-                      {profile.github && (
+                      {profile?.github && (
                         <Chip
                           icon={<GitHubIcon />}
                           label="GitHub"
@@ -578,11 +519,11 @@ const UserProfile = () => {
                 )}
 
                 {/* Skills & Interests */}
-                {(profile.skills || profile.interests) && (
+                {(profile?.skills || profile?.interests) && (
                   <Grid item xs={12}>
                     <Divider sx={{ my: 2, borderColor: '#334155' }} />
                     <Grid container spacing={2}>
-                      {profile.skills && (
+                      {profile?.skills && (
                         <Grid item xs={12} sm={6}>
                           <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                             <SkillsIcon sx={{ mr: 2, color: '#3B82F6', mt: 0.5 }} />
@@ -591,13 +532,13 @@ const UserProfile = () => {
                                 Skills
                               </Typography>
                               <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                                {profile.skills}
+                                {profile?.skills}
                               </Typography>
                             </Box>
                           </Box>
                         </Grid>
                       )}
-                      {profile.interests && (
+                      {profile?.interests && (
                         <Grid item xs={12} sm={6}>
                           <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                             <InterestsIcon sx={{ mr: 2, color: '#3B82F6', mt: 0.5 }} />
@@ -606,7 +547,7 @@ const UserProfile = () => {
                                 Interests
                               </Typography>
                               <Typography variant="body1" sx={{ fontWeight: 500, color: 'white' }}>
-                                {profile.interests}
+                                {profile?.interests}
                               </Typography>
                             </Box>
                           </Box>

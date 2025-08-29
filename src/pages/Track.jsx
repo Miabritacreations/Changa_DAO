@@ -1,21 +1,21 @@
 import {
-  Analytics as AnalyticsIcon,
-  ArrowBack as ArrowBackIcon,
-  Assessment as AssessmentIcon,
-  BarChart as ChartIcon,
-  LocationOn as LocationIcon,
-  Timeline as TimelineIcon
+    Analytics as AnalyticsIcon,
+    ArrowBack as ArrowBackIcon,
+    Assessment as AssessmentIcon,
+    BarChart as ChartIcon,
+    LocationOn as LocationIcon,
+    Timeline as TimelineIcon
 } from "@mui/icons-material";
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-  useTheme
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Container,
+    Grid,
+    Typography,
+    useTheme
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -321,22 +321,60 @@ const Track = () => {
             Get detailed insights into how your contributions are creating real-world impact 
             through our comprehensive tracking and reporting system.
           </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => navigate('/Changa_DAO/dashboard')}
-            sx={{
-              background: 'linear-gradient(135deg, #3B82F6, #1E40AF)',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #1E40AF, #1E3A8A)',
-              },
-              px: 4,
-              py: 2,
-              fontSize: '1.1rem',
-            }}
-          >
-            Access Your Dashboard
-          </Button>
+          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/dashboard')}
+              sx={{
+                background: 'linear-gradient(135deg, #3B82F6, #1E40AF)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #1E40AF, #1E3A8A)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Access Your Dashboard
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/projects')}
+              sx={{
+                borderColor: '#3B82F6',
+                color: '#3B82F6',
+                '&:hover': {
+                  borderColor: '#1E40AF',
+                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Browse More Projects
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/verify')}
+              sx={{
+                borderColor: '#10B981',
+                color: '#10B981',
+                '&:hover': {
+                  borderColor: '#059669',
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                },
+                px: 4,
+                py: 2,
+                fontSize: '1.1rem',
+              }}
+            >
+              Learn About Verification
+            </Button>
+          </Box>
         </Box>
       </Container>
     </Box>

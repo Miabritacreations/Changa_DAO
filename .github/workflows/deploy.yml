@@ -33,7 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd src/Changa_DAO_frontend
-        npm ci
+        npm install
         
     - name: Build project
       run: |

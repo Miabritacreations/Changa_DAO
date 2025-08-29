@@ -48,14 +48,14 @@ jobs:
         git config --global user.email "actions@github.com"
         git add -f dist/
         git commit -m "Deploy to GitHub Pages" || exit 0
-        git push origin main
+        git push origin master
         
     - name: Deploy to Netlify
       if: github.event.inputs.platform == 'netlify'
       uses: nwtgck/actions-netlify@v2.0
       with:
         publish-dir: './src/Changa_DAO_frontend/dist'
-        production-branch: main
+        production-branch: master
         github-token: ${{ secrets.GITHUB_TOKEN }}
         deploy-message: "Deploy from AI Agent"
       env:

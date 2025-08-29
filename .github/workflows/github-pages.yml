@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        cd src/Changa_DAO_frontend
+        npm install
+        
+    - name: Build project
+      run: |
+        cd src/Changa_DAO_frontend
+        npm run build
+        
+    - name: Deploy to GitHub Pages
+      run: |
+        cd src/Changa_DAO_frontend
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add -f dist/
+        git commit -m "Deploy to GitHub Pages" || exit 0
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git master
+        
+    - name: Notify deployment
+      run: |
+        echo "GitHub Pages deployment completed successfully!"
+        echo "Repository: ${{ github.repository }}"
+        echo "Commit: ${{ github.sha }}"

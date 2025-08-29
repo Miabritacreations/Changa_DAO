@@ -8,12 +8,12 @@ on:
       platform:
         description: 'Deployment platform'
         required: true
-        default: 'vercel'
+        default: 'github-pages'
         type: choice
         options:
+        - github-pages
         - vercel
         - netlify
-        - github-pages
         - icp
 
 jobs:
@@ -40,14 +40,15 @@ jobs:
         cd src/Changa_DAO_frontend
         npm run build
         
-    - name: Deploy to Vercel
-      if: github.event.inputs.platform == 'vercel' || github.event.inputs.platform == ''
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./src/Changa_DAO_frontend
+    - name: Deploy to GitHub Pages
+      if: github.event.inputs.platform == 'github-pages' || github.event.inputs.platform == ''
+      run: |
+        cd src/Changa_DAO_frontend
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add -f dist/
+        git commit -m "Deploy to GitHub Pages" || exit 0
+        git push origin main
         
     - name: Deploy to Netlify
       if: github.event.inputs.platform == 'netlify'
@@ -61,11 +62,7 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         
-    - name: Deploy to GitHub Pages
-      if: github.event.inputs.platform == 'github-pages'
-      run: |
-        cd src/Changa_DAO_frontend
-        npm run deploy
+
         
     - name: Deploy to ICP
       if: github.event.inputs.platform == 'icp'

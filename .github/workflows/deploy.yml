@@ -1,8 +1,8 @@
-name: AI Agent Deployment
+name: Deploy
 
 on:
   push:
-    branches: [ main, master ]
+    branches:  master 
   workflow_dispatch:
     inputs:
       platform:
